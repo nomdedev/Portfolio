@@ -142,7 +142,7 @@ p {
 #header .nav-list ul li:hover a {
 	color: rgb(50, 194, 98);
 }
-#header .hamburger {
+#header .burguer {
 	height: 60px;
 	width: 60px;
 	display: inline-block;
@@ -157,24 +157,24 @@ p {
 	transform: scale(0.8);
 	margin-right: 20px;
 }
-#header .hamburger:after {
+#header .burguer:after {
 	position: absolute;
 	content: '';
 	height: 100%;
 	width: 100%;
 	border-radius: 50%;
 	border: 3px solid white;
-	animation: hamburger_puls 1s ease infinite;
+	animation: burguer_puls 1s ease infinite;
 }
-#header .hamburger .bar {
+#header .burguer .bar {
 	height: 2px;
 	width: 30px;
 	position: relative;
 	background-color: white;
 	z-index: -1;
 }
-#header .hamburger .bar::after,
-#header .hamburger .bar::before {
+#header .burguer .bar::after,
+#header .burguer .bar::before {
 	content: '';
 	position: absolute;
 	height: 100%;
@@ -184,16 +184,16 @@ p {
 	transition: 0.3s ease;
 	transition-property: top, bottom;
 }
-#header .hamburger .bar::after {
+#header .burguer .bar::after {
 	top: 8px;
 }
-#header .hamburger .bar::before {
+#header .burguer .bar::before {
 	bottom: 8px;
 }
-#header .hamburger.active .bar::before {
+#header .burguer.active .bar::before {
 	bottom: 0;
 }
-#header .hamburger.active .bar::after {
+#header .burguer.active .bar::after {
 	top: 0;
 }
 /* End Header section */
@@ -291,7 +291,7 @@ p {
 	flex-direction: column;
 	padding: 30px;
 	border-radius: 10px;
-	background-image: url(./img/img-1.png);
+	background-image: url();
 	background-size: cover;
 	margin: 10px 5%;
 	position: relative;
@@ -299,7 +299,7 @@ p {
 	overflow: hidden;
 }
 #services .service-item::after {
-	content: '';
+	content: 'boca';
 	position: absolute;
 	left: 0;
 	top: 0;
@@ -533,7 +533,7 @@ p {
 /* End Footer */
 
 /* Keyframes */
-@keyframes hamburger_puls {
+@keyframes burguer_puls {
 	0% {
 		opacity: 1;
 		transform: scale(1);
@@ -677,7 +677,7 @@ p {
 /* Media Query For Desktop */
 @media only screen and (min-width: 1200px) {
 	/* header */
-	#header .hamburger {
+	#header .burguer {
 		display: none;
 	}
 	#header .nav-list ul {
