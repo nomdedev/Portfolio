@@ -299,7 +299,7 @@ p {
 	overflow: hidden;
 }
 #services .service-item::after {
-	content: 'boca';
+	content: '';
 	position: absolute;
 	left: 0;
 	top: 0;
