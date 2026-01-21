@@ -48,19 +48,79 @@
   </div>
   <!-- End Header -->
 
-  <!-- bckPage Section  -->
+  <!-- bckPage Section con Skills Prominentes -->
   <div id="bckPage">
     <div class="bckPage container">
-      <div>
-        <h1>Hola, <span></span></h1>
-        <h1>Soy <span></span></h1>
-        <h1>Martin Nomdedeu <span></span></h1>
-        <p>Ingeniero Mecánico, analista de datos y Project Manager especializado en transformación digital industrial</p>
-        <a href="#projects" type="button" class="cta">Ver Mis Proyectos</a>
+      <div class="hero-content">
+        <div class="hero-text">
+          <h1>Hola, <span></span></h1>
+          <h1>Soy <span></span></h1>
+          <h1>Martin Nomdedeu <span></span></h1>
+          <p class="hero-subtitle">Ingeniero Mecánico especializado en transformación digital industrial</p>
+
+          <!-- Value Proposition Prominente -->
+          <div class="value-prop">
+            <div class="value-prop-item">
+              <span class="value-icon">🏆</span>
+              <span class="value-text">+300% ROI en proyectos industriales</span>
+            </div>
+            <div class="value-prop-item">
+              <span class="value-icon">⚡</span>
+              <span class="value-text">75% reducción tiempo operativo</span>
+            </div>
+            <div class="value-prop-item">
+              <span class="value-icon">🤖</span>
+              <span class="value-text">IA aplicada a procesos reales</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Skills Matrix Prominente -->
+        <div class="hero-skills">
+          <h2 class="skills-title">🏆 Expertise Principal</h2>
+          <div class="skills-matrix">
+            <div class="skill-primary">
+              <div class="skill-icon">🏭</div>
+              <div class="skill-info">
+                <h3>Ingeniería Industrial</h3>
+                <p>Diseño de producto, procesos, Industria 4.0</p>
+              </div>
+            </div>
+
+            <div class="skill-primary">
+              <div class="skill-icon">🤖</div>
+              <div class="skill-info">
+                <h3>IA & Machine Learning</h3>
+                <p>Automatización inteligente, análisis predictivo</p>
+              </div>
+            </div>
+
+            <div class="skill-secondary">
+              <div class="skill-icon">💻</div>
+              <div class="skill-info">
+                <h3>Full-Stack Development</h3>
+                <p>Python, React, APIs, bases de datos</p>
+              </div>
+            </div>
+
+            <div class="skill-secondary">
+              <div class="skill-icon">📊</div>
+              <div class="skill-info">
+                <h3>Data Science & BI</h3>
+                <p>Analytics, dashboards, business intelligence</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-cta">
+            <a href="#projects" class="cta-primary">Ver Proyectos Destacados</a>
+            <a href="#contact" class="cta-secondary">Hablemos de tu Proyecto</a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-  <!-- End bckPage Section  -->
+  <!-- End bckPage Section -->
 
   <!-- Service Section -->
   <div id="services">
@@ -310,32 +370,52 @@
         <p>Una muestra organizada de mi trabajo en transformación digital industrial, desarrollo de software y optimización de procesos.</p>
       </div>
 
-      <!-- Filtros Interactivos -->
+      <!-- Filtros Interactivos Optimizados -->
       <div class="filters-container">
         <div class="filter-tabs">
-          <button class="filter-btn active" data-filter="all">
+          <!-- Tiers (Jerarquía) -->
+          <button class="filter-btn active tier-hero" data-filter="all">
             <span class="filter-icon">📂</span>
-            Todos <span class="filter-count">(13)</span>
+            Todos <span class="filter-count">(8)</span>
           </button>
-          <button class="filter-btn" data-filter="featured">
+          <button class="filter-btn tier-hero" data-filter="hero">
             <span class="filter-icon">⭐</span>
-            Destacados <span class="filter-count">(3)</span>
+            Hero <span class="filter-count">(3)</span>
           </button>
+          <button class="filter-btn tier-primary" data-filter="primary">
+            <span class="filter-icon">🔥</span>
+            Principal <span class="filter-count">(3)</span>
+          </button>
+          <button class="filter-btn tier-secondary" data-filter="secondary">
+            <span class="filter-icon">📋</span>
+            Secundario <span class="filter-count">(2)</span>
+          </button>
+
+          <!-- Categorías -->
+          <div class="filter-separator"></div>
           <button class="filter-btn" data-filter="industrial">
             <span class="filter-icon">🏭</span>
-            Industrial <span class="filter-count">(4)</span>
+            Industrial <span class="filter-count">(2)</span>
           </button>
           <button class="filter-btn" data-filter="ai">
             <span class="filter-icon">🤖</span>
-            IA & ML <span class="filter-count">(2)</span>
+            IA & ML <span class="filter-count">(1)</span>
           </button>
           <button class="filter-btn" data-filter="software">
             <span class="filter-icon">💻</span>
             Software <span class="filter-count">(2)</span>
           </button>
-          <button class="filter-btn" data-filter="web">
-            <span class="filter-icon">🌐</span>
-            Web Dev <span class="filter-count">(2)</span>
+          <button class="filter-btn" data-filter="fintech">
+            <span class="filter-icon">📊</span>
+            Fintech <span class="filter-count">(1)</span>
+          </button>
+          <button class="filter-btn" data-filter="automation">
+            <span class="filter-icon">⚡</span>
+            Automatización <span class="filter-count">(1)</span>
+          </button>
+          <button class="filter-btn" data-filter="education">
+            <span class="filter-icon">🎓</span>
+            Educación <span class="filter-count">(1)</span>
           </button>
         </div>
 

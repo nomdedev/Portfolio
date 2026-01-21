@@ -243,8 +243,14 @@ class ProjectsFilter {
 
     createProjectElement(project, index) {
         const projectDiv = document.createElement('div');
-        projectDiv.className = `project-item ${project.featured ? 'featured' : ''}`;
+        projectDiv.className = `project-item ${project.featured ? 'featured' : ''} tier-${project.tier || 'secondary'}`;
         projectDiv.style.animationDelay = `${index * 0.1}s`;
+
+        // Add data attributes for filtering
+        projectDiv.dataset.category = project.category;
+        projectDiv.dataset.tier = project.tier || 'secondary';
+        projectDiv.dataset.complexity = project.complexity;
+        projectDiv.dataset.year = project.year;
 
         // Get category info
         const categoryInfo = filterConfig.categories[project.category] || { label: project.category, icon: '📁' };
@@ -268,6 +274,15 @@ class ProjectsFilter {
 
         // Generate rating stars
         const stars = '⭐'.repeat(project.rating);
+
+        // Generate highlights if available
+        const highlights = project.highlights ?
+            `<div class="project-highlights">
+                <strong>✨ Aspectos destacados:</strong>
+                <ul>
+                    ${project.highlights.map(h => `<li>${h}</li>`).join('')}
+                </ul>
+            </div>` : '';
 
         projectDiv.innerHTML = `
             <div class="project-meta">
@@ -297,6 +312,7 @@ class ProjectsFilter {
                     <strong>🎯 Impacto:</strong> ${project.impact}
                 </div>
                 ` : ''}
+                ${highlights}
                 <div class="project-tech">
                     <strong>🛠️ Tecnologías:</strong>
                     <div class="tech-tags">
@@ -317,15 +333,22 @@ class ProjectsFilter {
         let visibleCount = 0;
 
         projectItems.forEach(item => {
-            const category = item.querySelector('.project-category').textContent.trim().split(' ')[1] || '';
+            const category = item.dataset.category || '';
+            const tier = item.dataset.tier || '';
             const techTags = Array.from(item.querySelectorAll('.tech-tag')).map(tag => tag.textContent.toLowerCase());
-            const complexity = this.getProjectComplexity(item);
+            const complexity = item.dataset.complexity || '';
 
             let isVisible = true;
 
             // Category filter
             if (this.currentFilter !== 'all') {
-                isVisible = isVisible && category.toLowerCase() === this.currentFilter;
+                if (this.currentFilter === 'hero' || this.currentFilter === 'primary' || this.currentFilter === 'secondary') {
+                    // Tier-based filtering
+                    isVisible = isVisible && tier === this.currentFilter;
+                } else {
+                    // Category-based filtering
+                    isVisible = isVisible && category.toLowerCase() === this.currentFilter;
+                }
             }
 
             // Tech filter
