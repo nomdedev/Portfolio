@@ -74,3 +74,16 @@ vercel_diagnostic.py
 # Node.js files (not needed for static site)
 package.json
 package-lock.json
+
+# Additional development files
+.eslintrc.js
+deploy.sh
+PORTFOLIO_MARKETING_GUIDE.md
+TECHNICAL_DOCS.md
+RESPONSIVENESS_IMPLEMENTATION_RESULTS.md
+MEJORAS_CRITICAS_PLAN.md
+AUDITORIA_UI_UX.md
+CHANGELOG.md
+
+# CV directory (if not part of main site)
+cv/

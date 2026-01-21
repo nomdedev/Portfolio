@@ -1,7 +1,7 @@
 {
   "version": 2,
   "buildCommand": null,
-  "outputDirectory": ".",
+  "outputDirectory": "public",
   "framework": null,
   "installCommand": null,
   "routes": [
