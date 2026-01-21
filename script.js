@@ -23,3 +23,26 @@ menu_item.forEach((item) => {
 		mobile_menu.classList.toggle('active');
 	});
 });
+
+// Animación de proyectos al hacer scroll
+const projectItems = document.querySelectorAll('#projects .project-item');
+
+const observerOptions = {
+	threshold: 0.1,
+	rootMargin: '0px 0px -50px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+	entries.forEach((entry, index) => {
+		if (entry.isIntersecting) {
+			setTimeout(() => {
+				entry.target.style.animationDelay = '0s';
+				entry.target.style.opacity = '1';
+			}, index * 200);
+		}
+	});
+}, observerOptions);
+
+projectItems.forEach(item => {
+	observer.observe(item);
+});
