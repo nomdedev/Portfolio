@@ -6,9 +6,12 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  output: 'export',
-  trailingSlash: true,
-  distDir: 'dist',
+  // Solo usar export para GitHub Pages, no para Vercel
+  ...(process.env.GITHUB_PAGES ? {
+    output: 'export',
+    trailingSlash: true,
+    distDir: 'dist',
+  } : {}),
 }
 
 export default nextConfig
