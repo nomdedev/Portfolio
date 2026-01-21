@@ -452,3 +452,200 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, 100);
 });
+
+// ==========================================
+// SECURE CONTACT SYSTEM
+// ==========================================
+
+// Email obfuscation and secure contact functions
+function openEmailClient() {
+    // Obfuscated email to prevent scraping
+    const user = 'martin.nomdedeu';
+    const domain = 'gmail.com';
+    const subject = encodeURIComponent('Contacto desde Portfolio Web');
+    const body = encodeURIComponent('Hola Martin,\n\nMe gustaría contactarte para hablar sobre...\n\nSaludos,');
+
+    // Open default email client
+    window.location.href = `mailto:${user}@${domain}?subject=${subject}&body=${body}`;
+}
+
+function showPhoneModal() {
+    const modal = document.getElementById('phoneModal');
+    if (modal) {
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closePhoneModal() {
+    const modal = document.getElementById('phoneModal');
+    if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+}
+
+function closeSuccessModal() {
+    const modal = document.getElementById('successModal');
+    if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+}
+
+function openLinkedIn() {
+    window.open('https://www.linkedin.com/in/martin-nomdedeu/', '_blank');
+}
+
+// Contact form handling
+document.addEventListener('DOMContentLoaded', () => {
+    const contactForm = document.querySelector('.contact-form');
+
+    if (contactForm) {
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Validate form before submission
+            if (!validateForm()) {
+                return;
+            }
+
+            const submitBtn = contactForm.querySelector('.submit-btn');
+            const originalText = submitBtn.innerHTML;
+
+            // Show loading state
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="btn-text">Enviando...</span><span class="btn-icon">⏳</span>';
+
+            try {
+                // Get form data
+                const formData = new FormData(contactForm);
+
+                // Send to Formspree (the form action handles this)
+                const response = await fetch(contactForm.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    // Show success modal
+                    const successModal = document.getElementById('successModal');
+                    if (successModal) {
+                        successModal.style.display = 'block';
+                        document.body.style.overflow = 'hidden';
+                    }
+
+                    // Reset form
+                    contactForm.reset();
+                } else {
+                    throw new Error('Error al enviar el mensaje');
+                }
+
+            } catch (error) {
+                console.error('Error sending message:', error);
+                showFormError('Error al enviar el mensaje. Por favor intenta de nuevo.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+            }
+        });
+    }
+
+    // Close modals when clicking outside
+    window.addEventListener('click', (e) => {
+        const phoneModal = document.getElementById('phoneModal');
+        const successModal = document.getElementById('successModal');
+
+        if (e.target === phoneModal) {
+            closePhoneModal();
+        }
+        if (e.target === successModal) {
+            closeSuccessModal();
+        }
+    });
+
+    // Close modals with Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closePhoneModal();
+            closeSuccessModal();
+        }
+    });
+});
+
+// ==========================================
+// FORM VALIDATION ENHANCEMENTS
+// ==========================================
+
+function validateEmail(email) {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+}
+
+function validateForm() {
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const message = document.getElementById('message').value.trim();
+
+    if (!name) {
+        showFormError('Por favor ingresa tu nombre');
+        return false;
+    }
+
+    if (!email) {
+        showFormError('Por favor ingresa tu email');
+        return false;
+    }
+
+    if (!validateEmail(email)) {
+        showFormError('Por favor ingresa un email válido');
+        return false;
+    }
+
+    if (!message) {
+        showFormError('Por favor ingresa tu mensaje');
+        return false;
+    }
+
+    return true;
+}
+
+function showFormError(message) {
+    // Remove existing error messages
+    const existingError = document.querySelector('.form-error');
+    if (existingError) {
+        existingError.remove();
+    }
+
+    // Create and show error message
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'form-error';
+    errorDiv.textContent = message;
+    errorDiv.style.cssText = `
+        color: #ef4444;
+        background: rgba(239, 68, 68, 0.1);
+        border: 1px solid #ef4444;
+        padding: 12px;
+        border-radius: 8px;
+        margin-bottom: 16px;
+        font-size: 14px;
+        text-align: center;
+    `;
+
+    const form = document.querySelector('.contact-form');
+    form.insertBefore(errorDiv, form.firstChild);
+
+    // Auto-remove after 5 seconds
+    setTimeout(() => {
+        if (errorDiv.parentNode) {
+            errorDiv.remove();
+        }
+    }, 5000);
+}
+
+// ==========================================
+// END SECURE CONTACT SYSTEM
+// ==========================================
