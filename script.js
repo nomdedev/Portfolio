@@ -24,25 +24,27 @@ menu_item.forEach((item) => {
 	});
 });
 
-// Animación de proyectos al hacer scroll
-const projectItems = document.querySelectorAll('#projects .project-item');
+// Función para cambiar imagen principal en galería
+function changeMainImage(thumb) {
+    const projectItem = thumb.closest('.project-item');
+    const mainImage = projectItem.querySelector('.project-img img');
+    const currentSrc = mainImage.src;
+    const newSrc = thumb.src;
 
-const observerOptions = {
-	threshold: 0.1,
-	rootMargin: '0px 0px -50px 0px'
-};
+    // Solo cambiar si es diferente
+    if (currentSrc !== newSrc) {
+        // Animación de fade out
+        mainImage.style.opacity = '0';
 
-const observer = new IntersectionObserver((entries) => {
-	entries.forEach((entry, index) => {
-		if (entry.isIntersecting) {
-			setTimeout(() => {
-				entry.target.style.animationDelay = '0s';
-				entry.target.style.opacity = '1';
-			}, index * 200);
-		}
-	});
-}, observerOptions);
+        setTimeout(() => {
+            mainImage.src = newSrc;
+            mainImage.alt = thumb.alt;
+            mainImage.style.opacity = '1';
+        }, 200);
+    }
 
-projectItems.forEach(item => {
-	observer.observe(item);
-});
+    // Actualizar thumbnails activos
+    const thumbs = projectItem.querySelectorAll('.gallery-thumbs img');
+    thumbs.forEach(t => t.classList.remove('active'));
+    thumb.classList.add('active');
+}
