@@ -11,6 +11,12 @@ Un portfolio web moderno y elegante construido con Next.js 15, TypeScript y comp
 - **Deployment**: Vercel automático
 - **Edición Visual**: Compatible con v0.dev
 
+### 📄 GitHub Pages (Backup)
+- **URL**: https://nomdedev.github.io/myportfolio/
+- **Rama**: `gh-pages`
+- **Propósito**: Versión estática de respaldo
+- **Estado**: ✅ Configurado y funcionando
+
 ## ✨ Características Destacadas
 
 - **🎨 Diseño Moderno**: Tema oscuro con acentos violetas y efectos glassmorphism
