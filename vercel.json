@@ -4,12 +4,6 @@
   "outputDirectory": "public",
   "framework": null,
   "installCommand": null,
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
-    }
-  ],
   "headers": [
     {
       "source": "/(.*)",
@@ -34,4 +28,5 @@
     }
   ],
   "regions": ["iad1"]
+}
 }
