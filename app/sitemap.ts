@@ -1,9 +1,11 @@
 import type { MetadataRoute } from 'next'
 
+export const dynamic = 'force-static'
+
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
-      url: 'https://martinnomdedeu.vercel.app',
+      url: 'https://nomdedev.github.io/Portfolio/',
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 1,
