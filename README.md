@@ -4,13 +4,29 @@ Un portfolio web moderno y elegante que showcases proyectos de desarrollo web, i
 
 ![Portfolio Preview](./img/minimalist-office.jpg)
 
-## ✨ Características
+## ✨ Características Destacadas
 
 - **🎨 Diseño Moderno**: Tema oscuro con acentos violetas y efectos glassmorphism
 - **📱 Diseño Responsivo**: Optimizado para desktop, tablet y móvil
 - **⚡ Animaciones Suaves**: Transiciones CSS y animaciones al hacer scroll
+- **🖼️ Galerías Interactivas**: Visualización detallada de proyectos con múltiples imágenes
 - **🔗 Integración Social**: Enlaces directos a LinkedIn y GitHub
 - **🛠️ Tecnologías Actuales**: HTML5, CSS3 moderno, JavaScript ES6+
+
+## 📁 Estructura de Imágenes
+
+```
+img/
+├── tsolares/           # Proyecto Tanques Solares
+│   ├── ts1-fabricacion.jpg
+│   ├── ts2-detalleproducto.jpg
+│   ├── ts3-productohogar.jpg
+│   └── ts4-procesofab.jpg
+├── harvesting/         # Proyecto Máquina Cosechadora
+├── Rexxus/            # Proyectos Web
+├── vecinosimple/      # Proyecto Vecino Simple
+└── [otras imágenes]
+```
 
 ## 🏗️ Arquitectura del Proyecto
 
@@ -223,6 +239,27 @@ Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) par
 **Martin Nomdedeu**
 - LinkedIn: [linkedin.com/in/martin-nomdedeu](https://www.linkedin.com/in/martin-nomdedeu)
 - Email: [Contáctame directamente](#contact)
+
+---
+
+## 📚 Recursos Adicionales
+
+### 🎯 Guía de Marketing Digital
+Para optimizar tu portfolio y estrategia de marketing profesional, consulta nuestra **[Guía Definitiva de Portfolios y Marketing Digital](PORTFOLIO_MARKETING_GUIDE.md)** que incluye:
+
+- Estrategias de posicionamiento de marca personal
+- Optimización SEO para profesionales
+- Diseño de portfolios que convierten
+- Content marketing para técnicos
+- Analytics y A/B testing
+- Casos de éxito reales
+
+### 📋 Checklist de Optimización
+- [ ] **SEO Técnico**: Meta tags, schema markup, Core Web Vitals
+- [ ] **Contenido**: Casos de estudio con métricas cuantificables
+- [ ] **Social Proof**: Testimonials y logos de clientes
+- [ ] **Conversiones**: CTAs estratégicos y formularios optimizados
+- [ ] **Analytics**: Google Analytics 4 y heatmaps configurados
 
 ---
 
