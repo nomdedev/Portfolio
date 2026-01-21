@@ -1,8 +1,20 @@
 # 🚀 Portfolio de Martin Nomdedeu
 
-Un portfolio web moderno y elegante que showcases proyectos de desarrollo web, ingeniería industrial y soluciones tecnológicas innovadoras.
+Un portfolio web moderno y elegante construido con Next.js 15, TypeScript y componentes UI modernos que showcases proyectos de desarrollo web, ingeniería industrial y soluciones tecnológicas innovadoras.
 
-![Portfolio Preview](./img/minimalist-office.jpg)
+## 🌐 URLs Disponibles
+
+### 🚀 Versión Principal (Next.js + App Router)
+- **Rama**: `main` (principal)
+- **Framework**: Next.js 15 + TypeScript
+- **UI Components**: Radix UI + Tailwind CSS
+- **Deployment**: Vercel automático
+- **Edición Visual**: Compatible con v0.dev
+
+### 📄 Versión Legacy (GitHub Pages)
+- **Rama**: `gh-pages`
+- **Tecnología**: HTML/CSS/JS puro
+- **Uso**: Backup y compatibilidad legacy
 
 ## ✨ Características Destacadas
 
@@ -11,7 +23,7 @@ Un portfolio web moderno y elegante que showcases proyectos de desarrollo web, i
 - **⚡ Animaciones Suaves**: Transiciones CSS y animaciones al hacer scroll
 - **🖼️ Galerías Interactivas**: Visualización detallada de proyectos con múltiples imágenes
 - **🔗 Integración Social**: Enlaces directos a LinkedIn y GitHub
-- **🛠️ Tecnologías Actuales**: HTML5, CSS3 moderno, JavaScript ES6+
+- **🛠️ Tecnologías Actuales**: Next.js 15, TypeScript, Tailwind CSS, Radix UI
 
 ## 📁 Estructura de Imágenes
 
@@ -32,20 +44,31 @@ img/
 
 ```
 portfolio/
-├── index.html          # Página principal
-├── style.css           # Estilos CSS modernos
-├── script.js           # JavaScript para interactividad
-├── README.md           # Esta documentación
-├── test_portfolio_simple.py  # Suite de testing
-├── test_results.json   # Resultados de tests
-├── playwright.config.js     # Configuración de Playwright
-├── tests/              # Directorio de tests
-│   └── portfolio_tests.js   # Tests de Playwright
-└── img/                # Imágenes del portfolio
-    ├── minimalist-office.jpg
-    ├── minimalist-office2.jpg
-    ├── business-busy-clean-computer.jpg
-    └── ...
+├── app/                    # Next.js App Router
+│   ├── globals.css        # Estilos globales
+│   ├── layout.tsx         # Layout principal
+│   ├── page.tsx           # Página principal
+│   └── sitemap.ts         # Sitemap para SEO
+├── components/            # Componentes React
+│   ├── portfolio/         # Componentes del portfolio
+│   │   ├── navigation.tsx
+│   │   ├── hero.tsx
+│   │   ├── about.tsx
+│   │   ├── experience.tsx
+│   │   ├── projects.tsx
+│   │   ├── contact.tsx
+│   │   ├── footer.tsx
+│   │   └── side-elements.tsx
+│   ├── theme-provider.tsx
+│   └── ui/                # Componentes UI (Radix)
+├── lib/                   # Utilidades
+│   └── utils.ts
+├── public/                # Archivos estáticos
+│   ├── img/              # Imágenes del portfolio
+│   └── icons/            # Iconos y favicons
+├── styles/               # Estilos adicionales
+├── tests/                # Tests automatizados
+└── [config files]        # next.config.mjs, tsconfig.json, etc.
 ```
 
 ## 🛠️ Tecnologías Utilizadas
@@ -75,11 +98,12 @@ portfolio/
 ## 🚀 Inicio Rápido
 
 ### Prerrequisitos
-- Python 3.6+ (para servidor local)
+- **Node.js 18+** (para Next.js)
+- **pnpm** (recomendado) o npm
+- **Git** para control de versiones
 - Navegador web moderno
-- Node.js (opcional, para Playwright avanzado)
 
-### Instalación y Ejecución
+### Instalación y Desarrollo
 
 1. **Clonar el repositorio**
    ```bash
@@ -87,55 +111,102 @@ portfolio/
    cd Portfolio
    ```
 
-2. **Iniciar servidor local**
+2. **Cambiar a rama main** (principal)
    ```bash
-   python -m http.server 8000
+   git checkout main
    ```
 
-3. **Abrir en navegador**
+3. **Instalar dependencias**
+   ```bash
+   # Con pnpm (recomendado)
+   pnpm install
+
+   # O con npm
+   npm install
    ```
-   http://localhost:8000
+
+4. **Iniciar servidor de desarrollo**
+   ```bash
+   # Con pnpm
+   pnpm dev
+
+   # O con npm
+   npm run dev
    ```
 
-## 🧪 Testing
+5. **Abrir en navegador**
+   ```
+   http://localhost:3000
+   ```
 
-### Tests Automatizados
-
-Ejecutar la suite completa de tests:
+### 🛠️ Comandos Disponibles
 
 ```bash
-# Tests simplificados (recomendado)
-python test_portfolio_simple.py
+# Desarrollo
+pnpm dev          # Servidor de desarrollo
+pnpm build        # Build de producción
+pnpm start        # Servidor de producción
+pnpm lint         # Linting con ESLint
 
-# Tests con Playwright (requiere configuración adicional)
-npx playwright test
+# Testing (futuro)
+pnpm test         # Ejecutar tests
 ```
 
-### Cobertura de Tests
+## 🌟 Flujo de Trabajo
 
-Los tests verifican:
-- ✅ Carga correcta de la página principal
-- ✅ Estructura HTML válida
-- ✅ Archivos CSS y JS accesibles
-- ✅ Imágenes existentes
-- ✅ Enlaces internos funcionales
-- ✅ Contenido de calidad (descripciones, tecnologías)
-- ✅ Características modernas (glassmorphism, animaciones)
+### Rama Principal: `main`
+Esta es la rama principal y por defecto del proyecto. Contiene la versión más actual y moderna del portfolio con Next.js.
 
-**Tasa de éxito actual: 76.2%** (16/21 tests pasan)
+**Para trabajar en el proyecto:**
+```bash
+# Asegurarse de estar en main
+git checkout main
+git pull origin main
 
-### Resultados de Tests
+# Crear rama de feature si es necesario
+git checkout -b feature/nueva-funcionalidad
 
-Los resultados detallados se guardan en `test_results.json`:
-
-```json
-{
-  "tests_run": 21,
-  "tests_passed": 16,
-  "tests_failed": 5,
-  "failures": [...]
-}
+# Después de trabajar, merge a main
+git checkout main
+git merge feature/nueva-funcionalidad
+git push origin main
 ```
+
+### 🎨 Edición Visual con v0.dev
+
+1. **Importar proyecto**: Ve a [v0.dev](https://v0.dev) → Import Repository
+2. **Seleccionar rama**: `main` (rama principal)
+3. **Framework**: Next.js (auto-detectado)
+4. **¡Empieza a editar!**
+
+**Prompts útiles para v0.dev:**
+- `"Add a testimonials section with client reviews"`
+- `"Create a contact form with validation"`
+- `"Add a dark mode toggle"`
+- `"Create a blog section with latest posts"`
+- `"Add animated background effects"`
+
+### � Verificación del Proyecto
+
+Este proyecto incluye scripts de verificación para asegurar que todo esté configurado correctamente:
+
+#### Para Windows PowerShell:
+```powershell
+.\check_main.ps1
+```
+
+#### Para Windows Command Prompt:
+```batch
+check_main.bat
+```
+
+### Qué Verifican los Scripts:
+
+- ✅ Rama actual (debe ser `main`)
+- ✅ Versión de Next.js instalada
+- ✅ Archivos requeridos presentes (`app/`, `components/`, configuración)
+- ✅ Servidor de desarrollo corriendo
+- ✅ Instrucciones paso a paso para importar a v0.dev
 
 ## 📱 Secciones del Portfolio
 
