@@ -1,0 +1,27 @@
+{
+  "tests_run": 21,
+  "tests_passed": 16,
+  "tests_failed": 5,
+  "failures": [
+    {
+      "test": "Navegación presente",
+      "message": ""
+    },
+    {
+      "test": "Enlaces internos válidos",
+      "message": "Enlaces inválidos: ['https://www.linkedin.com/in/martin-nomdedeu/', 'https://www.linkedin.com/in/martin-nomdedeu/', 'https://www.linkedin.com/in/martin-nomdedeu/', 'https://www.linkedin.com/in/martin-nomdedeu/', 'https://www.linkedin.com/in/martin-nomdedeu/', 'https://www.linkedin.com/in/martin-nomdedeu/', 'https://www.linkedin.com/in/martin-nomdedeu/', 'https://www.linkedin.com/in/martin-nomdedeu/', 'https://www.linkedin.com/in/martin-nomdedeu/', 'https://www.linkedin.com/in/martin-nomdedeu/', 'https://www.linkedin.com/in/martin-nomdedeu/', 'https://www.linkedin.com/in/martin-nomdedeu/', 'https://www.linkedin.com/in/martin-nomdedeu/', 'https://www.linkedin.com/in/martin-nomdedeu/', '#', '#', 'https://www.linkedin.com/in/martin-nomdedeu/', '#']"
+    },
+    {
+      "test": "Tecnologías mencionadas",
+      "message": ""
+    },
+    {
+      "test": "Usa backdrop-filter (glassmorphism)",
+      "message": ""
+    },
+    {
+      "test": "Usa animaciones CSS",
+      "message": ""
+    }
+  ]
+}
