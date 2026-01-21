@@ -4,14 +4,13 @@
   "description": "Portfolio web moderno de Martin Nomdedeu - Desarrollador Web & Ingeniero Mecánico",
   "main": "index.html",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "test": "playwright test",
+    "start": "python -m http.server 8000",
+    "test": "python test_portfolio_simple.py",
     "test:full": "python test_portfolio.py",
+    "build": "echo 'No build step required for static site'",
     "deploy": "echo 'Deploy manually or use GitHub Pages'",
-    "format": "prettier --write ."
+    "lint": "echo 'No linter configured'",
+    "format": "echo 'No formatter configured'"
   },
   "keywords": [
     "portfolio",

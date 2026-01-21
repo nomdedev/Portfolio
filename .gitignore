@@ -18,15 +18,29 @@ test_results.json
 playwright-report/
 test-results/
 playwright/.cache/
+tests/
+test_portfolio.py
+test_portfolio_simple.py
+run_tests.bat
+playwright.config.js
 
-# IDE
+# Development and audit files
+analyze_projects.py
+analyze_projects_new.py
+AUDITORIA_UI_UX.md
+CHANGELOG.md
+MEJORAS_CRITICAS_PLAN.md
+MOBILE_RESPONSIVENESS_AUDIT.md
+PORTFOLIO_MARKETING_GUIDE.md
+RESPONSIVENESS_IMPLEMENTATION_RESULTS.md
+TECHNICAL_DOCS.md
+
+# IDE and OS files
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
-
-# OS
 .DS_Store
 .DS_Store?
 ._*
@@ -35,19 +49,48 @@ playwright/.cache/
 ehthumbs.db
 Thumbs.db
 
+# Git and deployment
+.github/
+.gitignore
+deploy.sh
+
 # Logs
 *.log
 logs/
 
-# Build outputs
+# Environment
+.env
+.env.local
+
+# Build outputs (if any)
 dist/
 build/
 *.min.css
 *.min.js
 
-# Environment
-.env
-.env.local
+# Documentation (keep only essential)
+README.md
+VERCEL_DEPLOY_GUIDE.md
+vercel_diagnostic.py
+
+# Node.js files (not needed for static site)
+package.json
+package-lock.json
+
+# Additional development files
+.eslintrc.js
+PORTFOLIO_MARKETING_GUIDE.md
+TECHNICAL_DOCS.md
+RESPONSIVENESS_IMPLEMENTATION_RESULTS.md
+MEJORAS_CRITICAS_PLAN.md
+AUDITORIA_UI_UX.md
+CHANGELOG.md
+
+# CV directory (if not part of main site)
+cv/
+
+# Force update file
+force_update.txt
 .env.development.local
 .env.test.local
 .env.production.local
