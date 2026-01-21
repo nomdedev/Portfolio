@@ -4,13 +4,14 @@
   "description": "Portfolio web moderno de Martin Nomdedeu - Desarrollador Web & Ingeniero Mecánico",
   "main": "index.html",
   "scripts": {
-    "start": "python -m http.server 8000",
-    "test": "python test_portfolio_simple.py",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test": "playwright test",
     "test:full": "python test_portfolio.py",
-    "build": "echo 'No build step required for static site'",
     "deploy": "echo 'Deploy manually or use GitHub Pages'",
-    "lint": "echo 'No linter configured'",
-    "format": "echo 'No formatter configured'"
+    "format": "prettier --write ."
   },
   "keywords": [
     "portfolio",
@@ -24,7 +25,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/nomdedev/Portfolio.git"
+    "url": "git+https://github.com/nomdedev/Portfolio.git"
   },
   "bugs": {
     "url": "https://github.com/nomdedev/Portfolio/issues"
@@ -35,8 +36,8 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.57.0",
-    "prettier": "^3.0.0",
-    "eslint": "^8.0.0"
+    "eslint": "^8.0.0",
+    "prettier": "^3.0.0"
   },
   "browserslist": [
     "last 2 versions",
@@ -46,5 +47,15 @@
   "config": {
     "port": 8000,
     "host": "localhost"
+  },
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "type": "commonjs",
+  "dependencies": {
+    "next": "^16.1.4",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3"
   }
 }
