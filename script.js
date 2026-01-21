@@ -23,7 +23,7 @@ document.addEventListener('click', (e) => {
 
 // Header background change with smooth transition
 document.addEventListener('scroll', () => {
-	var scroll_position = window.scrollY;
+	let scroll_position = window.scrollY;
 	if (scroll_position > 250) {
 		header.style.backgroundColor = 'rgba(41, 50, 60, 0.95)';
 		header.style.backdropFilter = 'blur(20px)';
@@ -166,11 +166,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     lastFocusableElement.focus();
                     e.preventDefault();
                 }
-            } else {
-                if (document.activeElement === lastFocusableElement) {
-                    firstFocusableElement.focus();
-                    e.preventDefault();
-                }
+            } else if (document.activeElement === lastFocusableElement) {
+                firstFocusableElement.focus();
+                e.preventDefault();
             }
         }
     });
