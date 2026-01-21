@@ -1,19 +1,13 @@
 {
   "version": 2,
-  "buildCommand": "echo 'Static site - no build required'",
+  "buildCommand": null,
   "outputDirectory": ".",
   "framework": null,
-  "installCommand": "echo 'No dependencies to install'",
-  "builds": [
-    {
-      "src": "index.html",
-      "use": "@vercel/static"
-    }
-  ],
+  "installCommand": null,
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/index.html"
+      "dest": "/$1"
     }
   ],
   "headers": [
@@ -39,6 +33,5 @@
       ]
     }
   ],
-  "functions": {},
   "regions": ["iad1"]
 }
