@@ -397,29 +397,89 @@
   <!-- Contact Section -->
   <div id="contact">
     <div class="contact container">
-      <div>
+      <div class="contact-header">
         <h1 class="div-title">Contácta<span>me</span></h1>
+        <p>¿Interesado en trabajar juntos? Envíame un mensaje y conversemos sobre tu proyecto.</p>
       </div>
-      <div class="contact-items">
-        <div class="contact-item">
-          <div class="icon"><img src="https://img.icons8.com/bubbles/100/000000/phone.png" /></div>
-          <div class="contact-info">
-            <h1>Teléfono: Argentina</h1>
-            <h2>+54 221 6497571</h2>
-          </div>
+
+      <div class="contact-content">
+        <!-- Contact Form -->
+        <div class="contact-form-container">
+          <h2>📧 Envía un Mensaje</h2>
+          <form action="https://formspree.io/f/xpznqkgb" method="POST" class="contact-form">
+            <div class="form-group">
+              <label for="name">Nombre *</label>
+              <input type="text" id="name" name="name" required>
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email *</label>
+              <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+              <label for="subject">Asunto</label>
+              <input type="text" id="subject" name="subject" placeholder="Proyecto, consulta, etc.">
+            </div>
+
+            <div class="form-group">
+              <label for="message">Mensaje *</label>
+              <textarea id="message" name="message" rows="5" required placeholder="Cuéntame sobre tu proyecto o consulta..."></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn">
+              <span class="btn-text">Enviar Mensaje</span>
+              <span class="btn-icon">📤</span>
+            </button>
+          </form>
         </div>
-        <div class="contact-item">
-          <div class="icon"><img src="https://img.icons8.com/bubbles/100/000000/new-post.png" /></div>
-          <div class="contact-info">
-            <h1>Email</h1>
-            <h2>martin.nomdedeu@gmail.com</h2>            
+
+        <!-- Contact Methods -->
+        <div class="contact-methods">
+          <h2>🌐 Otros Medios de Contacto</h2>
+
+          <div class="contact-item">
+            <div class="icon"><img src="https://img.icons8.com/bubbles/100/000000/linkedin.png" /></div>
+            <div class="contact-info">
+              <h1>LinkedIn</h1>
+              <h2>Perfil Profesional</h2>
+              <a href="https://www.linkedin.com/in/martin-nomdedeu/" class="contact-link" target="_blank">
+                Ver Perfil <span>→</span>
+              </a>
+            </div>
           </div>
-        </div>
-        <div class="contact-item">
-          <div class="icon"><img src="https://img.icons8.com/bubbles/100/000000/map-marker.png" /></div>
-          <div class="contact-info">
-            <h1>Dirección</h1>
-            <h2>La Plata, Buenos Aires, Argentina</h2>
+
+          <div class="contact-item">
+            <div class="icon"><img src="https://img.icons8.com/bubbles/100/000000/github.png" /></div>
+            <div class="contact-info">
+              <h1>GitHub</h1>
+              <h2>Código y Proyectos</h2>
+              <a href="https://github.com/nomdedev" class="contact-link" target="_blank">
+                Ver Repositorios <span>→</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <div class="icon"><img src="https://img.icons8.com/bubbles/100/000000/phone.png" /></div>
+            <div class="contact-info">
+              <h1>Teléfono</h1>
+              <h2>Argentina (GMT-3)</h2>
+              <button onclick="showPhoneModal()" class="contact-link phone-btn">
+                Solicitar Contacto <span>📞</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <div class="icon"><img src="https://img.icons8.com/bubbles/100/000000/new-post.png" /></div>
+            <div class="contact-info">
+              <h1>Email</h1>
+              <h2>Respuesta en 24hs</h2>
+              <button onclick="openEmailClient()" class="contact-link email-btn">
+                Enviar Email <span>✉️</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -454,6 +514,54 @@
   <!-- End Footer -->
   <script src="./projects-data.js"></script>
   <script src="./script.js"></script>
+
+  <!-- Phone Contact Modal -->
+  <div id="phoneModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>📞 Contacto Telefónico</h2>
+        <span class="close-modal" onclick="closePhoneModal()">&times;</span>
+      </div>
+      <div class="modal-body">
+        <p>Para proteger mi privacidad, no muestro mi número de teléfono públicamente.</p>
+        <p><strong>¿Prefieres contactarme por teléfono?</strong></p>
+        <p>Envíame un mensaje primero a través del formulario o LinkedIn, y podremos coordinar una llamada.</p>
+
+        <div class="modal-actions">
+          <button onclick="openLinkedIn()" class="modal-btn primary">
+            Contactar por LinkedIn 💼
+          </button>
+          <button onclick="closePhoneModal()" class="modal-btn secondary">
+            Cerrar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Modal -->
+  <div id="successModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>✅ Mensaje Enviado</h2>
+        <span class="close-modal" onclick="closeSuccessModal()">&times;</span>
+      </div>
+      <div class="modal-body">
+        <p>¡Gracias por tu mensaje! Te responderé lo antes posible, generalmente dentro de 24 horas.</p>
+        <p>Mientras tanto, puedes revisar mis proyectos o conectarte en LinkedIn.</p>
+
+        <div class="modal-actions">
+          <button onclick="openLinkedIn()" class="modal-btn primary">
+            Ver LinkedIn 💼
+          </button>
+          <button onclick="closeSuccessModal()" class="modal-btn secondary">
+            Cerrar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </body>
 
 </html>
