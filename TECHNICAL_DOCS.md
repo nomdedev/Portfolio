@@ -100,7 +100,7 @@ const observer = new IntersectionObserver((entries) => {
 
 ### Meta Tags
 ```html
-<meta name="description" content="Portfolio de Martin Nomdedeu - Desarrollador Web & Ingeniero Industrial">
+<meta name="description" content="Portfolio de Martin Nomdedeu - Desarrollador Web & Ingeniero Mecánico">
 <meta name="keywords" content="portfolio, web development, industrial engineering, proyectos">
 <meta name="author" content="Martin Nomdedeu">
 ```
