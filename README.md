@@ -2,19 +2,14 @@
 
 Un portfolio web moderno y elegante construido con Next.js 15, TypeScript y componentes UI modernos que showcases proyectos de desarrollo web, ingeniería industrial y soluciones tecnológicas innovadoras.
 
-## 🌐 URLs Disponibles
+## 🌐 Información del Proyecto
 
-### 🚀 Versión Principal (Next.js + App Router)
-- **Rama**: `main` (principal)
+### 🚀 Versión Principal
+- **Rama**: `main` (única rama)
 - **Framework**: Next.js 15 + TypeScript
 - **UI Components**: Radix UI + Tailwind CSS
 - **Deployment**: Vercel automático
 - **Edición Visual**: Compatible con v0.dev
-
-### 📄 Versión Legacy (GitHub Pages)
-- **Rama**: `gh-pages`
-- **Tecnología**: HTML/CSS/JS puro
-- **Uso**: Backup y compatibilidad legacy
 
 ## ✨ Características Destacadas
 
@@ -154,16 +149,15 @@ pnpm test         # Ejecutar tests
 
 ## 🌟 Flujo de Trabajo
 
-### Rama Principal: `main`
-Esta es la rama principal y por defecto del proyecto. Contiene la versión más actual y moderna del portfolio con Next.js.
+### Rama Única: `main`
+Este proyecto usa una **única rama principal** (`main`) para todo el desarrollo. Esto simplifica el workflow y mantiene todo centralizado.
 
 **Para trabajar en el proyecto:**
 ```bash
-# Asegurarse de estar en main
-git checkout main
+# Sincronizar con el remoto
 git pull origin main
 
-# Crear rama de feature si es necesario
+# Crear rama de feature para cambios grandes
 git checkout -b feature/nueva-funcionalidad
 
 # Después de trabajar, merge a main
@@ -175,7 +169,7 @@ git push origin main
 ### 🎨 Edición Visual con v0.dev
 
 1. **Importar proyecto**: Ve a [v0.dev](https://v0.dev) → Import Repository
-2. **Seleccionar rama**: `main` (rama principal)
+2. **Seleccionar rama**: `main` (única rama disponible)
 3. **Framework**: Next.js (auto-detectado)
 4. **¡Empieza a editar!**
 
