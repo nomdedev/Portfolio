@@ -1,134 +1,27 @@
-# Dependencies
-node_modules/
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
-env/
-venv/
-.venv/
-pip-log.txt
-pip-delete-this-directory.txt
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# Testing
-test_results.json
-.coverage
-.pytest_cache/
-playwright-report/
-test-results/
-playwright/.cache/
-tests/
-test_portfolio.py
-test_portfolio_simple.py
-run_tests.bat
-playwright.config.js
+# dependencies
+/node_modules
 
-# Development and audit files
-analyze_projects.py
-analyze_projects_new.py
-AUDITORIA_UI_UX.md
-CHANGELOG.md
-MEJORAS_CRITICAS_PLAN.md
-MOBILE_RESPONSIVENESS_AUDIT.md
-PORTFOLIO_MARKETING_GUIDE.md
-RESPONSIVENESS_IMPLEMENTATION_RESULTS.md
-TECHNICAL_DOCS.md
+# next.js
+/.next/
+/out/
 
-# IDE and OS files
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-
-# Git and deployment
-.github/
-.gitignore
-deploy.sh
-
-# Logs
-*.log
-logs/
-
-# Environment
-.env
-.env.local
-
-# Build outputs (if any)
-dist/
-build/
-*.min.css
-*.min.js
-
-# Documentation (keep only essential)
-README.md
-VERCEL_DEPLOY_GUIDE.md
-vercel_diagnostic.py
-
-# Node.js files (not needed for static site)
-package.json
-package-lock.json
-
-# Additional development files
-.eslintrc.js
-PORTFOLIO_MARKETING_GUIDE.md
-TECHNICAL_DOCS.md
-RESPONSIVENESS_IMPLEMENTATION_RESULTS.md
-MEJORAS_CRITICAS_PLAN.md
-AUDITORIA_UI_UX.md
-CHANGELOG.md
-
-# CV directory (if not part of main site)
-cv/
-
-# Force update file
-force_update.txt
-.env.development.local
-.env.test.local
-.env.production.local
-
-# Temporary files
-*.tmp
-*.temp
-.vercel
-.env*.local
-
-# Next.js
-.next/
-out/
-build/
-dist/
-
-# Production
+# production
 /build
 
-# Misc
-.DS_Store
-*.pem
-
-# Debug
+# debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.pnpm-debug.log*
 
-# Local env files
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+# env files
+.env*
 
-# Vercel
+# vercel
 .vercel
 
-# TypeScript
+# typescript
 *.tsbuildinfo
 next-env.d.ts
