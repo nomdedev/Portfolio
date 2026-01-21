@@ -253,7 +253,7 @@ p {
 	width: fit-content;
 	font-size: 5rem;
 	position: relative;
-	color: transparent;
+	color: #f9fafb; /* Cambiado de transparent para asegurar visibilidad */
 	animation: text_reveal 0.5s ease forwards;
 	animation-delay: 1s;
 	font-weight: 700;
@@ -282,10 +282,11 @@ p {
 	top: 0;
 	left: 0;
 	height: 100%;
-	width: 0;
+	width: 100%; /* Cambiado de 0 para cubrir todo el texto */
 	background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
 	animation: text_reveal_box 1s ease;
 	animation-delay: 0.5s;
+	mix-blend-mode: multiply; /* Para mejor contraste */
 }
 #bckPage h1:nth-child(1) span {
 	animation-delay: 0.5s;

@@ -235,7 +235,7 @@ Semana 4: Thread en LinkedIn sobre tendencias
 ### **LinkedIn Optimization**
 
 #### **Perfil Optimizado**
-- **Headline**: "Ingeniero Industrial | Desarrollo de Producto | React"
+- **Headline**: "Ingeniero Mecánico | Desarrollo de Producto | React"
 - **About**: Historia + Resultados + CTA
 - **Experience**: Métricas cuantificables
 - **Recommendations**: 5+ testimonials detallados
