@@ -1,5 +1,9 @@
 {
   "version": 2,
+  "buildCommand": "echo 'Static site - no build required'",
+  "outputDirectory": ".",
+  "framework": null,
+  "installCommand": "echo 'No dependencies to install'",
   "builds": [
     {
       "src": "index.html",
@@ -36,6 +40,5 @@
     }
   ],
   "functions": {},
-  "regions": ["iad1"],
-  "outputDirectory": "."
+  "regions": ["iad1"]
 }

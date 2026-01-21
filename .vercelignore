@@ -68,3 +68,9 @@ build/
 
 # Documentation (keep only essential)
 README.md
+VERCEL_DEPLOY_GUIDE.md
+vercel_diagnostic.py
+
+# Node.js files (not needed for static site)
+package.json
+package-lock.json
