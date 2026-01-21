@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Martin Nomdedeu | Portfolio</title>
+    <meta name="description" content="Ingeniero Mecánico especializado en transformación digital industrial, desarrollo de software, IA y Project Management.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0a192f 0%, #112240 100%);
+            color: #e6f1ff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 3rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #64ffda, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #8892b0;
+            margin-bottom: 2rem;
+        }
+
+        .description {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            color: #a8b2d1;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(45deg, #64ffda, #00d4ff);
+            color: #0a192f;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: transform 0.2s ease;
+            margin: 0.5rem;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+        }
+
+        .secondary-button {
+            background: transparent;
+            color: #64ffda;
+            border: 2px solid #64ffda;
+        }
+
+        .secondary-button:hover {
+            background: rgba(100, 255, 218, 0.1);
+        }
+
+        .tech-stack {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .tech-stack h3 {
+            color: #64ffda;
+            margin-bottom: 1rem;
+        }
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+
+        .tech-tag {
+            background: rgba(100, 255, 218, 0.1);
+            color: #64ffda;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            border: 1px solid rgba(100, 255, 218, 0.2);
+        }
+
+        .footer {
+            margin-top: 3rem;
+            font-size: 0.9rem;
+            color: #6272a4;
+        }
+
+        .footer a {
+            color: #64ffda;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Martin Nomdedeu</h1>
+        <p class="subtitle">Ingeniero Mecánico | Transformación Digital | IA & Project Management</p>
+
+        <p class="description">
+            Especialista en transformación digital industrial con +300% ROI en proyectos.
+            Desarrollo de software moderno, machine learning aplicado y gestión de proyectos de alto impacto.
+        </p>
+
+        <div>
+            <a href="https://myportfolio-5utk0q4o9-nomdedevs-projects.vercel.app" class="cta-button">
+                🚀 Ver Portfolio Completo
+            </a>
+            <a href="https://nomdedev.github.io/myportfolio/" class="cta-button secondary-button">
+                📄 Ver en GitHub Pages
+            </a>
+        </div>
+
+        <div class="tech-stack">
+            <h3>Tecnologías</h3>
+            <div class="tech-tags">
+                <span class="tech-tag">Python</span>
+                <span class="tech-tag">React</span>
+                <span class="tech-tag">Next.js</span>
+                <span class="tech-tag">TypeScript</span>
+                <span class="tech-tag">FastAPI</span>
+                <span class="tech-tag">PostgreSQL</span>
+                <span class="tech-tag">Machine Learning</span>
+                <span class="tech-tag">Docker</span>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>🚀 Desplegado con <a href="https://vercel.com" target="_blank">Vercel</a> | 💻 Código en <a href="https://github.com/nomdedev/myportfolio" target="_blank">GitHub</a></p>
+        </div>
+    </div>
+
+    <script>
+        // Redirección automática después de 10 segundos
+        setTimeout(() => {
+            window.location.href = 'https://myportfolio-5utk0q4o9-nomdedevs-projects.vercel.app';
+        }, 10000);
+    </script>
+</body>
+</html>
