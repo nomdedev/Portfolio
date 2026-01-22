@@ -1,6 +1,8 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
+import Link from "next/link"
+import { Download } from "lucide-react"
 
 const expertiseAreas = [
   {
@@ -89,6 +91,17 @@ export function About() {
               producción e innovación tecnológica, diseñando herramientas de gestión que 
               transforman datos en decisiones rentables.
             </p>
+            <div className="mt-6">
+              <Link
+                href="/cv/Nomdedeu, Martin - CV - 2026.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium"
+              >
+                <Download className="w-4 h-4" />
+                Ver CV
+              </Link>
+            </div>
           </div>
 
           <div className="relative group">
