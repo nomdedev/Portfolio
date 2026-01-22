@@ -1,0 +1,19 @@
+import { test, expect } from '@playwright/test';
+
+test('GitHub Pages redirect works correctly', async ({ page }) => {
+  // Ir al enlace de GitHub Pages
+  await page.goto('https://nomdedev.github.io/Portfolio/');
+
+  // Verificar que se muestra la animación de carga
+  await expect(page.locator('h1:has-text("Redirigiendo a Portfolio")')).toBeVisible();
+  await expect(page.locator('.spinner')).toBeVisible();
+
+  // Esperar a que ocurra la redirección
+  await page.waitForURL('**/vercel.app/**', { timeout: 5000 });
+
+  // Verificar que estamos en Vercel
+  expect(page.url()).toContain('vercel.app');
+
+  // Verificar que la página carga correctamente
+  await expect(page.locator('h1:has-text("Martin Nomdedeu")')).toBeVisible();
+});
