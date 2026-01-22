@@ -9,7 +9,7 @@ const featuredProjects = [
     title: "Rexus.app - Plataforma SaaS",
     description:
       "Plataforma web completa para gestión empresarial con autenticación, dashboards interactivos, análisis de datos en tiempo real y reportes automatizados. Arquitectura escalable con Python backend.",
-    image: "/projects/rexus.jpg",
+    image: "/img/Rexxus/rexus.svg",
     tech: ["Python", "FastAPI", "React", "PostgreSQL", "Docker"],
     github: "https://github.com/nomdedev/Rexus.app",
     external: "https://rexus.app",
@@ -18,7 +18,7 @@ const featuredProjects = [
     title: "Vecino Simple - Gestión de Consorcios",
     description:
       "Sistema integral para administración de consorcios con 80% de mejora en comunicación. Gestión de expensas, reclamos, reservas de amenities y comunicación entre vecinos.",
-    image: "/projects/vecinosimple.jpg",
+    image: "/img/vecinosimple/vecinosimple.svg",
     tech: ["Next.js", "Supabase", "TypeScript", "Tailwind CSS"],
     github: "https://github.com/nomdedev",
     external: "#",
@@ -27,7 +27,7 @@ const featuredProjects = [
     title: "Tanques Solares - Ingeniería Industrial",
     description:
       "Diseño completo de producto para tanques de agua con calentamiento solar. Desde conceptualización hasta fabricación, incluyendo documentación técnica y normas ISO.",
-    image: "/projects/tsolares.jpg",
+    image: "/img/tsolares/tsolares.svg",
     tech: ["CAD 3D", "SolidWorks", "Ingeniería Mecánica", "Normas ISO"],
     github: "#",
     external: "https://drive.google.com",

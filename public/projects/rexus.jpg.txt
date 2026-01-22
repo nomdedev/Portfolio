@@ -1,0 +1,5 @@
+﻿# IMAGEN REQUERIDA: rexus.jpg
+# Descripción: Captura de pantalla o mockup de la plataforma Rexus.app
+# Debe mostrar: Dashboard principal, interfaz de usuario, funcionalidades principales
+# Dimensiones recomendadas: 800x600px o similar
+# Formato: JPG de alta calidad

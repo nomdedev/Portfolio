@@ -1,0 +1,13 @@
+﻿<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="#0a192f"/>
+  <rect x="50" y="50" width="700" height="500" fill="#112240" stroke="#64ffda" stroke-width="2"/>
+  <text x="400" y="200" text-anchor="middle" fill="#64ffda" font-family="Arial, sans-serif" font-size="24" font-weight="bold">Rexus.app</text>
+  <text x="400" y="240" text-anchor="middle" fill="#e6f1ff" font-family="Arial, sans-serif" font-size="16">Plataforma SaaS</text>
+  <text x="400" y="280" text-anchor="middle" fill="#e6f1ff" font-family="Arial, sans-serif" font-size="14">Dashboard Principal</text>
+  <rect x="100" y="350" width="150" height="100" fill="#1a365d" stroke="#64ffda" stroke-width="1"/>
+  <rect x="300" y="350" width="150" height="100" fill="#1a365d" stroke="#64ffda" stroke-width="1"/>
+  <rect x="500" y="350" width="150" height="100" fill="#1a365d" stroke="#64ffda" stroke-width="1"/>
+  <text x="175" y="410" text-anchor="middle" fill="#64ffda" font-family="Arial, sans-serif" font-size="12">Analytics</text>
+  <text x="375" y="410" text-anchor="middle" fill="#64ffda" font-family="Arial, sans-serif" font-size="12">Users</text>
+  <text x="575" y="410" text-anchor="middle" fill="#64ffda" font-family="Arial, sans-serif" font-size="12">Reports</text>
+</svg>
