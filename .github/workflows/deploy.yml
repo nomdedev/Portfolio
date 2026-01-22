@@ -21,19 +21,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
       - name: Setup pages
         uses: actions/configure-pages@v4
 
-      - name: Create dist directory
-        run: mkdir -p dist
+      - name: Install dependencies
+        run: pnpm install
 
-      - name: Copy index.html to dist
-        run: cp index.html dist/
-
-      - name: Copy static assets
-        run: |
-          cp -r public/* dist/ 2>/dev/null || true
-          cp -r img/* dist/ 2>/dev/null || true
+      - name: Build with Next.js
+        run: pnpm build
+        env:
+          GITHUB_PAGES: 1
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
