@@ -54,7 +54,7 @@ export function Navigation() {
             ))}
             <li>
               <Link
-                href="/cv/Nomdedeu, Martin - CV - 2026.pdf"
+                href="/cv.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="border border-primary text-primary px-4 py-2 rounded font-mono text-sm hover:bg-primary/10 transition-colors duration-300"
@@ -97,7 +97,7 @@ export function Navigation() {
               ))}
               <li>
                 <Link
-                  href="/cv/Nomdedeu, Martin - CV - 2026.pdf"
+                  href="/cv.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="border border-primary text-primary px-6 py-3 rounded font-mono text-sm hover:bg-primary/10 transition-colors duration-300"

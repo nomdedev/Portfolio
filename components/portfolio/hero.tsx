@@ -55,7 +55,7 @@ export function Hero() {
 
         <div className="flex items-center gap-6 mb-12">
           <Link
-            href="https://github.com/nomdedev"
+            href="https://github.com/nomdedev/Portfolio"
             target="_blank"
             rel="noopener noreferrer"
             className="text-muted-foreground hover:text-primary transition-colors duration-300"
