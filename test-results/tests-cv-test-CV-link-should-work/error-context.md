@@ -1,0 +1,383 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - navigation [ref=e4]:
+      - generic [ref=e5]:
+        - link "<MN />" [ref=e6] [cursor=pointer]:
+          - /url: "#hero"
+        - list [ref=e7]:
+          - listitem [ref=e8]:
+            - link "01. Sobre mí" [ref=e9] [cursor=pointer]:
+              - /url: "#about"
+              - generic [ref=e10]: "01."
+              - text: Sobre mí
+          - listitem [ref=e11]:
+            - link "02. Experiencia" [ref=e12] [cursor=pointer]:
+              - /url: "#experience"
+              - generic [ref=e13]: "02."
+              - text: Experiencia
+          - listitem [ref=e14]:
+            - link "03. Proyectos" [ref=e15] [cursor=pointer]:
+              - /url: "#projects"
+              - generic [ref=e16]: "03."
+              - text: Proyectos
+          - listitem [ref=e17]:
+            - link "04. Contacto" [ref=e18] [cursor=pointer]:
+              - /url: "#contact"
+              - generic [ref=e19]: "04."
+              - text: Contacto
+          - listitem [ref=e20]:
+            - link "Currículum" [ref=e21] [cursor=pointer]:
+              - /url: /cv.pdf
+    - generic [ref=e22]:
+      - link "GitHub" [ref=e23] [cursor=pointer]:
+        - /url: https://github.com/nomdedev
+        - img [ref=e24]
+      - link "LinkedIn" [ref=e27] [cursor=pointer]:
+        - /url: https://linkedin.com/in/martin-nomdedeu
+        - img [ref=e28]
+    - link "contacto@martinnomdedeu.com" [ref=e34] [cursor=pointer]:
+      - /url: mailto:contacto@martinnomdedeu.com
+    - generic [ref=e36]:
+      - generic [ref=e37]:
+        - paragraph [ref=e38]: Hola, soy
+        - heading "Martin Nomdedeu" [level=1] [ref=e39]
+        - heading "Transformación Digital Industrial & Project Management" [level=2] [ref=e40]
+        - paragraph [ref=e41]: Ingeniero Mecánico especializado en la convergencia entre operación industrial y tecnología digital. Desarrollo soluciones que optimizan procesos, automatizan tareas y transforman datos en decisiones estratégicas.
+        - generic [ref=e42]:
+          - generic [ref=e43]:
+            - img [ref=e44]
+            - generic [ref=e50]: +300% ROI en proyectos industriales
+          - generic [ref=e51]:
+            - img [ref=e52]
+            - generic [ref=e54]: 75% reducción tiempo operativo
+          - generic [ref=e55]:
+            - img [ref=e56]
+            - generic [ref=e59]: IA aplicada a procesos reales
+        - generic [ref=e60]:
+          - link "GitHub" [ref=e61] [cursor=pointer]:
+            - /url: https://github.com/nomdedev
+            - img [ref=e62]
+          - link "LinkedIn" [ref=e65] [cursor=pointer]:
+            - /url: https://linkedin.com/in/martin-nomdedeu
+            - img [ref=e66]
+          - link "Email" [ref=e70] [cursor=pointer]:
+            - /url: mailto:contacto@martinnomdedeu.com
+            - img [ref=e71]
+        - generic [ref=e74]:
+          - link "Ver Proyectos Destacados" [ref=e75] [cursor=pointer]:
+            - /url: "#projects"
+          - link "Hablemos de tu Proyecto" [ref=e76] [cursor=pointer]:
+            - /url: "#contact"
+            - text: Hablemos de tu Proyecto
+            - img [ref=e77]
+      - img [ref=e80]
+    - generic [ref=e83]:
+      - heading "01. Sobre mí" [level=2] [ref=e84]:
+        - generic [ref=e85]: "01."
+        - text: Sobre mí
+      - generic [ref=e87]:
+        - generic [ref=e88]:
+          - heading "Ingeniero Mecánico, Analista de Datos y Project Manager" [level=3] [ref=e89]
+          - paragraph [ref=e90]: Apasionado por la convergencia entre la operación industrial y la tecnología digital. Me especializo en liderar proyectos complejos mediante el desarrollo de software, optimización de procesos y gestión estratégica de equipos multidisciplinarios.
+          - paragraph [ref=e91]: Combino formación técnica en ingeniería con habilidades en Python, Inteligencia Artificial, automatización y metodologías de gestión (PMBOK, Agile, Scrum, Kanban).
+          - paragraph [ref=e92]: En mi trayectoria profesional, he liderado equipos de hasta 60 personas en proyectos de mantenimiento, producción e innovación tecnológica, diseñando herramientas de gestión que transforman datos en decisiones rentables.
+        - generic [ref=e99]: MN
+      - generic [ref=e100]:
+        - generic [ref=e101]:
+          - heading "Ingeniería Industrial" [level=4] [ref=e102]
+          - list [ref=e103]:
+            - listitem [ref=e104]:
+              - generic [ref=e105]: ▹
+              - text: Diseño de Producto
+            - listitem [ref=e106]:
+              - generic [ref=e107]: ▹
+              - text: Optimización de Procesos
+            - listitem [ref=e108]:
+              - generic [ref=e109]: ▹
+              - text: Industria 4.0
+            - listitem [ref=e110]:
+              - generic [ref=e111]: ▹
+              - text: Normas ISO
+        - generic [ref=e112]:
+          - heading "IA & Machine Learning" [level=4] [ref=e113]
+          - list [ref=e114]:
+            - listitem [ref=e115]:
+              - generic [ref=e116]: ▹
+              - text: Computer Vision
+            - listitem [ref=e117]:
+              - generic [ref=e118]: ▹
+              - text: NLP
+            - listitem [ref=e119]:
+              - generic [ref=e120]: ▹
+              - text: Análisis Predictivo
+            - listitem [ref=e121]:
+              - generic [ref=e122]: ▹
+              - text: Automatización IA
+        - generic [ref=e123]:
+          - heading "Full-Stack Development" [level=4] [ref=e124]
+          - list [ref=e125]:
+            - listitem [ref=e126]:
+              - generic [ref=e127]: ▹
+              - text: Python
+            - listitem [ref=e128]:
+              - generic [ref=e129]: ▹
+              - text: React
+            - listitem [ref=e130]:
+              - generic [ref=e131]: ▹
+              - text: Next.js
+            - listitem [ref=e132]:
+              - generic [ref=e133]: ▹
+              - text: FastAPI
+            - listitem [ref=e134]:
+              - generic [ref=e135]: ▹
+              - text: PostgreSQL
+        - generic [ref=e136]:
+          - heading "Data Science & BI" [level=4] [ref=e137]
+          - list [ref=e138]:
+            - listitem [ref=e139]:
+              - generic [ref=e140]: ▹
+              - text: Pandas
+            - listitem [ref=e141]:
+              - generic [ref=e142]: ▹
+              - text: Power BI
+            - listitem [ref=e143]:
+              - generic [ref=e144]: ▹
+              - text: Analytics
+            - listitem [ref=e145]:
+              - generic [ref=e146]: ▹
+              - text: Dashboards
+      - generic [ref=e147]:
+        - generic [ref=e148]:
+          - generic [ref=e149]: 200+
+          - generic [ref=e150]: Profesionales Formados en IA
+        - generic [ref=e151]:
+          - generic [ref=e152]: 60%
+          - generic [ref=e153]: Reducción Tiempo Gestión
+        - generic [ref=e154]:
+          - generic [ref=e155]: "13"
+          - generic [ref=e156]: Proyectos Completados
+        - generic [ref=e157]:
+          - generic [ref=e158]: 4+
+          - generic [ref=e159]: Años Experiencia Industrial
+    - generic [ref=e161]:
+      - heading "02. Experiencia" [level=2] [ref=e162]:
+        - generic [ref=e163]: "02."
+        - text: Experiencia
+      - generic [ref=e165]:
+        - generic [ref=e166]:
+          - generic [ref=e167]: 2022 — Presente
+          - generic [ref=e168]:
+            - heading "Product Owner & Project Manager · Transformación Digital Industrial" [level=3] [ref=e169]:
+              - text: Product Owner & Project Manager ·
+              - link "Transformación Digital Industrial" [ref=e170] [cursor=pointer]:
+                - /url: https://linkedin.com/in/martin-nomdedeu
+                - text: Transformación Digital Industrial
+                - img [ref=e171]
+            - paragraph [ref=e175]: Liderazgo de proyectos de transformación digital con enfoque data-driven. Convertir necesidades de negocio y usuarios en entregables claros (user stories, criterios de aceptación). Gestión de equipos multidisciplinarios de hasta 60 personas.
+            - list [ref=e176]:
+              - listitem [ref=e177]: PMBOK
+              - listitem [ref=e178]: Agile
+              - listitem [ref=e179]: Scrum
+              - listitem [ref=e180]: Kanban
+              - listitem [ref=e181]: Power BI
+        - generic [ref=e182]:
+          - generic [ref=e183]: 2020 — 2022
+          - generic [ref=e184]:
+            - heading "Ingeniero Mecánico Senior · Industria 4.0" [level=3] [ref=e185]:
+              - text: Ingeniero Mecánico Senior ·
+              - link "Industria 4.0" [ref=e186] [cursor=pointer]:
+                - /url: https://linkedin.com/in/martin-nomdedeu
+                - text: Industria 4.0
+                - img [ref=e187]
+            - paragraph [ref=e191]: Diseño de producto y manufactura, optimización de procesos industriales. Implementación de soluciones de automatización que lograron 75% de reducción en tiempo operativo y +300% ROI en proyectos industriales.
+            - list [ref=e192]:
+              - listitem [ref=e193]: CAD 3D
+              - listitem [ref=e194]: SolidWorks
+              - listitem [ref=e195]: Normas ISO
+              - listitem [ref=e196]: Automatización
+        - generic [ref=e197]:
+          - generic [ref=e198]: 2021 — Presente
+          - generic [ref=e199]:
+            - heading "Desarrollador Full-Stack & IA · Proyectos Independientes" [level=3] [ref=e200]:
+              - text: Desarrollador Full-Stack & IA ·
+              - link "Proyectos Independientes" [ref=e201] [cursor=pointer]:
+                - /url: https://github.com/nomdedev
+                - text: Proyectos Independientes
+                - img [ref=e202]
+            - paragraph [ref=e206]: Desarrollo de aplicaciones web, APIs y sistemas con Python, JavaScript. Implementación de soluciones de Machine Learning y Computer Vision. Formación de +200 profesionales en IA aplicada.
+            - list [ref=e207]:
+              - listitem [ref=e208]: Python
+              - listitem [ref=e209]: FastAPI
+              - listitem [ref=e210]: React
+              - listitem [ref=e211]: TensorFlow
+              - listitem [ref=e212]: PostgreSQL
+    - generic [ref=e214]:
+      - heading "03. Proyectos Destacados" [level=2] [ref=e215]:
+        - generic [ref=e216]: "03."
+        - text: Proyectos Destacados
+      - generic [ref=e218]:
+        - generic [ref=e219]:
+          - img [ref=e223]
+          - generic [ref=e225]:
+            - paragraph [ref=e226]: Proyecto Destacado
+            - heading "Rexus.app - Plataforma SaaS" [level=3] [ref=e227]
+            - paragraph [ref=e229]: Plataforma web completa para gestión empresarial con autenticación, dashboards interactivos, análisis de datos en tiempo real y reportes automatizados. Arquitectura escalable con Python backend.
+            - list [ref=e230]:
+              - listitem [ref=e231]: Python
+              - listitem [ref=e232]: FastAPI
+              - listitem [ref=e233]: React
+              - listitem [ref=e234]: PostgreSQL
+              - listitem [ref=e235]: Docker
+            - generic [ref=e236]:
+              - link "Ver código en GitHub" [ref=e237] [cursor=pointer]:
+                - /url: https://github.com/nomdedev/Rexus.app
+                - img [ref=e238]
+              - link "Ver proyecto en vivo" [ref=e241] [cursor=pointer]:
+                - /url: https://rexus.app
+                - img [ref=e242]
+        - generic [ref=e246]:
+          - img [ref=e250]
+          - generic [ref=e252]:
+            - paragraph [ref=e253]: Proyecto Destacado
+            - heading "Vecino Simple - Gestión de Consorcios" [level=3] [ref=e254]
+            - paragraph [ref=e256]: Sistema integral para administración de consorcios con 80% de mejora en comunicación. Gestión de expensas, reclamos, reservas de amenities y comunicación entre vecinos.
+            - list [ref=e257]:
+              - listitem [ref=e258]: Next.js
+              - listitem [ref=e259]: Supabase
+              - listitem [ref=e260]: TypeScript
+              - listitem [ref=e261]: Tailwind CSS
+            - generic [ref=e262]:
+              - link "Ver código en GitHub" [ref=e263] [cursor=pointer]:
+                - /url: https://github.com/nomdedev
+                - img [ref=e264]
+              - link "Ver proyecto en vivo" [ref=e267] [cursor=pointer]:
+                - /url: "#"
+                - img [ref=e268]
+        - generic [ref=e272]:
+          - img [ref=e276]
+          - generic [ref=e278]:
+            - paragraph [ref=e279]: Proyecto Destacado
+            - heading "Tanques Solares - Ingeniería Industrial" [level=3] [ref=e280]
+            - paragraph [ref=e282]: Diseño completo de producto para tanques de agua con calentamiento solar. Desde conceptualización hasta fabricación, incluyendo documentación técnica y normas ISO.
+            - list [ref=e283]:
+              - listitem [ref=e284]: CAD 3D
+              - listitem [ref=e285]: SolidWorks
+              - listitem [ref=e286]: Ingeniería Mecánica
+              - listitem [ref=e287]: Normas ISO
+            - generic [ref=e288]:
+              - link "Ver código en GitHub" [ref=e289] [cursor=pointer]:
+                - /url: "#"
+                - img [ref=e290]
+              - link "Ver proyecto en vivo" [ref=e293] [cursor=pointer]:
+                - /url: https://drive.google.com
+                - img [ref=e294]
+      - heading "Otros Proyectos" [level=3] [ref=e298]
+      - generic [ref=e299]:
+        - generic [ref=e300]:
+          - generic [ref=e301]:
+            - img [ref=e302]
+            - generic [ref=e304]:
+              - link "Ver código en GitHub" [ref=e305] [cursor=pointer]:
+                - /url: https://github.com/nomdedev/ArbitrageAR-USDT
+                - img [ref=e306]
+              - link "Ver proyecto en vivo" [ref=e309] [cursor=pointer]:
+                - /url: "#"
+                - img [ref=e310]
+          - heading "ArbitrageAR-USDT" [level=4] [ref=e314]
+          - paragraph [ref=e315]: Extensión Chrome para arbitraje Dólar Oficial USDT en Argentina con UI/UX moderna y actualizaciones en tiempo real.
+          - list [ref=e316]:
+            - listitem [ref=e317]: JavaScript
+            - listitem [ref=e318]: Chrome API
+            - listitem [ref=e319]: REST APIs
+        - generic [ref=e320]:
+          - generic [ref=e321]:
+            - img [ref=e322]
+            - link "Ver código en GitHub" [ref=e325] [cursor=pointer]:
+              - /url: https://github.com/nomdedev/IFVG-Trading-Strategy
+              - img [ref=e326]
+          - heading "IFVG Trading Strategy" [level=4] [ref=e329]
+          - paragraph [ref=e330]: Sistema de análisis técnico y estrategias de trading automatizado con indicadores personalizados.
+          - list [ref=e331]:
+            - listitem [ref=e332]: Python
+            - listitem [ref=e333]: Pandas
+            - listitem [ref=e334]: Technical Analysis
+        - generic [ref=e335]:
+          - generic [ref=e336]:
+            - img [ref=e337]
+            - link "Ver código en GitHub" [ref=e340] [cursor=pointer]:
+              - /url: https://github.com/nomdedev/tradingIA
+              - img [ref=e341]
+          - heading "Trading IA" [level=4] [ref=e344]
+          - paragraph [ref=e345]: Plataforma de trading con inteligencia artificial para análisis predictivo y automatización de operaciones.
+          - list [ref=e346]:
+            - listitem [ref=e347]: Python
+            - listitem [ref=e348]: TensorFlow
+            - listitem [ref=e349]: FastAPI
+            - listitem [ref=e350]: ML
+        - generic [ref=e351]:
+          - generic [ref=e352]:
+            - img [ref=e353]
+            - generic [ref=e355]:
+              - link "Ver código en GitHub" [ref=e356] [cursor=pointer]:
+                - /url: "#"
+                - img [ref=e357]
+              - link "Ver proyecto en vivo" [ref=e360] [cursor=pointer]:
+                - /url: https://drive.google.com
+                - img [ref=e361]
+          - heading "Máquina Cosechadora" [level=4] [ref=e365]
+          - paragraph [ref=e366]: Diseño mecánico de máquina cosechadora industrial siguiendo normas ISO y estándares de calidad.
+          - list [ref=e367]:
+            - listitem [ref=e368]: CAD
+            - listitem [ref=e369]: Ingeniería Mecánica
+            - listitem [ref=e370]: Normas ISO
+        - generic [ref=e371]:
+          - generic [ref=e372]:
+            - img [ref=e373]
+            - generic [ref=e375]:
+              - link "Ver código en GitHub" [ref=e376] [cursor=pointer]:
+                - /url: "#"
+                - img [ref=e377]
+              - link "Ver proyecto en vivo" [ref=e380] [cursor=pointer]:
+                - /url: https://drive.google.com
+                - img [ref=e381]
+          - heading "Tanque de Gas Industrial" [level=4] [ref=e385]
+          - paragraph [ref=e386]: Diseño y documentación técnica de tanque industrial para almacenamiento de gas con certificaciones de seguridad.
+          - list [ref=e387]:
+            - listitem [ref=e388]: CAD 3D
+            - listitem [ref=e389]: Ingeniería Industrial
+            - listitem [ref=e390]: Seguridad
+        - generic [ref=e391]:
+          - generic [ref=e392]:
+            - img [ref=e393]
+            - link "Ver código en GitHub" [ref=e396] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e397]
+          - heading "Dashboard Power BI" [level=4] [ref=e400]
+          - paragraph [ref=e401]: Dashboards interactivos para toma de decisiones basada en datos con KPIs y métricas de negocio.
+          - list [ref=e402]:
+            - listitem [ref=e403]: Power BI
+            - listitem [ref=e404]: SQL
+            - listitem [ref=e405]: DAX
+            - listitem [ref=e406]: Analytics
+    - generic [ref=e408]:
+      - paragraph [ref=e409]: 04. ¿Qué sigue?
+      - heading "Hablemos de tu Proyecto" [level=2] [ref=e410]
+      - paragraph [ref=e411]: ¿Interesado en trabajar juntos? Ya sea que tengas un proyecto de transformación digital, necesites optimizar procesos industriales o quieras desarrollar una solución de software personalizada, estoy aquí para ayudarte. ¡Respondo en menos de 24 horas!
+      - generic [ref=e412]:
+        - link "Conectar en LinkedIn" [ref=e413] [cursor=pointer]:
+          - /url: https://linkedin.com/in/martin-nomdedeu
+        - link "Enviar Email" [ref=e414] [cursor=pointer]:
+          - /url: mailto:contacto@martinnomdedeu.com
+          - img [ref=e415]
+          - text: Enviar Email
+    - generic [ref=e419]:
+      - paragraph [ref=e420]:
+        - text: Diseñado y desarrollado por
+        - link "Martin Nomdedeu" [ref=e421] [cursor=pointer]:
+          - /url: https://github.com/nomdedev
+      - paragraph [ref=e422]: Copyright 2024 Martin Nomdedeu. Todos los derechos reservados.
+  - alert [ref=e423]
+```
