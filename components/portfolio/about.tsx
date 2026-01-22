@@ -92,15 +92,15 @@ export function About() {
               transforman datos en decisiones rentables.
             </p>
             <div className="mt-6">
-              <Link
-                href="/cv.pdf"
+              <a
+                href="https://drive.google.com/file/d/1Gi8OMUOUrH3r_HSuqGlF4Gbxm-by_oM8/view?usp=sharing"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium"
               >
                 <Download className="w-4 h-4" />
                 Ver CV
-              </Link>
+              </a>
             </div>
           </div>
 

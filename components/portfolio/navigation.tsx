@@ -53,14 +53,14 @@ export function Navigation() {
               </li>
             ))}
             <li>
-              <Link
-                href="/cv.pdf"
+              <a
+                href="https://drive.google.com/file/d/1Gi8OMUOUrH3r_HSuqGlF4Gbxm-by_oM8/view?usp=sharing"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="border border-primary text-primary px-4 py-2 rounded font-mono text-sm hover:bg-primary/10 transition-colors duration-300"
               >
                 Currículum
-              </Link>
+              </a>
             </li>
           </ul>
 
@@ -96,14 +96,14 @@ export function Navigation() {
                 </li>
               ))}
               <li>
-                <Link
-                  href="/cv.pdf"
+                <a
+                  href="https://drive.google.com/file/d/1Gi8OMUOUrH3r_HSuqGlF4Gbxm-by_oM8/view?usp=sharing"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="border border-primary text-primary px-6 py-3 rounded font-mono text-sm hover:bg-primary/10 transition-colors duration-300"
                 >
                   Currículum
-                </Link>
+                </a>
               </li>
             </ul>
           </div>
