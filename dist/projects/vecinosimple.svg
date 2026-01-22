@@ -1,0 +1,24 @@
+﻿<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="#0a192f"/>
+  <rect x="50" y="50" width="700" height="500" fill="#112240" stroke="#64ffda" stroke-width="2"/>
+  <text x="400" y="200" text-anchor="middle" fill="#64ffda" font-family="Arial, sans-serif" font-size="24" font-weight="bold">VecinoSimple</text>
+  <text x="400" y="240" text-anchor="middle" fill="#e6f1ff" font-family="Arial, sans-serif" font-size="16">Aplicación Móvil</text>
+  <text x="400" y="280" text-anchor="middle" fill="#e6f1ff" font-family="Arial, sans-serif" font-size="14">Interfaz de Usuario</text>
+  
+  <!-- Phone mockup -->
+  <rect x="300" y="320" width="200" height="250" rx="20" fill="#1a365d" stroke="#64ffda" stroke-width="2"/>
+  <rect x="320" y="340" width="160" height="210" rx="10" fill="#0a192f"/>
+  
+  <!-- App content -->
+  <rect x="340" y="360" width="120" height="40" fill="#64ffda" rx="5"/>
+  <text x="400" y="385" text-anchor="middle" fill="#0a192f" font-family="Arial, sans-serif" font-size="12" font-weight="bold">VecinoSimple</text>
+  
+  <rect x="340" y="420" width="120" height="30" fill="#1a365d" stroke="#64ffda" stroke-width="1" rx="3"/>
+  <text x="400" y="440" text-anchor="middle" fill="#64ffda" font-family="Arial, sans-serif" font-size="10">Reportar Incidente</text>
+  
+  <rect x="340" y="470" width="120" height="30" fill="#1a365d" stroke="#64ffda" stroke-width="1" rx="3"/>
+  <text x="400" y="490" text-anchor="middle" fill="#64ffda" font-family="Arial, sans-serif" font-size="10">Comunidad Local</text>
+  
+  <rect x="340" y="520" width="120" height="30" fill="#1a365d" stroke="#64ffda" stroke-width="1" rx="3"/>
+  <text x="400" y="540" text-anchor="middle" fill="#64ffda" font-family="Arial, sans-serif" font-size="10">Directorio</text>
+</svg>

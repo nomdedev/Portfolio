@@ -2,7 +2,7 @@ import { Github, Linkedin, Mail } from "lucide-react"
 import Link from "next/link"
 
 const socialLinks = [
-  { name: "GitHub", href: "https://github.com/nomdedev", icon: Github },
+  { name: "GitHub", href: "https://github.com/nomdedev/Portfolio", icon: Github },
   { name: "LinkedIn", href: "https://linkedin.com/in/martin-nomdedeu", icon: Linkedin },
   { name: "Email", href: "mailto:contacto@martinnomdedeu.com", icon: Mail },
 ]
@@ -30,7 +30,7 @@ export function Footer() {
         <p className="text-muted-foreground text-sm font-mono">
           Diseñado y desarrollado por{" "}
           <Link
-            href="https://github.com/nomdedev"
+            href="https://github.com/nomdedev/Portfolio"
             target="_blank"
             rel="noopener noreferrer"
             className="text-primary hover:underline"

@@ -1,0 +1,6 @@
+﻿# IMAGEN REQUERIDA: tsolares.jpg
+# Descripción: Diseño del tanque de agua con calentamiento solar
+# Debe mostrar: Render 3D del producto, vistas técnicas, o fotografía del prototipo
+# Dimensiones recomendadas: 800x600px
+# Formato: JPG de alta calidad
+# Contexto: Diseño completo de producto desde conceptualización hasta fabricación
