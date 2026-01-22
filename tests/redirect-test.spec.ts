@@ -4,8 +4,8 @@ test('GitHub Pages redirect works correctly', async ({ page }) => {
   // Ir al enlace de GitHub Pages
   await page.goto('https://nomdedev.github.io/Portfolio/');
 
-  // Esperar a que ocurra el redirect
-  await page.waitForTimeout(2000);
+  // Esperar a que ocurra el redirect (ahora más rápido)
+  await page.waitForTimeout(500);
 
   // Verificar que estamos en Vercel
   expect(page.url()).toContain('vercel.app');
