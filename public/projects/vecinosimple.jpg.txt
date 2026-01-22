@@ -1,0 +1,6 @@
+﻿# IMAGEN REQUERIDA: vecinosimple.jpg
+# Descripción: Interfaz de la aplicación Vecino Simple
+# Debe mostrar: Dashboard de gestión de consorcios, lista de expensas, sistema de reclamos
+# Dimensiones recomendadas: 800x600px
+# Formato: JPG de alta calidad
+# Contexto: App para administración de consorcios con mejora del 80% en comunicación
