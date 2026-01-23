@@ -4,11 +4,11 @@ test('CV link should work', async ({ page }) => {
   // Ir al sitio en GitHub Pages
   await page.goto('https://nomdedev.github.io/Portfolio/');
 
-  // Esperar a que la página cargue y redirija
+  // Esperar a que la página cargue
   await page.waitForLoadState('networkidle');
 
-  // Verificar que estamos en Vercel después de la redirección
-  expect(page.url()).toContain('vercel.app');
+  // Verificar que estamos en GitHub Pages (no redirige a Vercel)
+  expect(page.url()).toBe('https://nomdedev.github.io/Portfolio/');
 
   // Buscar el enlace del CV por texto
   const cvLink = page.locator('a:has-text("Ver CV")').or(page.locator('a:has-text("Currículum")')).first();
@@ -23,8 +23,8 @@ test('CV link should work', async ({ page }) => {
     cvLink.click()
   ]);
 
-  // Esperar a que la nueva página cargue
-  await newPage.waitForLoadState('networkidle');
+  // Esperar a que la nueva página cargue en Google Drive
+  await newPage.waitForURL('**/drive.google.com/**');
 
   // Verificar que la URL es de Google Drive
   expect(newPage.url()).toContain('drive.google.com');
