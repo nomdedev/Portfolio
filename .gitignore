@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+/.venv
 
 # next.js
 /.next/
@@ -9,6 +10,7 @@
 
 # production
 /build
+/dist
 
 # debug
 npm-debug.log*
@@ -18,6 +20,18 @@ yarn-error.log*
 
 # env files
 .env*
+
+# test results
+/test-results
+/playwright-report
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+.env*.local
 
 # vercel
 .vercel
