@@ -32,9 +32,14 @@ Esta auditoría de seguridad evalúa el repositorio Portfolio, un sitio web de p
 - **GitHub Pages**: Como sitio estático, las opciones de seguridad son limitadas (no soporta .htaccess).
 - **Workflow de GitHub Actions**: Usa actions oficiales y no expone secrets.
 
-### Despliegue
-- **GitHub Pages**: Configurado correctamente con despliegue basado en workflow.
-- **Build**: Incluye variable de entorno GITHUB_PAGES para export estático.
+### Archivos Removidos
+- **check_main.bat y check_main.ps1**: Scripts de verificación innecesarios en repo público.
+- **test-results/**: Directorio con resultados de tests que podrían contener información sensible de errores.
+- **playwright-report/**: Reportes de Playwright (agregado a .gitignore).
+
+### .gitignore Actualizado
+- Agregado: `/.venv`, `/dist`, `/test-results`, `/playwright-report`
+- Asegura que entornos virtuales y artifacts no se suban.
 
 ## Recomendaciones
 
