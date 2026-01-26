@@ -72,7 +72,7 @@ export function Hero() {
             <Linkedin className="w-6 h-6" />
           </Link>
           <Link
-            href="mailto:martin.nomdedeu@gmail.com"
+            href="mailto:martin.nomdedeu.dev@gmail.com"
             className="text-muted-foreground hover:text-primary transition-colors duration-300"
             aria-label="Email"
           >
@@ -86,14 +86,6 @@ export function Hero() {
             className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-3 rounded font-mono text-sm hover:bg-primary/90 transition-colors duration-300"
           >
             Ver Proyectos
-          </Link>
-          <Link
-            href="/cv.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 border border-primary text-primary px-6 py-3 rounded font-mono text-sm hover:bg-primary/10 transition-colors duration-300"
-          >
-            Descargar CV
           </Link>
         </div>
       </div>

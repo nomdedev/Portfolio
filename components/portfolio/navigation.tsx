@@ -54,16 +54,6 @@ export function Navigation() {
                 </Link>
               </li>
             ))}
-            <li>
-              <a
-                href="/cv.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="border border-primary text-primary px-4 py-2 rounded font-mono text-sm hover:bg-primary/10 transition-colors duration-300"
-              >
-                Descargar CV
-              </a>
-            </li>
             <li className="flex items-center gap-4 ml-4">
               <a
                 href="https://github.com/nomdedev"
@@ -117,16 +107,6 @@ export function Navigation() {
                   </Link>
                 </li>
               ))}
-              <li>
-                <a
-                  href="/cv.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="border border-primary text-primary px-6 py-3 rounded font-mono text-sm hover:bg-primary/10 transition-colors duration-300"
-                >
-                  Descargar CV
-                </a>
-              </li>
               <li className="flex items-center gap-6 mt-2">
                 <a
                   href="https://github.com/nomdedev"
