@@ -4,7 +4,7 @@
 
 Si encuentra una vulnerabilidad de seguridad en este proyecto, por favor repórtela de manera responsable a:
 
-- **Email**: [martin.nomdedeu@gmail.com](mailto:martin.nomdedeu@gmail.com)
+- **Email**: [martin.nomdedeu.dev@gmail.com](mailto:martin.nomdedeu.dev@gmail.com)
 - **GitHub**: [nomdedev](https://github.com/nomdedev)
 
 Por favor, incluya detalles sobre la vulnerabilidad encontrada, pasos para reproducirla y, si es posible, una sugerencia de mitigación.

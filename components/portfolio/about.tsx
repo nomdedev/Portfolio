@@ -86,15 +86,9 @@ export function About() {
             </p>
             <div className="mt-6 space-y-3">
               <div className="flex items-center gap-2 text-muted-foreground">
-                <span className="text-primary">📱</span>
-                <a href="tel:+542216497571" className="hover:text-primary transition-colors">
-                  +54 221 649-7571
-                </a>
-              </div>
-              <div className="flex items-center gap-2 text-muted-foreground">
                 <span className="text-primary">✉️</span>
-                <a href="mailto:martin.nomdedeu@gmail.com" className="hover:text-primary transition-colors">
-                  martin.nomdedeu@gmail.com
+                <a href="mailto:martin.nomdedeu.dev@gmail.com" className="hover:text-primary transition-colors">
+                  martin.nomdedeu.dev@gmail.com
                 </a>
               </div>
               <div className="pt-4">

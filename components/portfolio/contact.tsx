@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { Mail, Linkedin, Github, MessageCircle } from "lucide-react"
+import { Mail, Linkedin, Github } from "lucide-react"
 import Link from "next/link"
 
 export function Contact() {
@@ -47,11 +47,11 @@ export function Contact() {
         {/* Contact Links */}
         <div className="flex flex-wrap items-center justify-center gap-6 mb-12">
           <Link
-            href="mailto:martin.nomdedeu@gmail.com"
+            href="mailto:martin.nomdedeu.dev@gmail.com"
             className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors duration-300"
           >
             <Mail className="w-5 h-5" />
-            <span className="text-sm">martin.nomdedeu@gmail.com</span>
+            <span className="text-sm">martin.nomdedeu.dev@gmail.com</span>
           </Link>
           <Link
             href="https://linkedin.com/in/martin-nomdedeu"
@@ -70,15 +70,6 @@ export function Contact() {
           >
             <Github className="w-5 h-5" />
             <span className="text-sm">GitHub</span>
-          </Link>
-          <Link
-            href="https://wa.me/542216497571"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors duration-300"
-          >
-            <MessageCircle className="w-5 h-5" />
-            <span className="text-sm">WhatsApp</span>
           </Link>
         </div>
 
@@ -131,7 +122,7 @@ export function Contact() {
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link
-            href="mailto:martin.nomdedeu@gmail.com"
+            href="mailto:martin.nomdedeu.dev@gmail.com"
             className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-4 rounded font-mono hover:bg-primary/90 transition-colors duration-300"
           >
             <Mail className="w-5 h-5" />

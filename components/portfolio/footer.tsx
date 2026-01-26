@@ -4,7 +4,7 @@ import Link from "next/link"
 const socialLinks = [
   { name: "GitHub", href: "https://github.com/nomdedev", icon: Github },
   { name: "LinkedIn", href: "https://linkedin.com/in/martin-nomdedeu", icon: Linkedin },
-  { name: "Email", href: "mailto:martin.nomdedeu@gmail.com", icon: Mail },
+  { name: "Email", href: "mailto:martin.nomdedeu.dev@gmail.com", icon: Mail },
 ]
 
 const quickLinks = [
