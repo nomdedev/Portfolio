@@ -6,20 +6,28 @@ import { Download } from "lucide-react"
 
 const expertiseAreas = [
   {
-    title: "Ingeniería Industrial",
-    skills: ["Diseño de Producto", "Optimización de Procesos", "Industria 4.0", "Normas ISO"],
+    title: "PRODUCTO & ESTRATEGÍA",
+    skills: ["Product Vision", "Roadmap", "Product-Market Fit", "Market Analysis", "GTM", "Discovery", "User Research", "MVP"],
   },
   {
-    title: "IA & Machine Learning",
-    skills: ["Computer Vision", "NLP", "Análisis Predictivo", "Automatización IA"],
+    title: "OPERACIONES",
+    skills: ["Lean Manufacturing", "Six Sigma", "5S", "PDCA", "Kaizen", "Process Optimization", "Continuous Improvement"],
   },
   {
-    title: "Full-Stack Development",
-    skills: ["Python", "React", "Next.js", "FastAPI", "PostgreSQL"],
+    title: "LIDERAZGO",
+    skills: ["Agile/Scrum", "Kanban", "Team Leadership (60+ personas)", "Stakeholder Alignment", "Cross-Functional Coordination"],
   },
   {
-    title: "Data Science & BI",
-    skills: ["Pandas", "Power BI", "Analytics", "Dashboards"],
+    title: "DATOS & ANALÍTICA",
+    skills: ["OKRs/KPIs", "Power BI", "Excel Avanzado", "SQL", "Python", "Data-Driven Decision Making", "Product Analytics"],
+  },
+  {
+    title: "TÉCNICO",
+    skills: ["Python", "Full-Stack", "APIs REST", "WMS/ERP", "Jira", "Confluence", "Electrical/Mechanical Systems"],
+  },
+  {
+    title: "CUMPLIMIENTO",
+    skills: ["ISO 9001", "ISO 14001", "IRAM 3810", "Safety Standards", "Quality Management"],
   },
 ]
 
@@ -71,36 +79,35 @@ export function About() {
         <div className="grid lg:grid-cols-3 gap-12 mb-16">
           <div className="lg:col-span-2 space-y-4">
             <h3 className="text-xl font-semibold text-foreground mb-4">
-              Ingeniero Mecánico, Analista de Datos y Project Manager
+              Ingeniero Electromecánico
             </h3>
             <p className="text-muted-foreground leading-relaxed">
-              Apasionado por la convergencia entre la operación industrial y la tecnología digital. 
-              Me especializo en liderar proyectos complejos mediante el desarrollo de software, 
-              optimización de procesos y gestión estratégica de equipos multidisciplinarios.
+              Ingeniero electromecánico con expertise en transformación digital, gestión de producto, liderazgo técnico y optimización operativa. Experiencia definiendo estrategias end-to-end, liderando equipos (60+ personas), análisis data-driven (Power BI, SQL, Python) y entrega de proyectos complejos. Especialista en convertir desafíos operativos en soluciones medibles (Lean, Six Sigma, Agile).
             </p>
-            <p className="text-muted-foreground leading-relaxed">
-              Combino formación técnica en ingeniería con habilidades en{" "}
-              <span className="text-primary">Python</span>,{" "}
-              <span className="text-primary">Inteligencia Artificial</span>,{" "}
-              <span className="text-primary">automatización</span> y metodologías de gestión 
-              (PMBOK, Agile, Scrum, Kanban).
-            </p>
-            <p className="text-muted-foreground leading-relaxed">
-              En mi trayectoria profesional, he liderado equipos de hasta{" "}
-              <span className="text-primary">60 personas</span> en proyectos de mantenimiento, 
-              producción e innovación tecnológica, diseñando herramientas de gestión que 
-              transforman datos en decisiones rentables.
-            </p>
-            <div className="mt-6">
-              <a
-                href="https://drive.google.com/file/d/1Gi8OMUOUrH3r_HSuqGlF4Gbxm-by_oM8/view?usp=sharing"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium"
-              >
-                <Download className="w-4 h-4" />
-                Ver CV
-              </a>
+            <div className="mt-6 space-y-3">
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <span className="text-primary">📱</span>
+                <a href="tel:+***REMOVED***" className="hover:text-primary transition-colors">
+                  ***REMOVED***
+                </a>
+              </div>
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <span className="text-primary">✉️</span>
+                <a href="mailto:martin.nomdedeu@gmail.com" className="hover:text-primary transition-colors">
+                  martin.nomdedeu@gmail.com
+                </a>
+              </div>
+              <div className="pt-4">
+                <a
+                  href="https://drive.google.com/file/d/1Gi8OMUOUrH3r_HSuqGlF4Gbxm-by_oM8/view?usp=sharing"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium"
+                >
+                  <Download className="w-4 h-4" />
+                  Ver CV
+                </a>
+              </div>
             </div>
           </div>
 
@@ -118,24 +125,23 @@ export function About() {
         </div>
 
         {/* Expertise Areas */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
           {expertiseAreas.map((area) => (
             <div
               key={area.title}
               className="bg-card p-6 rounded-lg border border-border hover:border-primary/50 transition-colors"
             >
-              <h4 className="text-primary font-semibold mb-4">{area.title}</h4>
-              <ul className="space-y-2">
+              <h4 className="text-primary font-semibold mb-4 text-sm">{area.title}</h4>
+              <div className="flex flex-wrap gap-2">
                 {area.skills.map((skill) => (
-                  <li
+                  <span
                     key={skill}
-                    className="flex items-center gap-2 text-muted-foreground text-sm"
+                    className="px-2 py-1 bg-primary/10 text-primary text-xs rounded-full hover:bg-primary/20 transition-colors"
                   >
-                    <span className="text-primary">▹</span>
                     {skill}
-                  </li>
+                  </span>
                 ))}
-              </ul>
+              </div>
             </div>
           ))}
         </div>

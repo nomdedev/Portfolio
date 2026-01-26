@@ -31,7 +31,7 @@ export function Hero() {
           Hola, soy
         </p>
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-foreground mb-4 text-balance">
-          Martin Nomdedeu
+          Martín Nomdedeu
         </h1>
         <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold text-muted-foreground mb-6 text-balance">
           Transformación Digital Industrial & Project Management
@@ -73,7 +73,7 @@ export function Hero() {
             <Linkedin className="w-6 h-6" />
           </Link>
           <Link
-            href="mailto:contacto@martinnomdedeu.com"
+            href="mailto:martin.nomdedeu@gmail.com"
             className="text-muted-foreground hover:text-primary transition-colors duration-300"
             aria-label="Email"
           >

@@ -1,6 +1,8 @@
-# 🚀 Portfolio de Martin Nomdedeu
+# Martín Nomdedeu - Portfolio
 
-Un portfolio web moderno y elegante construido con Next.js 15, TypeScript y componentes UI modernos que showcases proyectos de desarrollo web, ingeniería industrial y soluciones tecnológicas innovadoras.
+Portfolio de Martín Nomdedeu - Ingeniero Electromecánico, Product Manager & Technical Leader especializado en transformación digital, optimización operativa y desarrollo de productos.
+
+Un portfolio web moderno y elegante construido con Next.js 15, React, TypeScript y Tailwind CSS que showcases proyectos de desarrollo web, ingeniería industrial y soluciones tecnológicas innovadoras.
 
 ## 🌐 Información del Proyecto
 
@@ -67,6 +69,12 @@ portfolio/
 ```
 
 ## 🛠️ Tecnologías Utilizadas
+
+### Framework y Stack Principal
+- **Next.js 15**: Framework React para aplicaciones web modernas
+- **React 18**: Biblioteca JavaScript para interfaces de usuario
+- **TypeScript**: Superset tipado de JavaScript
+- **Tailwind CSS**: Framework de utilidades CSS
 
 ### Frontend
 - **HTML5**: Estructura semántica moderna
@@ -301,9 +309,10 @@ Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) par
 
 ## 📞 Contacto
 
-**Martin Nomdedeu**
-- LinkedIn: [linkedin.com/in/martin-nomdedeu](https://www.linkedin.com/in/martin-nomdedeu)
-- Email: [Contáctame directamente](#contact)
+**Martín Nomdedeu**
+- GitHub: [github.com/nomdedev](https://github.com/nomdedev)
+- LinkedIn: [linkedin.com/in/martin-nomdedeu](https://linkedin.com/in/martin-nomdedeu)
+- Email: [martin.nomdedeu@gmail.com](mailto:martin.nomdedeu@gmail.com)
 
 ---
 
@@ -331,5 +340,6 @@ Para optimizar tu portfolio y estrategia de marketing profesional, consulta nues
 ⭐ **Si te gusta este portfolio, ¡dale una estrella!**
 
 Última actualización: Enero 2026
-#   F o r c e   r e d e p l o y   w i t h   G e i s t   f o n t s  
+#   F o r c e   r e d e p l o y   w i t h   G e i s t   f o n t s 
+ 
  

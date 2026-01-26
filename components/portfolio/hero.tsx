@@ -31,14 +31,13 @@ export function Hero() {
           Hola, soy
         </p>
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-foreground mb-4 text-balance">
-          Martin Nomdedeu
+          Martín Nomdedeu
         </h1>
         <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold text-muted-foreground mb-6 text-balance">
-          Transformación Digital Industrial & Project Management
+          Ingeniero Electromecánico | Product Manager & Technical Leader | Data-Driven
         </h2>
         <p className="text-muted-foreground text-base md:text-lg max-w-2xl leading-relaxed mb-8">
-          Ingeniero Mecánico especializado en la convergencia entre operación industrial y tecnología digital. 
-          Desarrollo soluciones que optimizan procesos, automatizan tareas y transforman datos en decisiones estratégicas.
+          Especialista en transformación digital, optimización operativa y desarrollo de productos. Combiné ingeniería técnica con business acumen en FinTech, Lean Manufacturing y Six Sigma.
         </p>
 
         <div className="flex flex-wrap gap-4 mb-8">
@@ -55,7 +54,7 @@ export function Hero() {
 
         <div className="flex items-center gap-6 mb-12">
           <Link
-            href="https://github.com/nomdedev/Portfolio"
+            href="https://github.com/nomdedev"
             target="_blank"
             rel="noopener noreferrer"
             className="text-muted-foreground hover:text-primary transition-colors duration-300"
@@ -73,7 +72,7 @@ export function Hero() {
             <Linkedin className="w-6 h-6" />
           </Link>
           <Link
-            href="mailto:contacto@martinnomdedeu.com"
+            href="mailto:martin.nomdedeu@gmail.com"
             className="text-muted-foreground hover:text-primary transition-colors duration-300"
             aria-label="Email"
           >
@@ -86,14 +85,15 @@ export function Hero() {
             href="#projects"
             className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-3 rounded font-mono text-sm hover:bg-primary/90 transition-colors duration-300"
           >
-            Ver Proyectos Destacados
+            Ver Proyectos
           </Link>
           <Link
-            href="#contact"
+            href="/cv.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-2 border border-primary text-primary px-6 py-3 rounded font-mono text-sm hover:bg-primary/10 transition-colors duration-300"
           >
-            Hablemos de tu Proyecto
-            <ArrowDown className="w-4 h-4" />
+            Descargar CV
           </Link>
         </div>
       </div>

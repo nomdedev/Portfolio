@@ -4,7 +4,7 @@ import Link from "next/link"
 const socialLinks = [
   { name: "GitHub", href: "https://github.com/nomdedev", icon: Github },
   { name: "LinkedIn", href: "https://linkedin.com/in/martin-nomdedeu", icon: Linkedin },
-  { name: "Email", href: "mailto:contacto@martinnomdedeu.com", icon: Mail },
+  { name: "Email", href: "mailto:martin.nomdedeu@gmail.com", icon: Mail },
 ]
 
 export function Footer() {
@@ -35,11 +35,11 @@ export function Footer() {
             rel="noopener noreferrer"
             className="text-primary hover:underline"
           >
-            Martin Nomdedeu
+            Martín Nomdedeu
           </Link>
         </p>
         <p className="text-muted-foreground/60 text-xs">
-          Copyright 2024 Martin Nomdedeu. Todos los derechos reservados.
+          Copyright 2024 Martín Nomdedeu. Todos los derechos reservados.
         </p>
       </div>
     </footer>

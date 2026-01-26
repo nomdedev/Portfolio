@@ -18,23 +18,27 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Martin Nomdedeu | Transformación Digital Industrial & Project Management',
-  description: 'Ingeniero Mecánico especializado en transformación digital industrial, desarrollo de software, IA y Project Management. +300% ROI en proyectos industriales.',
+  title: 'Martín Nomdedeu | Ingeniero Electromecánico, Product Manager & Technical Leader',
+  description: 'Ingeniero Electromecánico, Product Manager & Technical Leader especializado en transformación digital, optimización operativa y desarrollo de productos. Experiencia en FinTech, Lean Manufacturing y Six Sigma.',
   generator: 'v0.app',
-  keywords: ['Transformación Digital', 'Project Management', 'Ingeniero Mecánico', 'IA', 'Machine Learning', 'Python', 'React', 'Full Stack Developer', 'Industria 4.0'],
-  authors: [{ name: 'Martin Nomdedeu', url: 'https://github.com/nomdedev' }],
-  creator: 'Martin Nomdedeu',
+  keywords: ['Martín Nomdedeu', 'Ingeniero Electromecánico', 'Product Manager', 'Technical Leader', 'FinTech', 'Transformación Digital', 'Lean Manufacturing', 'Six Sigma', 'Python', 'Power BI', 'Data Analytics'],
+  authors: [{ name: 'Martín Nomdedeu' }],
+  creator: 'Martín Nomdedeu',
+  alternates: {
+    canonical: 'https://martinnomdedeu.com',
+  },
   openGraph: {
     type: 'website',
     locale: 'es_AR',
-    title: 'Martin Nomdedeu | Transformación Digital Industrial',
-    description: 'Ingeniero Mecánico especializado en transformación digital, desarrollo de software e IA. +300% ROI en proyectos industriales.',
-    siteName: 'Martin Nomdedeu Portfolio',
+    url: 'https://martinnomdedeu.com',
+    title: 'Martín Nomdedeu | Ingeniero Electromecánico, Product Manager & Technical Leader',
+    description: 'Ingeniero Electromecánico, Product Manager & Technical Leader especializado en transformación digital, optimización operativa y desarrollo de productos.',
+    siteName: 'Martín Nomdedeu Portfolio',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Martin Nomdedeu | Transformación Digital Industrial',
-    description: 'Ingeniero Mecánico especializado en transformación digital, desarrollo de software e IA.',
+    title: 'Martín Nomdedeu | Ingeniero Electromecánico, Product Manager & Technical Leader',
+    description: 'Ingeniero Electromecánico, Product Manager & Technical Leader especializado en transformación digital, optimización operativa y desarrollo de productos.',
   },
   robots: {
     index: true,
