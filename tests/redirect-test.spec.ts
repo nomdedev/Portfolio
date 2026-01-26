@@ -4,8 +4,8 @@ test('GitHub Pages loads directly without redirect', async ({ page }) => {
   // Medir el tiempo de carga
   const start = Date.now();
 
-  // Ir al enlace de GitHub Pages
-  await page.goto('https://nomdedev.github.io/Portfolio/');
+  // Ir al sitio en martinnomdedeu.com
+  await page.goto('https://martinnomdedeu.com');
 
   const end = Date.now();
   const loadTime = end - start;
@@ -13,9 +13,9 @@ test('GitHub Pages loads directly without redirect', async ({ page }) => {
   // Verificar que la página carga en menos de 5 segundos
   expect(loadTime).toBeLessThan(5000);
 
-  // Verificar que estamos en GitHub Pages (no redirige a Vercel)
-  expect(page.url()).toBe('https://nomdedev.github.io/Portfolio/');
+  // Verificar que estamos en martinnomdedeu.com
+  expect(page.url()).toBe('https://martinnomdedeu.com');
 
   // Verificar que la página carga correctamente
-  await expect(page.locator('h1:has-text("Martin Nomdedeu")')).toBeVisible();
+  await expect(page.locator('h1:has-text("Martín Nomdedeu")')).toBeVisible();
 });

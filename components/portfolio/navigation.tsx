@@ -2,12 +2,14 @@
 
 import Link from "next/link"
 import { useState, useEffect } from "react"
-import { Menu, X } from "lucide-react"
+import { Menu, X, Github, Linkedin } from "lucide-react"
 
 const navItems = [
-  { name: "Sobre mí", href: "#about" },
-  { name: "Experiencia", href: "#experience" },
+  { name: "Home", href: "#hero" },
+  { name: "Sobre Mí", href: "#about" },
   { name: "Proyectos", href: "#projects" },
+  { name: "Skills", href: "#about" },
+  { name: "Experiencia", href: "#experience" },
   { name: "Contacto", href: "#contact" },
 ]
 
@@ -37,7 +39,7 @@ export function Navigation() {
             href="#hero"
             className="text-primary font-bold text-xl hover:text-primary/80 transition-colors"
           >
-            {"<MN />"}
+            Martín Nomdedeu
           </Link>
 
           {/* Desktop Navigation */}
@@ -54,12 +56,32 @@ export function Navigation() {
             ))}
             <li>
               <a
-                href="https://drive.google.com/file/d/1Gi8OMUOUrH3r_HSuqGlF4Gbxm-by_oM8/view?usp=sharing"
+                href="/cv.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="border border-primary text-primary px-4 py-2 rounded font-mono text-sm hover:bg-primary/10 transition-colors duration-300"
               >
-                Currículum
+                Descargar CV
+              </a>
+            </li>
+            <li className="flex items-center gap-4 ml-4">
+              <a
+                href="https://github.com/nomdedev"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-primary transition-colors duration-300"
+                aria-label="GitHub"
+              >
+                <Github className="w-5 h-5" />
+              </a>
+              <a
+                href="https://linkedin.com/in/martin-nomdedeu"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-primary transition-colors duration-300"
+                aria-label="LinkedIn"
+              >
+                <Linkedin className="w-5 h-5" />
               </a>
             </li>
           </ul>
@@ -97,12 +119,32 @@ export function Navigation() {
               ))}
               <li>
                 <a
-                  href="https://drive.google.com/file/d/1Gi8OMUOUrH3r_HSuqGlF4Gbxm-by_oM8/view?usp=sharing"
+                  href="/cv.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="border border-primary text-primary px-6 py-3 rounded font-mono text-sm hover:bg-primary/10 transition-colors duration-300"
                 >
-                  Currículum
+                  Descargar CV
+                </a>
+              </li>
+              <li className="flex items-center gap-6 mt-2">
+                <a
+                  href="https://github.com/nomdedev"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted-foreground hover:text-primary transition-colors duration-300"
+                  aria-label="GitHub"
+                >
+                  <Github className="w-6 h-6" />
+                </a>
+                <a
+                  href="https://linkedin.com/in/martin-nomdedeu"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted-foreground hover:text-primary transition-colors duration-300"
+                  aria-label="LinkedIn"
+                >
+                  <Linkedin className="w-6 h-6" />
                 </a>
               </li>
             </ul>

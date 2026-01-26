@@ -3,4 +3,4 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://martinnomdedeu.vercel.app/sitemap.xml
+Sitemap: https://martinnomdedeu.com/sitemap.xml

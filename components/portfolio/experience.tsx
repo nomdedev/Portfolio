@@ -6,31 +6,40 @@ import Link from "next/link"
 
 const experiences = [
   {
-    title: "Product Owner & Project Manager",
-    company: "Transformación Digital Industrial",
+    title: "Founder & Product Lead",
+    company: "FinTech Products",
     companyUrl: "https://linkedin.com/in/martin-nomdedeu",
-    date: "2022 — Presente",
+    date: "2025 — Presente",
     description:
-      "Liderazgo de proyectos de transformación digital con enfoque data-driven. Convertir necesidades de negocio y usuarios en entregables claros (user stories, criterios de aceptación). Gestión de equipos multidisciplinarios de hasta 60 personas.",
-    skills: ["PMBOK", "Agile", "Scrum", "Kanban", "Power BI"],
+      "Desarrollé múltiples productos B2C desde discovery hasta MVP. Proyectos: Portfolio Tracker, ERP, Arbitrajes, Vecino Simple.",
+    skills: ["Product Discovery", "MVP", "B2C", "FinTech", "Strategy"],
   },
   {
-    title: "Ingeniero Mecánico Senior",
-    company: "Industria 4.0",
+    title: "Coordinador General Producción & Tecnología",
+    company: "MPS",
     companyUrl: "https://linkedin.com/in/martin-nomdedeu",
-    date: "2020 — 2022",
+    date: "2023 — 2025",
     description:
-      "Diseño de producto y manufactura, optimización de procesos industriales. Implementación de soluciones de automatización que lograron 75% de reducción en tiempo operativo y +300% ROI en proyectos industriales.",
-    skills: ["CAD 3D", "SolidWorks", "Normas ISO", "Automatización"],
+      "Lideré transformación digital para 60+ personas. Resultados: Cycle time ↓70%, Eficiencia ↑25%, KPIs en Power BI.",
+    skills: ["Digital Transformation", "Power BI", "KPIs", "Lean", "Leadership"],
   },
   {
-    title: "Desarrollador Full-Stack & IA",
-    company: "Proyectos Independientes",
-    companyUrl: "https://github.com/nomdedev",
-    date: "2021 — Presente",
+    title: "Project Analyst",
+    company: "Centro Tecnológico Aeroespacial (CTA)",
+    companyUrl: "https://linkedin.com/in/martin-nomdedeu",
+    date: "2019 — 2023",
     description:
-      "Desarrollo de aplicaciones web, APIs y sistemas con Python, JavaScript. Implementación de soluciones de Machine Learning y Computer Vision. Formación de +200 profesionales en IA aplicada.",
-    skills: ["Python", "FastAPI", "React", "TensorFlow", "PostgreSQL"],
+      "Primer colectivo eléctrico funcional de Argentina. Coordinación UNLP-CTA-Nueve de Julio, integración técnica completa.",
+    skills: ["Project Management", "Aeroespacial", "Coordinación", "Innovación", "R&D"],
+  },
+  {
+    title: "Jefe de Mantenimiento",
+    company: "Nueve de Julio SAT",
+    companyUrl: "https://linkedin.com/in/martin-nomdedeu",
+    date: "2022 — 2023",
+    description:
+      "Reorganización completa de almacén con 5S + digitalización. Implementación Lean Manufacturing, auditorías ISO/IRAM.",
+    skills: ["Lean Manufacturing", "5S", "ISO", "IRAM", "Gestión"],
   },
 ]
 

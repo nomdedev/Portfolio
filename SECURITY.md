@@ -1,5 +1,14 @@
 # Auditoría de Seguridad - Portfolio
 
+## Reporte de Vulnerabilidades
+
+Si encuentra una vulnerabilidad de seguridad en este proyecto, por favor repórtela de manera responsable a:
+
+- **Email**: [martin.nomdedeu@gmail.com](mailto:martin.nomdedeu@gmail.com)
+- **GitHub**: [nomdedev](https://github.com/nomdedev)
+
+Por favor, incluya detalles sobre la vulnerabilidad encontrada, pasos para reproducirla y, si es posible, una sugerencia de mitigación.
+
 ## Introducción
 
 Esta auditoría de seguridad evalúa el repositorio Portfolio, un sitio web de portfolio personal construido con Next.js y desplegado en GitHub Pages. La auditoría se realizó el 23 de enero de 2026 y cubre aspectos de dependencias, código fuente, configuraciones y despliegue.

@@ -1,6 +1,6 @@
 ﻿#  ESTRUCTURA DE IMÁGENES DEL PORTFOLIO
 
-Esta carpeta contiene todas las imágenes necesarias para mostrar los proyectos del portfolio de Martin Nomdedeu.
+Esta carpeta contiene todas las imágenes necesarias para mostrar los proyectos del portfolio de Martín Nomdedeu.
 
 ##  Estructura de Directorios
 
