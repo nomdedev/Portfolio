@@ -56,7 +56,7 @@ export function Contact() {
             Conectar en LinkedIn
           </Link>
           <Link
-            href="mailto:martin.nomdedeu@gmail.com"
+            href="mailto:martin.nomdedeu.dev@gmail.com"
             className="inline-flex items-center gap-2 border border-primary text-primary px-8 py-4 rounded font-mono hover:bg-primary/10 transition-colors duration-300"
           >
             <Mail className="w-5 h-5" />

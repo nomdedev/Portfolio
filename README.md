@@ -312,7 +312,7 @@ Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) par
 **Martín Nomdedeu**
 - GitHub: [github.com/nomdedev](https://github.com/nomdedev)
 - LinkedIn: [linkedin.com/in/martin-nomdedeu](https://linkedin.com/in/martin-nomdedeu)
-- Email: [martin.nomdedeu@gmail.com](mailto:martin.nomdedeu@gmail.com)
+- Email: [martin.nomdedeu.dev@gmail.com](mailto:martin.nomdedeu.dev@gmail.com)
 
 ---
 
