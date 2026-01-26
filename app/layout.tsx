@@ -2,6 +2,7 @@ import React from "react"
 import type { Metadata, Viewport } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { AnimatedBackground } from '@/components/animated-background'
 import './globals.css'
 
 const geistSans = Geist({
@@ -70,6 +71,7 @@ export default function RootLayout({
   return (
     <html lang="es" className="scroll-smooth">
       <body className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}>
+        <AnimatedBackground />
         {children}
         <Analytics />
       </body>

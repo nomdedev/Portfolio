@@ -148,3 +148,102 @@
 ::-webkit-scrollbar-thumb:hover {
   background: oklch(0.75 0.12 175);
 }
+
+/* Animated Background Styles */
+@keyframes float-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(5%, -5%) scale(1.1); }
+  50% { transform: translate(-5%, 5%) scale(1); }
+  75% { transform: translate(-3%, -3%) scale(1.05); }
+}
+
+@keyframes float-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-10%, 5%) scale(1.15); }
+  66% { transform: translate(10%, -5%) scale(0.95); }
+}
+
+@keyframes float-3 {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(5%, 5%) rotate(180deg); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.5; }
+}
+
+.gradient-orb-1 {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, oklch(0.75 0.12 175) 0%, transparent 70%);
+  top: -200px;
+  left: -200px;
+  filter: blur(80px);
+  animation: float-1 20s ease-in-out infinite, pulse-glow 8s ease-in-out infinite;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+.gradient-orb-2 {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, oklch(0.696 0.17 162.48) 0%, transparent 70%);
+  top: 50%;
+  right: -150px;
+  filter: blur(60px);
+  animation: float-2 25s ease-in-out infinite, pulse-glow 10s ease-in-out infinite 2s;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+.gradient-orb-3 {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, oklch(0.769 0.188 70.08) 0%, transparent 70%);
+  bottom: -100px;
+  left: 30%;
+  filter: blur(50px);
+  animation: float-3 30s linear infinite, pulse-glow 12s ease-in-out infinite 4s;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+.gradient-orb-4 {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, oklch(0.627 0.265 303.9) 0%, transparent 70%);
+  top: 40%;
+  left: 10%;
+  filter: blur(40px);
+  animation: float-1 18s ease-in-out infinite reverse, pulse-glow 9s ease-in-out infinite 1s;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+/* Mobile optimization for gradient orbs */
+@media (max-width: 768px) {
+  .gradient-orb-1,
+  .gradient-orb-2,
+  .gradient-orb-3,
+  .gradient-orb-4 {
+    width: 300px;
+    height: 300px;
+    filter: blur(40px);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .gradient-orb-1,
+  .gradient-orb-2,
+  .gradient-orb-3,
+  .gradient-orb-4 {
+    animation: none;
+    opacity: 0.2;
+  }
+}
