@@ -4,7 +4,7 @@ import { Github, Linkedin, Mail } from "lucide-react"
 import Link from "next/link"
 import { useLanguage, type Lang } from "@/lib/i18n"
 
-const EMAIL = "martin.nomdedeu@gmail.com"
+const EMAIL = "martin.nomdedeu.dev@gmail.com"
 
 const socialLinks = [
   { name: "GitHub", href: "https://github.com/nomdedev", icon: Github, external: true },

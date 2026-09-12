@@ -134,7 +134,7 @@ export function Hero() {
               <Linkedin className="w-6 h-6" />
             </Link>
             <Link
-              href="mailto:martin.nomdedeu@gmail.com"
+              href="mailto:martin.nomdedeu.dev@gmail.com"
               className="text-muted-foreground hover:text-primary hover:-translate-y-1 transition-all duration-300"
               aria-label={t.emailLabel}
             >

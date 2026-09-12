@@ -17,7 +17,7 @@ Un portfolio web minimalista construido con Next.js 16, React 19, TypeScript y T
 - **Nombre**: Martin Nomdedeu
 - **Título**: Data Scientist | Machine Learning Engineer | AI & Automation
 - **Ubicación**: La Plata, Buenos Aires, Argentina
-- **Email**: martin.nomdedeu@gmail.com
+- **Email**: martin.nomdedeu.dev@gmail.com
 - **Teléfono**: ***REMOVED***
 - **LinkedIn**: https://linkedin.com/in/martin-nomdedeu
 - **GitHub**: https://github.com/nomdedev
@@ -301,7 +301,7 @@ Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) par
 **Martin Nomdedeu**
 - GitHub: [github.com/nomdedev](https://github.com/nomdedev)
 - LinkedIn: [linkedin.com/in/martin-nomdedeu](https://linkedin.com/in/martin-nomdedeu)
-- Email: [martin.nomdedeu@gmail.com](mailto:martin.nomdedeu@gmail.com)
+- Email: [martin.nomdedeu.dev@gmail.com](mailto:martin.nomdedeu.dev@gmail.com)
 - Portfolio: [martinnomdedeu.com](https://martinnomdedeu.com)
 
 ---

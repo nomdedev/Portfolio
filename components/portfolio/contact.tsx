@@ -5,7 +5,7 @@ import Link from "next/link"
 import { useLanguage, type Lang } from "@/lib/i18n"
 import { Reveal } from "@/components/portfolio/reveal"
 
-const EMAIL = "martin.nomdedeu@gmail.com"
+const EMAIL = "martin.nomdedeu.dev@gmail.com"
 const PHONE_DISPLAY = "***REMOVED***"
 const WHATSAPP_URL = "https://wa.me/***REMOVED***"
 
