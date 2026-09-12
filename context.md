@@ -9,7 +9,6 @@ Este documento contiene toda la información contextual necesaria para entender 
 - **Título**: Data Scientist | Machine Learning Engineer | AI & Automation
 - **Ubicación**: La Plata, Buenos Aires, Argentina
 - **Email**: martin.nomdedeu.dev@gmail.com
-- **Teléfono**: ***REMOVED***
 - **LinkedIn**: https://linkedin.com/in/martin-nomdedeu
 - **GitHub**: https://github.com/nomdedev
 - **URL del Portfolio**: https://martinnomdedeu.com

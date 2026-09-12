@@ -18,7 +18,6 @@ Un portfolio web minimalista construido con Next.js 16, React 19, TypeScript y T
 - **Título**: Data Scientist | Machine Learning Engineer | AI & Automation
 - **Ubicación**: La Plata, Buenos Aires, Argentina
 - **Email**: martin.nomdedeu.dev@gmail.com
-- **Teléfono**: ***REMOVED***
 - **LinkedIn**: https://linkedin.com/in/martin-nomdedeu
 - **GitHub**: https://github.com/nomdedev
 

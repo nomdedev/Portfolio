@@ -1,13 +1,11 @@
 "use client"
 
-import { Mail, Linkedin, Github, Phone } from "lucide-react"
+import { Mail, Linkedin, Github } from "lucide-react"
 import Link from "next/link"
 import { useLanguage, type Lang } from "@/lib/i18n"
 import { Reveal } from "@/components/portfolio/reveal"
 
 const EMAIL = "martin.nomdedeu.dev@gmail.com"
-const PHONE_DISPLAY = "***REMOVED***"
-const WHATSAPP_URL = "https://wa.me/***REMOVED***"
 
 const copy: Record<
   Lang,
@@ -17,7 +15,6 @@ const copy: Record<
     subtitle: string
     emailCta: string
     linkedinCta: string
-    whatsappCta: string
   }
 > = {
   es: {
@@ -27,7 +24,6 @@ const copy: Record<
       "Disponible para roles y proyectos en Data Science, Machine Learning, IA aplicada y automatización.",
     emailCta: "Enviar email",
     linkedinCta: "Conectar en LinkedIn",
-    whatsappCta: "WhatsApp",
   },
   en: {
     index: "06. Contact",
@@ -36,7 +32,6 @@ const copy: Record<
       "Available for roles and projects in Data Science, Machine Learning, applied AI and automation.",
     emailCta: "Send email",
     linkedinCta: "Connect on LinkedIn",
-    whatsappCta: "WhatsApp",
   },
 }
 
@@ -67,15 +62,6 @@ export function Contact() {
           >
             <Mail className="w-5 h-5" aria-hidden="true" />
             <span className="text-sm">{EMAIL}</span>
-          </Link>
-          <Link
-            href={WHATSAPP_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors duration-300"
-          >
-            <Phone className="w-5 h-5" aria-hidden="true" />
-            <span className="text-sm">{PHONE_DISPLAY}</span>
           </Link>
           <Link
             href="https://linkedin.com/in/martin-nomdedeu"
@@ -115,15 +101,6 @@ export function Contact() {
           >
             <Linkedin className="w-5 h-5" aria-hidden="true" />
             {t.linkedinCta}
-          </Link>
-          <Link
-            href={WHATSAPP_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 border border-border text-muted-foreground px-8 py-4 rounded-md font-mono text-sm hover:border-primary hover:text-primary hover:-translate-y-0.5 transition-all duration-300"
-          >
-            <Phone className="w-5 h-5" aria-hidden="true" />
-            {t.whatsappCta}
           </Link>
         </div>
       </Reveal>
