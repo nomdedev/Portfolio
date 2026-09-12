@@ -1,27 +1,61 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { Mail, Linkedin, Github } from "lucide-react"
+import { Mail, Linkedin, Github, Phone } from "lucide-react"
 import Link from "next/link"
+import { useLanguage, type Lang } from "@/lib/i18n"
+
+const EMAIL = "martin.nomdedeu@gmail.com"
+const PHONE_DISPLAY = "+54 221 649-7571"
+const WHATSAPP_URL = "https://wa.me/542216497571"
+
+const copy: Record<
+  Lang,
+  {
+    index: string
+    title: string
+    subtitle: string
+    emailCta: string
+    linkedinCta: string
+    whatsappCta: string
+  }
+> = {
+  es: {
+    index: "06. Contacto",
+    title: "Hablemos de tu proyecto",
+    subtitle:
+      "Disponible para roles y proyectos en Data Science, Machine Learning, IA aplicada y automatización.",
+    emailCta: "Enviar email",
+    linkedinCta: "Conectar en LinkedIn",
+    whatsappCta: "WhatsApp",
+  },
+  en: {
+    index: "06. Contact",
+    title: "Let's talk about your project",
+    subtitle:
+      "Available for roles and projects in Data Science, Machine Learning, applied AI and automation.",
+    emailCta: "Send email",
+    linkedinCta: "Connect on LinkedIn",
+    whatsappCta: "WhatsApp",
+  },
+}
 
 export function Contact() {
+  const { lang } = useLanguage()
+  const t = copy[lang]
   const [isVisible, setIsVisible] = useState(false)
-  const sectionRef = useRef<HTMLElement>(null)
+  const sectionRef = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
+    const el = sectionRef.current
+    if (!el) return
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
-        }
+        if (entry.isIntersecting) setIsVisible(true)
       },
       { threshold: 0.2 }
     )
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
-    }
-
+    observer.observe(el)
     return () => observer.disconnect()
   }, [])
 
@@ -36,22 +70,30 @@ export function Contact() {
           isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
         }`}
       >
-        <p className="text-primary font-mono text-sm mb-4">04. Contacto</p>
+        <p className="text-primary font-mono text-sm mb-4">{t.index}</p>
         <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-          Hablemos de tu Proyecto
+          {t.title}
         </h2>
         <p className="text-muted-foreground leading-relaxed mb-12 max-w-lg mx-auto">
-          Disponible para oportunidades en FinTech, Logística, Optimización Operativa
+          {t.subtitle}
         </p>
 
-        {/* Contact Links */}
-        <div className="flex flex-wrap items-center justify-center gap-6 mb-12">
+        <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4 mb-12">
           <Link
-            href="mailto:martin.nomdedeu.dev@gmail.com"
+            href={`mailto:${EMAIL}`}
             className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors duration-300"
           >
-            <Mail className="w-5 h-5" />
-            <span className="text-sm">martin.nomdedeu.dev@gmail.com</span>
+            <Mail className="w-5 h-5" aria-hidden="true" />
+            <span className="text-sm">{EMAIL}</span>
+          </Link>
+          <Link
+            href={WHATSAPP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors duration-300"
+          >
+            <Phone className="w-5 h-5" aria-hidden="true" />
+            <span className="text-sm">{PHONE_DISPLAY}</span>
           </Link>
           <Link
             href="https://linkedin.com/in/martin-nomdedeu"
@@ -59,7 +101,7 @@ export function Contact() {
             rel="noopener noreferrer"
             className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors duration-300"
           >
-            <Linkedin className="w-5 h-5" />
+            <Linkedin className="w-5 h-5" aria-hidden="true" />
             <span className="text-sm">LinkedIn</span>
           </Link>
           <Link
@@ -68,74 +110,36 @@ export function Contact() {
             rel="noopener noreferrer"
             className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors duration-300"
           >
-            <Github className="w-5 h-5" />
+            <Github className="w-5 h-5" aria-hidden="true" />
             <span className="text-sm">GitHub</span>
           </Link>
         </div>
 
-        {/* Contact Form */}
-        <form className="max-w-md mx-auto mb-12 text-left">
-          <div className="mb-4">
-            <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
-              Nombre
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              className="w-full px-4 py-3 bg-background border border-input rounded focus:outline-none focus:border-primary transition-colors duration-300"
-              placeholder="Tu nombre"
-            />
-          </div>
-          <div className="mb-4">
-            <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              className="w-full px-4 py-3 bg-background border border-input rounded focus:outline-none focus:border-primary transition-colors duration-300"
-              placeholder="tu@email.com"
-            />
-          </div>
-          <div className="mb-4">
-            <label htmlFor="message" className="block text-sm font-medium text-foreground mb-2">
-              Mensaje
-            </label>
-            <textarea
-              id="message"
-              name="message"
-              rows={4}
-              className="w-full px-4 py-3 bg-background border border-input rounded focus:outline-none focus:border-primary transition-colors duration-300 resize-none"
-              placeholder="Cuéntame sobre tu proyecto..."
-            />
-          </div>
-          <button
-            type="submit"
-            className="w-full bg-primary text-primary-foreground px-8 py-4 rounded font-mono hover:bg-primary/90 transition-colors duration-300"
-          >
-            Enviar
-          </button>
-        </form>
-
-        {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link
-            href="mailto:martin.nomdedeu.dev@gmail.com"
-            className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-4 rounded font-mono hover:bg-primary/90 transition-colors duration-300"
+            href={`mailto:${EMAIL}`}
+            className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-4 rounded-md font-mono text-sm hover:bg-primary/90 transition-colors duration-300"
           >
-            <Mail className="w-5 h-5" />
-            Enviar Email
+            <Mail className="w-5 h-5" aria-hidden="true" />
+            {t.emailCta}
           </Link>
           <Link
             href="https://linkedin.com/in/martin-nomdedeu"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 border border-primary text-primary px-8 py-4 rounded font-mono hover:bg-primary/10 transition-colors duration-300"
+            className="inline-flex items-center gap-2 border border-primary text-primary px-8 py-4 rounded-md font-mono text-sm hover:bg-primary/10 transition-colors duration-300"
           >
-            <Linkedin className="w-5 h-5" />
-            Conectar en LinkedIn
+            <Linkedin className="w-5 h-5" aria-hidden="true" />
+            {t.linkedinCta}
+          </Link>
+          <Link
+            href={WHATSAPP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 border border-border text-muted-foreground px-8 py-4 rounded-md font-mono text-sm hover:border-primary hover:text-primary transition-colors duration-300"
+          >
+            <Phone className="w-5 h-5" aria-hidden="true" />
+            {t.whatsappCta}
           </Link>
         </div>
       </div>

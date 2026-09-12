@@ -3,17 +3,59 @@
 import Link from "next/link"
 import { useState, useEffect } from "react"
 import { Menu, X, Github, Linkedin } from "lucide-react"
+import { useLanguage, type Lang } from "@/lib/i18n"
 
-const navItems = [
-  { name: "Home", href: "#hero" },
-  { name: "Sobre Mí", href: "#about" },
-  { name: "Proyectos", href: "#projects" },
-  { name: "Skills", href: "#about" },
-  { name: "Experiencia", href: "#experience" },
-  { name: "Contacto", href: "#contact" },
-]
+const navItems: Record<Lang, { name: string; href: string }[]> = {
+  es: [
+    { name: "Sobre Mí", href: "#about" },
+    { name: "Proyectos", href: "#projects" },
+    { name: "Experiencia", href: "#experience" },
+    { name: "Docencia", href: "#teaching" },
+    { name: "Contacto", href: "#contact" },
+  ],
+  en: [
+    { name: "About", href: "#about" },
+    { name: "Projects", href: "#projects" },
+    { name: "Experience", href: "#experience" },
+    { name: "Teaching", href: "#teaching" },
+    { name: "Contact", href: "#contact" },
+  ],
+}
+
+const labels: Record<Lang, { openMenu: string; closeMenu: string; language: string }> = {
+  es: { openMenu: "Abrir menú", closeMenu: "Cerrar menú", language: "Idioma" },
+  en: { openMenu: "Open menu", closeMenu: "Close menu", language: "Language" },
+}
+
+function LanguageToggle() {
+  const { lang, setLang } = useLanguage()
+  return (
+    <div
+      className="flex items-center rounded-full border border-border p-0.5 font-mono text-xs"
+      role="group"
+      aria-label={labels[lang].language}
+    >
+      {(["es", "en"] as Lang[]).map((l) => (
+        <button
+          key={l}
+          type="button"
+          onClick={() => setLang(l)}
+          aria-pressed={lang === l}
+          className={`rounded-full px-2.5 py-1 uppercase transition-colors duration-300 ${
+            lang === l
+              ? "bg-primary text-primary-foreground"
+              : "text-muted-foreground hover:text-primary"
+          }`}
+        >
+          {l}
+        </button>
+      ))}
+    </div>
+  )
+}
 
 export function Navigation() {
+  const { lang } = useLanguage()
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
@@ -21,9 +63,22 @@ export function Navigation() {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50)
     }
-    window.addEventListener("scroll", handleScroll)
+    handleScroll()
+    window.addEventListener("scroll", handleScroll, { passive: true })
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
+
+  useEffect(() => {
+    if (!isMobileMenuOpen) return
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsMobileMenuOpen(false)
+    }
+    window.addEventListener("keydown", handleKey)
+    return () => window.removeEventListener("keydown", handleKey)
+  }, [isMobileMenuOpen])
+
+  const items = navItems[lang]
+  const t = labels[lang]
 
   return (
     <header
@@ -33,19 +88,19 @@ export function Navigation() {
           : "bg-transparent"
       }`}
     >
-      <nav className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 py-4">
+      <nav aria-label="Principal" className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 py-4">
         <div className="flex items-center justify-between">
           <Link
             href="#hero"
             className="text-primary font-bold text-xl hover:text-primary/80 transition-colors"
           >
-            Martín Nomdedeu
+            Martin Nomdedeu
           </Link>
 
           {/* Desktop Navigation */}
           <ul className="hidden md:flex items-center gap-8">
-            {navItems.map((item, index) => (
-              <li key={item.name}>
+            {items.map((item, index) => (
+              <li key={item.href}>
                 <Link
                   href={item.href}
                   className="text-muted-foreground hover:text-primary transition-colors duration-300 font-mono text-sm"
@@ -60,7 +115,7 @@ export function Navigation() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-muted-foreground hover:text-primary transition-colors duration-300"
-                aria-label="GitHub"
+                aria-label="GitHub de Martin Nomdedeu"
               >
                 <Github className="w-5 h-5" />
               </a>
@@ -69,34 +124,43 @@ export function Navigation() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-muted-foreground hover:text-primary transition-colors duration-300"
-                aria-label="LinkedIn"
+                aria-label="LinkedIn de Martin Nomdedeu"
               >
                 <Linkedin className="w-5 h-5" />
               </a>
+              <LanguageToggle />
             </li>
           </ul>
 
           {/* Mobile Menu Button */}
-          <button
-            type="button"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden text-primary p-2"
-            aria-label={isMobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
-          >
-            {isMobileMenuOpen ? (
-              <X className="w-6 h-6" />
-            ) : (
-              <Menu className="w-6 h-6" />
-            )}
-          </button>
+          <div className="flex md:hidden items-center gap-2">
+            <LanguageToggle />
+            <button
+              type="button"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="text-primary p-2 min-w-[44px] min-h-[44px] grid place-items-center"
+              aria-label={isMobileMenuOpen ? t.closeMenu : t.openMenu}
+              aria-expanded={isMobileMenuOpen}
+              aria-controls="mobile-menu"
+            >
+              {isMobileMenuOpen ? (
+                <X className="w-6 h-6" />
+              ) : (
+                <Menu className="w-6 h-6" />
+              )}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
-          <div className="md:hidden absolute top-full left-0 right-0 bg-background/95 backdrop-blur-md border-t border-border">
+          <div
+            id="mobile-menu"
+            className="md:hidden absolute top-full left-0 right-0 bg-background/95 backdrop-blur-md border-t border-border"
+          >
             <ul className="flex flex-col items-center py-8 gap-6">
-              {navItems.map((item, index) => (
-                <li key={item.name}>
+              {items.map((item, index) => (
+                <li key={item.href}>
                   <Link
                     href={item.href}
                     onClick={() => setIsMobileMenuOpen(false)}
@@ -112,8 +176,8 @@ export function Navigation() {
                   href="https://github.com/nomdedev"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-primary transition-colors duration-300"
-                  aria-label="GitHub"
+                  className="text-muted-foreground hover:text-primary transition-colors duration-300 min-w-[44px] min-h-[44px] grid place-items-center"
+                  aria-label="GitHub de Martin Nomdedeu"
                 >
                   <Github className="w-6 h-6" />
                 </a>
@@ -121,8 +185,8 @@ export function Navigation() {
                   href="https://linkedin.com/in/martin-nomdedeu"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-primary transition-colors duration-300"
-                  aria-label="LinkedIn"
+                  className="text-muted-foreground hover:text-primary transition-colors duration-300 min-w-[44px] min-h-[44px] grid place-items-center"
+                  aria-label="LinkedIn de Martin Nomdedeu"
                 >
                   <Linkedin className="w-6 h-6" />
                 </a>

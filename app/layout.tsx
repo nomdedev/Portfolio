@@ -1,4 +1,3 @@
-import React from "react"
 import type { Metadata, Viewport } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
@@ -8,22 +7,22 @@ import './globals.css'
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  weight: ["400", "500", "600", "700"],
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
-  title: 'Martín Nomdedeu | Ingeniero Electromecánico, Product Manager & Technical Leader',
-  description: 'Ingeniero Electromecánico, Product Manager & Technical Leader especializado en transformación digital, optimización operativa y desarrollo de productos. Experiencia en FinTech, Lean Manufacturing y Six Sigma.',
-  generator: 'v0.app',
-  keywords: ['Martín Nomdedeu', 'Ingeniero Electromecánico', 'Product Manager', 'Technical Leader', 'FinTech', 'Transformación Digital', 'Lean Manufacturing', 'Six Sigma', 'Python', 'Power BI', 'Data Analytics'],
-  authors: [{ name: 'Martín Nomdedeu' }],
-  creator: 'Martín Nomdedeu',
+  metadataBase: new URL('https://martinnomdedeu.com'),
+  title: 'Martin Nomdedeu — Data Scientist & ML Engineer',
+  description: 'Data Scientist | Machine Learning Engineer | AI & Automation. Convierto datos y modelos de IA en decisiones de negocio: ML, LLMs, agentes y automatización.',
+  keywords: ['Martin Nomdedeu', 'Data Scientist', 'Machine Learning Engineer', 'AI', 'LLMs', 'XGBoost', 'Python', 'Microsoft Fabric', 'n8n', 'FinTech', 'Automatización'],
+  authors: [{ name: 'Martin Nomdedeu' }],
+  creator: 'Martin Nomdedeu',
   alternates: {
     canonical: 'https://martinnomdedeu.com',
   },
@@ -31,14 +30,14 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'es_AR',
     url: 'https://martinnomdedeu.com',
-    title: 'Martín Nomdedeu | Ingeniero Electromecánico, Product Manager & Technical Leader',
-    description: 'Ingeniero Electromecánico, Product Manager & Technical Leader especializado en transformación digital, optimización operativa y desarrollo de productos.',
-    siteName: 'Martín Nomdedeu Portfolio',
+    title: 'Martin Nomdedeu — Data Scientist & ML Engineer',
+    description: 'Convierto datos y modelos de IA en decisiones de negocio: ML, LLMs, agentes y automatización.',
+    siteName: 'Martin Nomdedeu Portfolio',
   },
   twitter: {
-    card: 'summary_large_image',
-    title: 'Martín Nomdedeu | Ingeniero Electromecánico, Product Manager & Technical Leader',
-    description: 'Ingeniero Electromecánico, Product Manager & Technical Leader especializado en transformación digital, optimización operativa y desarrollo de productos.',
+    card: 'summary',
+    title: 'Martin Nomdedeu — Data Scientist & ML Engineer',
+    description: 'Convierto datos y modelos de IA en decisiones de negocio: ML, LLMs, agentes y automatización.',
   },
   robots: {
     index: true,
@@ -53,10 +52,6 @@ export const metadata: Metadata = {
       {
         url: '/icon-dark-32x32.png',
         media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
       },
     ],
     apple: '/apple-icon.png',

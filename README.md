@@ -1,8 +1,8 @@
-# Martín Nomdedeu - Portfolio
+# Martin Nomdedeu - Portfolio
 
-Portfolio de Martín Nomdedeu - Ingeniero Electromecánico, Product Manager & Technical Leader especializado en transformación digital, optimización operativa y desarrollo de productos.
+Portfolio de Martin Nomdedeu - Data Scientist | Machine Learning Engineer | AI & Automation. Convierto datos y modelos de IA en decisiones de negocio.
 
-Un portfolio web moderno y elegante construido con Next.js 15, React 18, TypeScript y Tailwind CSS que showcases proyectos de desarrollo web, ingeniería industrial y soluciones tecnológicas innovadoras.
+Un portfolio web minimalista construido con Next.js 16, React 19, TypeScript y Tailwind CSS: hero, about, proyectos filtrables por categoría, experiencia, docencia, skills y contacto. Bilingüe ES/EN.
 
 ## 🌐 Información del Proyecto
 
@@ -14,15 +14,18 @@ Un portfolio web moderno y elegante construido con Next.js 15, React 18, TypeScr
 - **URL del Portfolio**: https://martinnomdedeu.com
 
 ### 👤 Información Personal
-- **Nombre**: Martín Nomdedeu
-- **Título**: Ingeniero Electromecánico, Product Manager & Technical Leader
-- **Email**: martin.nomdedeu.dev@gmail.com
+- **Nombre**: Martin Nomdedeu
+- **Título**: Data Scientist | Machine Learning Engineer | AI & Automation
+- **Ubicación**: La Plata, Buenos Aires, Argentina
+- **Email**: martin.nomdedeu@gmail.com
+- **Teléfono**: +54 221 649-7571
 - **LinkedIn**: https://linkedin.com/in/martin-nomdedeu
 - **GitHub**: https://github.com/nomdedev
 
 ## ✨ Características Destacadas
 
-- **🎨 Diseño Moderno**: Tema oscuro por defecto con acentos violetas y efectos glassmorphism
+- **🎨 Diseño Minimalista**: Dark mode de alto contraste con un solo acento esmeralda, sin gradientes ni decoraciones
+- **🌐 Bilingüe**: Español e inglés con selector persistente (localStorage)
 - **📱 Diseño Responsivo**: Optimizado para desktop, tablet y móvil (mobile-first)
 - **⚡ Animaciones Suaves**: Transiciones CSS y animaciones al hacer scroll
 - **🔍 SEO Optimizado**: Meta tags, Open Graph, Twitter Cards, sitemap.xml, robots.txt
@@ -204,70 +207,39 @@ git push origin main
 ## 📱 Secciones del Portfolio
 
 ### 1. 🏠 Hero Section
-- Presentación personal con nombre y título
-- Descripción profesional breve
-- Botones CTA para ver proyectos y descargar CV
-- Fondo con diseño glassmorphism
+- Nombre, título y línea de posicionamiento ("Convierto datos y modelos de IA en decisiones de negocio")
+- Ubicación y CTAs: ver proyectos / descargar CV / contacto
+- Links directos a GitHub, LinkedIn y email
 
 ### 2. 💼 About Section
-- Descripción personal y profesional detallada
-- 6 categorías de skills organizadas:
-  - Frontend Development
-  - Backend Development
-  - DevOps & Cloud
-  - Project Management
-  - Data & Analytics
-  - Soft Skills
-- Datos de contacto directos (email, LinkedIn, GitHub)
-- Imagen de perfil con efectos visuales
+- Descripción en 2 párrafos + 3 métricas destacadas (+5 años en datos e IA, 80% reducción de tiempos, docente UNLP)
 
-### 3. 🚀 Experience Section
-- Timeline de experiencia profesional
-- 4 posiciones destacadas con:
-  - Cargo y empresa
-  - Período de tiempo
-  - Descripción de responsabilidades
-  - Logros y tecnologías utilizadas
+### 3. 🚀 Projects Section
+- 3 proyectos destacados (tenis ATP, fine-tuning LLMs, tradingview-mcp)
+- Grilla filtrable por 4 categorías: ML & IA, Trading & Quant, Automatización & Agentes, Productos & Software
+- Cada card: título, descripción con contexto de negocio, tags de stack, link a repo (badge "Privado" si no es público)
 
-### 4. 🎨 Projects Section
-- Grid de 2 columnas responsivo
-- 4 proyectos principales:
-  1. **Rexxus** - Plataforma web empresarial
-  2. **Tanques Solares** - Desarrollo de tanques solares
-  3. **Vecino Simple** - Aplicación de gestión comunitaria
-  4. **Harvesting Machine** - Diseño de máquina cosechadora
-- Cada proyecto incluye:
-  - Imagen representativa
-  - Título y descripción
-  - Tecnologías utilizadas
-  - Enlace a demo/repositorio
+### 4. 💼 Experience Section
+- Timeline vertical: Sumed (2026–hoy), MPS (2023–2025), Nueve de Julio SAT (2021–2023), CTA (2019–2023)
 
-### 5. 📞 Contact Section
-- Formulario de contacto funcional
-- Enlaces directos a redes sociales
-- Botones CTA para contacto directo
-- Información de contacto completa
+### 5. 🎓 Teaching Section
+- Docente de IA, Posgrado Facultad de Ciencias Económicas UNLP (2026–hoy)
 
-### 6. 🔗 Footer
-- Enlaces a redes sociales (GitHub, LinkedIn)
-- Enlace de email
-- Información de copyright
-- Navegación rápida a secciones
+### 6. 🛠️ Skills Section
+- Chips en 4 grupos: Machine Learning, LLMs & GenAI, Data Engineering, Automatización & Integración
 
-### 7. 📌 Side Elements
-- Elementos fijos laterales con:
-  - Enlace a GitHub
-  - Enlace a LinkedIn
-  - Email directo
-- Efectos hover y tooltips
+### 7. 📞 Contact Section
+- Email, teléfono/WhatsApp, LinkedIn y GitHub + CTAs directos (sin formulario)
+
+### 8. 🔗 Footer
+- Navegación secundaria, sociales, copyright con año dinámico
 
 ## 🎨 Diseño y UX
 
 ### Paleta de Colores
-- **Fondo Principal**: `#0f172a` (Dark Slate)
-- **Acentos**: `#8b5cf6` (Violet), `#6366f1` (Indigo)
+- **Fondo Principal**: `#0f172a` aprox. (oklch oscuro neutro)
+- **Acento único**: esmeralda (oklch 0.78 0.17 160) para CTAs y highlights
 - **Texto**: `#f9fafb` (White), `#e5e7eb` (Light Gray)
-- **Glassmorphism**: `rgba(30, 41, 59, 0.8)` con `backdrop-filter: blur(10px)`
 
 ### Tipografía
 - **Fuente Principal**: Inter (Google Fonts)
@@ -326,10 +298,10 @@ Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) par
 
 ## 📞 Contacto
 
-**Martín Nomdedeu**
+**Martin Nomdedeu**
 - GitHub: [github.com/nomdedev](https://github.com/nomdedev)
 - LinkedIn: [linkedin.com/in/martin-nomdedeu](https://linkedin.com/in/martin-nomdedeu)
-- Email: [martin.nomdedeu.dev@gmail.com](mailto:martin.nomdedeu.dev@gmail.com)
+- Email: [martin.nomdedeu@gmail.com](mailto:martin.nomdedeu@gmail.com)
 - Portfolio: [martinnomdedeu.com](https://martinnomdedeu.com)
 
 ---

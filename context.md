@@ -5,21 +5,23 @@
 Este documento contiene toda la información contextual necesaria para entender y trabajar en el portfolio de Martín Nomdedeu.
 
 ### Información Personal
-- **Nombre**: Martín Nomdedeu
-- **Título**: Ingeniero Electromecánico, Product Manager & Technical Leader
-- **Email**: martin.nomdedeu.dev@gmail.com
+- **Nombre**: Martin Nomdedeu
+- **Título**: Data Scientist | Machine Learning Engineer | AI & Automation
+- **Ubicación**: La Plata, Buenos Aires, Argentina
+- **Email**: martin.nomdedeu@gmail.com
+- **Teléfono**: +54 221 649-7571
 - **LinkedIn**: https://linkedin.com/in/martin-nomdedeu
 - **GitHub**: https://github.com/nomdedev
 - **URL del Portfolio**: https://martinnomdedeu.com
 
 ### Descripción Profesional
-Portfolio profesional que showcases proyectos de desarrollo web, ingeniería industrial y soluciones tecnológicas innovadoras. Especializado en transformación digital, optimización operativa y desarrollo de productos.
+Portfolio minimalista de Data Scientist / ML Engineer: ML aplicado, GenAI/agentes, automatización de negocio y productos propios. Bilingüe ES/EN.
 
 ## Stack Tecnológico
 
 ### Framework Principal
-- **Next.js 15**: Framework React con App Router para aplicaciones web modernas
-- **React 18**: Biblioteca JavaScript para interfaces de usuario
+- **Next.js 16**: Framework React con App Router para aplicaciones web modernas
+- **React 19**: Biblioteca JavaScript para interfaces de usuario
 - **TypeScript**: Superset tipado de JavaScript para mayor seguridad de tipos
 
 ### Estilos y UI
@@ -54,15 +56,17 @@ Layout principal de la aplicación que incluye:
 - Importación de estilos globales
 
 #### `app/page.tsx`
-Página principal que importa y renderiza todos los componentes del portfolio en orden:
+Página principal que renderiza todos los componentes del portfolio en orden (dentro de `LanguageProvider` ES/EN):
 1. Navigation
 2. Hero
 3. About
-4. Experience
-5. Projects
-6. Contact
-7. Footer
-8. SideElements
+4. Projects
+5. Experience
+6. Teaching
+7. Skills
+8. Contact
+9. Footer
+10. SideElements
 
 #### `app/globals.css`
 Estilos globales que incluyen:
@@ -115,17 +119,7 @@ Sección Experience con timeline de 4 posiciones:
 - Diseño vertical con línea temporal
 
 #### `components/portfolio/projects.tsx`
-Sección Projects con grid de 4 proyectos:
-1. **Rexxus** - Plataforma web empresarial
-2. **Tanques Solares** - Desarrollo de tanques solares
-3. **Vecino Simple** - Aplicación de gestión comunitaria
-4. **Harvesting Machine** - Diseño de máquina cosechadora
-
-Cada proyecto incluye:
-- Imagen representativa
-- Título y descripción
-- Tecnologías utilizadas
-- Enlace a demo/repositorio
+Sección Projects: 3 destacados (tenis ATP, fine-tuning LLMs, tradingview-mcp) + grilla filtrable por 4 categorías (ML & IA, Trading & Quant, Automatización & Agentes, Productos & Software). Datos en `lib/projects.ts` (bilingüe ES/EN). Badge "Privado" para repos sin link público.
 
 #### `components/portfolio/contact.tsx`
 Sección Contact con:
@@ -432,10 +426,7 @@ pnpm test            # Ejecutar tests con pnpm
 - **Texto Secundario**: `#e5e7eb` (Gray 200)
 
 ### Acentos
-- **Violeta**: `#8b5cf6` (Violet 500)
-- **Índigo**: `#6366f1` (Indigo 500)
-- **Violeta Hover**: `#7c3aed` (Violet 600)
-- **Índigo Hover**: `#4f46e5` (Indigo 600)
+- **Esmeralda**: único color de acento (oklch 0.78 0.17 160) para CTAs y highlights
 
 ### Glassmorphism
 - **Fondo**: `rgba(30, 41, 59, 0.8)`

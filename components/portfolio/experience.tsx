@@ -1,66 +1,86 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { ExternalLink } from "lucide-react"
-import Link from "next/link"
+import { useLanguage, type Lang } from "@/lib/i18n"
 
-const experiences = [
+type Experience = {
+  title: string
+  company: string
+  dateEs: string
+  dateEn: string
+  descriptionEs: string
+  descriptionEn: string
+  skills: string[]
+}
+
+const experiences: Experience[] = [
   {
-    title: "Founder & Product Lead",
-    company: "FinTech Products",
-    companyUrl: "https://linkedin.com/in/martin-nomdedeu",
-    date: "Ene 2025 — Presente",
-    description:
-      "Desarrollé múltiples productos B2C desde discovery hasta MVP. Proyectos: Portfolio Tracker, ERP, Arbitrajes, Vecino Simple.",
-    skills: ["Product Discovery", "MVP", "B2C", "FinTech", "Strategy"],
+    title: "Data Scientist · IA & Automatización",
+    company: "Sumed",
+    dateEs: "2026 — Presente",
+    dateEn: "2026 — Present",
+    descriptionEs:
+      "Soluciones de IA y datos en producción: bots conversacionales integrados a SAP, app de cotizaciones con ML + GenAI y arquitectura de datos en Microsoft Fabric.",
+    descriptionEn:
+      "Production AI and data solutions: conversational bots integrated with SAP, quoting app with ML + GenAI and data architecture on Microsoft Fabric.",
+    skills: ["LLMs", "n8n", "Microsoft Fabric", "SAP Business One", "Python"],
   },
   {
-    title: "Coordinador General Producción & Tecnología",
+    title: "Coordinador General de Producción & Tecnología",
     company: "MPS",
-    companyUrl: "https://linkedin.com/in/martin-nomdedeu",
-    date: "Feb 2023 — Ago2025",
-    description:
-      "Lideré transformación digital para 60+ personas. Resultados: Cycle time ↓70%, Eficiencia ↑25%, KPIs en Power BI.",
+    dateEs: "2023 — 2025",
+    dateEn: "2023 — 2025",
+    descriptionEs:
+      "Lideré la transformación digital para 60+ personas. Resultados: cycle time −70%, eficiencia +25% y KPIs en Power BI.",
+    descriptionEn:
+      "Led digital transformation for 60+ people. Results: cycle time −70%, efficiency +25% and KPIs in Power BI.",
     skills: ["Digital Transformation", "Power BI", "KPIs", "Lean", "Leadership"],
-  },
-  {
-    title: "Project Analyst",
-    company: "Centro Tecnológico Aeroespacial (CTA)",
-    companyUrl: "https://linkedin.com/in/martin-nomdedeu",
-    date: "Mar 2019 — Ene 2023",
-    description:
-      "Primer colectivo eléctrico funcional de Argentina. Coordinación UNLP-CTA-Nueve de Julio, integración técnica completa.",
-    skills: ["Project Management", "Aeroespacial", "Coordinación", "Innovación", "R&D"],
   },
   {
     title: "Jefe de Mantenimiento",
     company: "Nueve de Julio SAT",
-    companyUrl: "https://linkedin.com/in/martin-nomdedeu",
-    date: "Ene 2021 — Ene 2023",
-    description:
-      "Reorganización completa de almacén con 5S + digitalización. Implementación Lean Manufacturing, auditorías ISO/IRAM.",
-    skills: ["Lean Manufacturing", "5S", "ISO", "IRAM", "Gestión"],
+    dateEs: "2021 — 2023",
+    dateEn: "2021 — 2023",
+    descriptionEs:
+      "Reorganización completa de almacén con 5S + digitalización. Implementación de Lean Manufacturing y auditorías ISO/IRAM.",
+    descriptionEn:
+      "Full warehouse reorganization with 5S + digitization. Lean Manufacturing implementation and ISO/IRAM audits.",
+    skills: ["Lean Manufacturing", "5S", "ISO", "IRAM"],
+  },
+  {
+    title: "Project Analyst",
+    company: "Centro Tecnológico Aeroespacial (CTA)",
+    dateEs: "2019 — 2023",
+    dateEn: "2019 — 2023",
+    descriptionEs:
+      "Primer colectivo eléctrico funcional de Argentina. Coordinación UNLP–CTA–Nueve de Julio e integración técnica completa.",
+    descriptionEn:
+      "Argentina's first functional electric bus. UNLP–CTA–Nueve de Julio coordination and full technical integration.",
+    skills: ["Project Management", "R&D", "Innovation"],
   },
 ]
 
+const copy: Record<Lang, { index: string; title: string }> = {
+  es: { index: "03.", title: "Experiencia" },
+  en: { index: "03.", title: "Experience" },
+}
+
 export function Experience() {
+  const { lang } = useLanguage()
+  const t = copy[lang]
   const [isVisible, setIsVisible] = useState(false)
-  const sectionRef = useRef<HTMLElement>(null)
+  const sectionRef = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
+    const el = sectionRef.current
+    if (!el) return
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
-        }
+        if (entry.isIntersecting) setIsVisible(true)
       },
       { threshold: 0.1 }
     )
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
-    }
-
+    observer.observe(el)
     return () => observer.disconnect()
   }, [])
 
@@ -76,55 +96,46 @@ export function Experience() {
         }`}
       >
         <h2 className="flex items-center gap-4 text-2xl md:text-3xl font-bold text-foreground mb-12">
-          <span className="text-primary font-mono text-xl">02.</span>
-          Experiencia
+          <span className="text-primary font-mono text-xl">{t.index}</span>
+          {t.title}
           <span className="h-px bg-border flex-1 max-w-xs" />
         </h2>
 
-        <div className="space-y-12">
+        <ol className="relative ml-2 md:ml-4 border-l border-border space-y-10">
           {experiences.map((exp, index) => (
-            <div
-              key={exp.company}
-              className={`group relative grid md:grid-cols-[200px_1fr] gap-4 p-6 rounded-lg hover:bg-card/50 transition-all duration-300 ${
-                isVisible
-                  ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-8"
+            <li
+              key={`${exp.company}-${exp.title}`}
+              className={`relative pl-8 md:pl-10 transition-all duration-500 ${
+                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
               style={{ transitionDelay: `${index * 100}ms` }}
             >
-              <div className="text-muted-foreground font-mono text-sm">
-                {exp.date}
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold text-foreground mb-1 group-hover:text-primary transition-colors">
-                  {exp.title} ·{" "}
-                  <Link
-                    href={exp.companyUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-primary inline-flex items-center gap-1 hover:underline"
+              <span
+                aria-hidden="true"
+                className="absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-full bg-primary ring-4 ring-primary/15"
+              />
+              <p className="font-mono text-sm text-primary mb-1">
+                {lang === "es" ? exp.dateEs : exp.dateEn}
+              </p>
+              <h3 className="text-lg font-semibold text-foreground mb-1">
+                {exp.title} · <span className="text-muted-foreground">{exp.company}</span>
+              </h3>
+              <p className="text-muted-foreground leading-relaxed mb-4 max-w-2xl">
+                {lang === "es" ? exp.descriptionEs : exp.descriptionEn}
+              </p>
+              <ul className="flex flex-wrap gap-2">
+                {exp.skills.map((skill) => (
+                  <li
+                    key={skill}
+                    className="font-mono text-xs px-3 py-1 rounded-full bg-primary/10 text-primary"
                   >
-                    {exp.company}
-                    <ExternalLink className="w-4 h-4" />
-                  </Link>
-                </h3>
-                <p className="text-muted-foreground leading-relaxed mb-4">
-                  {exp.description}
-                </p>
-                <ul className="flex flex-wrap gap-2">
-                  {exp.skills.map((skill) => (
-                    <li
-                      key={skill}
-                      className="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-mono"
-                    >
-                      {skill}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
+                    {skill}
+                  </li>
+                ))}
+              </ul>
+            </li>
           ))}
-        </div>
+        </ol>
       </div>
     </section>
   )
