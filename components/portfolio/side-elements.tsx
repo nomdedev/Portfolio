@@ -17,7 +17,7 @@ export function SideElements() {
             href={link.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-muted-foreground hover:text-primary hover:-translate-y-1 transition-all duration-300 min-w-[44px] min-h-[44px] grid place-items-center"
+            className="text-muted-foreground hover:text-primary hover:-translate-y-1 transition-[transform,color] duration-300 min-w-[44px] min-h-[44px] grid place-items-center"
             aria-label={`${link.name} de Martin Nomdedeu`}
           >
             <link.icon className="w-5 h-5" />
@@ -31,7 +31,7 @@ export function SideElements() {
         <Link
           href="mailto:martin.nomdedeu.dev@gmail.com"
           aria-label="Enviar correo a Martin Nomdedeu"
-          className="text-muted-foreground hover:text-primary hover:-translate-y-1 transition-all duration-300 font-mono text-sm [writing-mode:vertical-rl]"
+          className="text-muted-foreground hover:text-primary hover:-translate-y-1 transition-[transform,color] duration-300 font-mono text-sm [writing-mode:vertical-rl]"
         >
           martin.nomdedeu.dev@gmail.com
         </Link>

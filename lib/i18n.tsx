@@ -2,9 +2,10 @@
 
 import {
   createContext,
+  useCallback,
   useContext,
   useEffect,
-  useState,
+  useSyncExternalStore,
   type ReactNode,
 } from "react"
 
@@ -21,24 +22,43 @@ const LanguageContext = createContext<LanguageContextValue>({
 })
 
 const STORAGE_KEY = "portfolio-lang"
+const listeners = new Set<() => void>()
+
+function emit() {
+  for (const listener of listeners) listener()
+}
+
+function subscribe(callback: () => void) {
+  listeners.add(callback)
+  window.addEventListener("storage", callback)
+  return () => {
+    listeners.delete(callback)
+    window.removeEventListener("storage", callback)
+  }
+}
+
+function getSnapshot(): Lang {
+  return window.localStorage.getItem(STORAGE_KEY) === "en" ? "en" : "es"
+}
+
+function getServerSnapshot(): Lang {
+  return "es"
+}
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [lang, setLangState] = useState<Lang>("es")
+  const lang = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
 
-  useEffect(() => {
-    const saved = window.localStorage.getItem(STORAGE_KEY)
-    if (saved === "es" || saved === "en") {
-      setLangState(saved)
-    }
+  const setLang = useCallback((next: Lang) => {
+    window.localStorage.setItem(STORAGE_KEY, next)
+    emit()
   }, [])
 
   useEffect(() => {
     document.documentElement.lang = lang
-    window.localStorage.setItem(STORAGE_KEY, lang)
   }, [lang])
 
   return (
-    <LanguageContext.Provider value={{ lang, setLang: setLangState }}>
+    <LanguageContext.Provider value={{ lang, setLang }}>
       {children}
     </LanguageContext.Provider>
   )

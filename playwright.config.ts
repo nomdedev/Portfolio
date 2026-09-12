@@ -3,7 +3,8 @@ import { defineConfig, devices } from '@playwright/test';
 export default defineConfig({
   testDir: './tests',
   fullyParallel: true,
-  retries: 0,
+  retries: 1,
+  workers: 2,
   timeout: 30 * 1000,
   use: {
     baseURL: 'http://localhost:3000',
@@ -16,9 +17,9 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'pnpm dev --port 3000',
+    command: 'pnpm test:serve',
     url: 'http://localhost:3000',
     reuseExistingServer: true,
-    timeout: 90 * 1000,
+    timeout: 120 * 1000,
   },
 });

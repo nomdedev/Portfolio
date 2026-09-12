@@ -100,7 +100,7 @@ export function Contact() {
             href="https://linkedin.com/in/martin-nomdedeu"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 border border-primary text-primary px-8 py-4 rounded-md font-mono text-sm hover:bg-primary/10 hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-flex items-center gap-2 border border-primary text-primary px-8 py-4 rounded-md font-mono text-sm hover:bg-primary/10 hover:-translate-y-1 transition-[transform,border-color,background-color] duration-300"
           >
             <Linkedin className="w-5 h-5" aria-hidden="true" />
             {t.linkedinCta}

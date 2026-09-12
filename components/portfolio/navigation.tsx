@@ -7,18 +7,18 @@ import { useLanguage, type Lang } from "@/lib/i18n"
 
 const navItems: Record<Lang, { name: string; href: string }[]> = {
   es: [
-    { name: "Sobre Mí", href: "#about" },
-    { name: "Proyectos", href: "#projects" },
-    { name: "Experiencia", href: "#experience" },
-    { name: "Docencia", href: "#teaching" },
-    { name: "Contacto", href: "#contact" },
+    { name: "Sobre Mí", href: "/#about" },
+    { name: "Proyectos", href: "/#projects" },
+    { name: "Experiencia", href: "/#experience" },
+    { name: "Docencia", href: "/#teaching" },
+    { name: "Contacto", href: "/#contact" },
   ],
   en: [
-    { name: "About", href: "#about" },
-    { name: "Projects", href: "#projects" },
-    { name: "Experience", href: "#experience" },
-    { name: "Teaching", href: "#teaching" },
-    { name: "Contact", href: "#contact" },
+    { name: "About", href: "/#about" },
+    { name: "Projects", href: "/#projects" },
+    { name: "Experience", href: "/#experience" },
+    { name: "Teaching", href: "/#teaching" },
+    { name: "Contact", href: "/#contact" },
   ],
 }
 
@@ -58,7 +58,7 @@ export function Navigation() {
   const { lang } = useLanguage()
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const [activeSection, setActiveSection] = useState("#hero")
+  const [activeSection, setActiveSection] = useState("/#hero")
   const progressRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -90,7 +90,7 @@ export function Navigation() {
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
-          if (entry.isIntersecting) setActiveSection(`#${entry.target.id}`)
+          if (entry.isIntersecting) setActiveSection(`/#${entry.target.id}`)
         }
       },
       { rootMargin: "-40% 0px -55% 0px" }
@@ -116,16 +116,16 @@ export function Navigation() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-[background-color,box-shadow] duration-300 ${
         isScrolled
           ? "bg-background/90 backdrop-blur-md shadow-lg"
           : "bg-transparent"
       }`}
     >
-      <nav aria-label="Principal" className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 py-4">
+      <nav aria-label="Principal" className="max-w-6xl mx-auto px-6 md:px-12 lg:px-24 py-4">
         <div className="flex items-center justify-between">
           <Link
-            href="#hero"
+            href="/#hero"
             className="text-primary font-bold text-xl hover:text-primary/80 transition-colors"
           >
             Martin Nomdedeu

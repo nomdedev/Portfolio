@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Github, Lock } from "lucide-react"
+import { ArrowRight, Github, Lock } from "lucide-react"
 import Link from "next/link"
 import {
   categories,
@@ -23,6 +23,7 @@ const copy: Record<
     featuredLabel: string
     privateLabel: string
     viewCode: string
+    viewDetails: string
     results: (n: number) => string
   }
 > = {
@@ -34,6 +35,7 @@ const copy: Record<
     featuredLabel: "Destacado",
     privateLabel: "Privado",
     viewCode: "Ver código",
+    viewDetails: "Ver detalle",
     results: (n) => `${n} proyecto${n === 1 ? "" : "s"}`,
   },
   en: {
@@ -44,6 +46,7 @@ const copy: Record<
     featuredLabel: "Featured",
     privateLabel: "Private",
     viewCode: "View code",
+    viewDetails: "View details",
     results: (n) => `${n} project${n === 1 ? "" : "s"}`,
   },
 }
@@ -73,7 +76,7 @@ function ProjectCard({
   return (
     <Spotlight className="h-full rounded-lg">
     <article
-      className={`group flex flex-col h-full bg-card rounded-lg border p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-[0_12px_40px_-16px_var(--ring)] ${
+      className={`group flex flex-col h-full bg-card rounded-lg border p-6 transition-[transform,border-color,box-shadow] duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-[0_12px_40px_-16px_var(--ring)] ${
         featured ? "border-primary/40 md:p-8" : "border-border"
       }`}
     >
@@ -98,12 +101,14 @@ function ProjectCard({
           featured ? "text-2xl" : "text-lg"
         }`}
       >
-        {title}
+        <Link href={`/projects/${slug}`} aria-label={`${t.viewDetails}: ${title}`}>
+          {title}
+        </Link>
       </h3>
       <p className="text-muted-foreground text-sm leading-relaxed mb-4 line-clamp-4">
         {description}
       </p>
-      <ul className="flex flex-wrap gap-2 mb-5 mt-auto">
+      <ul className="flex flex-wrap gap-2 mb-5">
         {stack.map((tech) => (
           <li
             key={`${slug}-${tech}`}
@@ -113,18 +118,28 @@ function ProjectCard({
           </li>
         ))}
       </ul>
-      {github && (
+      <div className="flex flex-wrap items-center gap-x-5 gap-y-2 mt-auto">
         <Link
-          href={github}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 font-mono text-sm text-muted-foreground hover:text-primary hover:gap-3 transition-all"
-          aria-label={`${t.viewCode}: ${title}`}
+          href={`/projects/${slug}`}
+          className="inline-flex items-center gap-1.5 font-mono text-sm text-primary"
+          aria-label={`${t.viewDetails}: ${title}`}
         >
-          <Github className="w-4 h-4" />
-          {t.viewCode}
+          {t.viewDetails}
+          <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
         </Link>
-      )}
+        {github && (
+          <Link
+            href={github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 font-mono text-sm text-muted-foreground hover:text-primary transition-colors duration-300"
+            aria-label={`${t.viewCode}: ${title}`}
+          >
+            <Github className="w-4 h-4" />
+            {t.viewCode}
+          </Link>
+        )}
+      </div>
     </article>
     </Spotlight>
   )
@@ -181,7 +196,7 @@ export function Projects() {
                 type="button"
                 onClick={() => setFilter(c.id)}
                 aria-pressed={active}
-                className={`font-mono text-sm px-4 py-2 rounded-full border transition-all duration-300 active:scale-95 ${
+                className={`font-mono text-sm px-4 py-2 rounded-full border transition-[transform,border-color,background-color,color] duration-150 active:scale-[0.97] ${
                   active
                     ? "bg-primary text-primary-foreground border-primary"
                     : "border-border text-muted-foreground hover:border-primary hover:text-primary"

@@ -14,18 +14,18 @@ const socialLinks = [
 
 const quickLinks: Record<Lang, { name: string; href: string }[]> = {
   es: [
-    { name: "Sobre mí", href: "#about" },
-    { name: "Proyectos", href: "#projects" },
-    { name: "Experiencia", href: "#experience" },
-    { name: "Docencia", href: "#teaching" },
-    { name: "Contacto", href: "#contact" },
+    { name: "Sobre mí", href: "/#about" },
+    { name: "Proyectos", href: "/#projects" },
+    { name: "Experiencia", href: "/#experience" },
+    { name: "Docencia", href: "/#teaching" },
+    { name: "Contacto", href: "/#contact" },
   ],
   en: [
-    { name: "About", href: "#about" },
-    { name: "Projects", href: "#projects" },
-    { name: "Experience", href: "#experience" },
-    { name: "Teaching", href: "#teaching" },
-    { name: "Contact", href: "#contact" },
+    { name: "About", href: "/#about" },
+    { name: "Projects", href: "/#projects" },
+    { name: "Experience", href: "/#experience" },
+    { name: "Teaching", href: "/#teaching" },
+    { name: "Contact", href: "/#contact" },
   ],
 }
 

@@ -59,7 +59,7 @@ export function Hero() {
       id="hero"
       className="relative min-h-screen flex flex-col px-6 md:px-12 lg:px-24 pt-28 pb-16"
     >
-      <div className="max-w-4xl m-auto w-full">
+      <div className="max-w-5xl m-auto w-full">
         <Reveal>
           <p className="text-primary font-mono text-sm md:text-base mb-4 tracking-wide">
             {t.greeting}
@@ -102,7 +102,7 @@ export function Hero() {
               href={CV_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 border border-border text-foreground px-6 py-3 rounded-md font-mono text-sm hover:border-primary hover:text-primary transition-all duration-300 hover:-translate-y-0.5"
+              className="inline-flex items-center gap-2 border border-border text-foreground px-6 py-3 rounded-md font-mono text-sm hover:border-primary hover:text-primary transition-[transform,border-color,color] duration-300 hover:-translate-y-1"
             >
               <Download className="w-4 h-4" aria-hidden="true" />
               {t.cvCta}
@@ -122,7 +122,7 @@ export function Hero() {
               href="https://github.com/nomdedev"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-muted-foreground hover:text-primary hover:-translate-y-1 transition-all duration-300"
+              className="text-muted-foreground hover:text-primary hover:-translate-y-1 transition-[transform,color] duration-300"
               aria-label="GitHub de Martin Nomdedeu"
             >
               <Github className="w-6 h-6" />
@@ -131,14 +131,14 @@ export function Hero() {
               href="https://linkedin.com/in/martin-nomdedeu"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-muted-foreground hover:text-primary hover:-translate-y-1 transition-all duration-300"
+              className="text-muted-foreground hover:text-primary hover:-translate-y-1 transition-[transform,color] duration-300"
               aria-label="LinkedIn de Martin Nomdedeu"
             >
               <Linkedin className="w-6 h-6" />
             </Link>
             <Link
               href="mailto:martin.nomdedeu.dev@gmail.com"
-              className="text-muted-foreground hover:text-primary hover:-translate-y-1 transition-all duration-300"
+              className="text-muted-foreground hover:text-primary hover:-translate-y-1 transition-[transform,color] duration-300"
               aria-label={t.emailLabel}
             >
               <Mail className="w-6 h-6" />

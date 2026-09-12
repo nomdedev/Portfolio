@@ -66,13 +66,19 @@ export function AnimatedBackground() {
       }))
     }
 
-    const step = () => {
+    let last = 0
+    const step = (ts: number) => {
       if (!running) return
+      raf = window.requestAnimationFrame(step)
+      // ~30fps: el fondo es sutil, no necesita 60. Mantiene velocidad con dt.
+      if (ts - last < 33) return
+      const dt = last ? Math.min(ts - last, 100) / 16.67 : 1
+      last = ts
       ctx.clearRect(0, 0, w, h)
 
       for (const p of pts) {
-        p.x += p.vx
-        p.y += p.vy
+        p.x += p.vx * dt
+        p.y += p.vy * dt
         if (p.x < 0 || p.x > w) p.vx *= -1
         if (p.y < 0 || p.y > h) p.vy *= -1
       }
@@ -108,7 +114,6 @@ export function AnimatedBackground() {
         }
       }
 
-      ctx.fillStyle = `rgba(${ACCENT},0.5)`
       const now = performance.now() / 1000
       for (const p of pts) {
         ctx.fillStyle = `rgba(${ACCENT},${(0.45 + 0.3 * Math.sin(now * 1.2 + p.tw)).toFixed(3)})`
@@ -116,8 +121,6 @@ export function AnimatedBackground() {
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
         ctx.fill()
       }
-
-      raf = window.requestAnimationFrame(step)
     }
 
     let resizeTimer = 0

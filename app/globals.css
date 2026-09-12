@@ -265,4 +265,68 @@
     transition-duration: 0.01ms !important;
     transition-delay: 0ms !important;
   }
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .mask-reveal-y {
+    --reveal: 1 !important;
+  }
+}
+
+/* Gradient masks para motions (GSAP ScrollTrigger / ScrollyVideo).
+   Uso: class="mask-fade-y" en el contenedor del video o sección animada. */
+
+/* Fundido vertical: bordes superior e inferior suaves (ideal scrolly-video) */
+.mask-fade-y {
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black 12%, black 88%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, black 12%, black 88%, transparent);
+}
+
+/* Fundido horizontal: bordes izquierdo y derecho suaves */
+.mask-fade-x {
+  -webkit-mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+}
+
+/* Fundido solo abajo (empalme con la siguiente sección) */
+.mask-fade-b {
+  -webkit-mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
+}
+
+/* Fundido solo arriba */
+.mask-fade-t {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 45%);
+  mask-image: linear-gradient(to bottom, transparent 0%, black 45%);
+}
+
+/* Viñeta radial: foco al centro, bordes desvanecidos */
+.mask-spot {
+  -webkit-mask-image: radial-gradient(circle at 50% 45%, black 40%, transparent 78%);
+  mask-image: radial-gradient(circle at 50% 45%, black 40%, transparent 78%);
+}
+
+/* Máscara progresiva controlada por motions.
+   GSAP anima la variable --reveal de 0 a 1 con ScrollTrigger scrub;
+   sin JS vale 1 y el contenido se ve completo. */
+@property --reveal {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 1;
+}
+
+.mask-reveal-y {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    black 0%,
+    black calc(var(--reveal, 1) * 100%),
+    transparent calc(var(--reveal, 1) * 100%)
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    black 0%,
+    black calc(var(--reveal, 1) * 100%),
+    transparent calc(var(--reveal, 1) * 100%)
+  );
 }

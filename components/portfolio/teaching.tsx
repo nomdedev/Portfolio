@@ -36,7 +36,7 @@ export function Teaching() {
   return (
     <section
       id="teaching"
-      className="py-24 px-6 md:px-12 lg:px-24 max-w-4xl mx-auto"
+      className="py-24 px-6 md:px-12 lg:px-24 max-w-5xl mx-auto"
     >
       <Reveal>
         <h2 className="flex items-center gap-4 text-2xl md:text-3xl font-bold text-foreground mb-8">
@@ -48,7 +48,7 @@ export function Teaching() {
 
       <Reveal delay={120}>
         <Spotlight className="rounded-lg">
-        <div className="flex gap-5 border border-border rounded-lg p-6 md:p-8 hover:border-primary/50 hover:-translate-y-1 transition-all duration-300">
+        <div className="flex gap-5 border border-border rounded-lg p-6 md:p-8 hover:border-primary/50 hover:-translate-y-1 transition-[transform,border-color] duration-300">
           <div className="hidden sm:flex w-12 h-12 shrink-0 items-center justify-center rounded-lg bg-primary/10">
             <GraduationCap className="w-6 h-6 text-primary" aria-hidden="true" />
           </div>

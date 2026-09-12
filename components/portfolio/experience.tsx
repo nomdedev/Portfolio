@@ -72,7 +72,7 @@ export function Experience() {
   return (
     <section
       id="experience"
-      className="py-24 px-6 md:px-12 lg:px-24 max-w-4xl mx-auto"
+      className="py-24 px-6 md:px-12 lg:px-24 max-w-5xl mx-auto"
     >
       <Reveal>
         <h2 className="flex items-center gap-4 text-2xl md:text-3xl font-bold text-foreground mb-12">
