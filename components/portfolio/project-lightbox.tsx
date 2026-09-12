@@ -94,14 +94,29 @@ export function ProjectLightbox({
           </div>
 
           <div className="relative flex-1 min-h-0">
-            <Image
-              src={current.src}
-              alt={currentAlt}
-              fill
-              unoptimized={current.src.endsWith(".svg")}
-              sizes="100vw"
-              className="object-contain"
-            />
+            {current.kind === "video" ? (
+              <video
+                className="absolute inset-0 h-full w-full object-contain"
+                src={current.src}
+                poster={current.poster}
+                controls
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                aria-label={currentAlt}
+              />
+            ) : (
+              <Image
+                src={current.src}
+                alt={currentAlt}
+                fill
+                unoptimized={current.src.endsWith(".svg")}
+                sizes="100vw"
+                className="object-contain"
+              />
+            )}
           </div>
 
           {multiple && (

@@ -17,7 +17,8 @@ El `<slug>` es el mismo de `lib/projects.ts` (ej: `tradingview-mcp`, `cotizador-
 ## Reglas
 
 - **Orden**: por nombre de archivo. Usá prefijo numérico (`01-`, `02-`, …) para controlar el orden.
-- **Formatos soportados**: `webp`, `avif`, `jpg`, `jpeg`, `png`.
+- **Formatos de imagen**: `webp`, `avif`, `jpg`, `jpeg`, `png`.
+- **Formatos de video**: `mp4`, `webm`, `ogg`, `mov`.
 - **Recomendado**: `webp` q75-80, portada 1600×1000 (relación 16:10), < 300 KB por imagen.
 - **Portada**: nombrá `01-cover.webp` la imagen principal (se muestra primero).
 - Si la carpeta **no tiene** imágenes raster, se usa el placeholder `01-cover.svg`.
@@ -37,6 +38,15 @@ Describe cada archivo para accesibilidad (alt) y leyenda (caption). Si falta una
   }
 }
 ```
+
+## Videos
+
+Podés mezclar videos con las imágenes. El orden sigue siendo por nombre.
+
+- Ej: `05-demo.mp4` se reproduce en la galería (con controles) y en el lightbox.
+- Si ponés una imagen con el **mismo nombre** (`05-demo.webp`), se usa como **poster** del video y no se muestra como imagen suelta.
+- También podés indicar el poster en `meta.json` con `"poster": "05-demo.webp"`.
+- Recomendado: 10-20 s, `mp4` H.264 o `webm`, muteado, < 5 MB.
 
 ## Cómo se muestran
 

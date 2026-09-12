@@ -10,6 +10,10 @@ export type ProjectImage = {
   altEn: string
   captionEs?: string
   captionEn?: string
+  /** "image" (default) o "video" */
+  kind?: "image" | "video"
+  /** Poster de un video (opcional) */
+  poster?: string
 }
 
 export type Project = {

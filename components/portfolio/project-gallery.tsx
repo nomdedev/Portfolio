@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import dynamic from "next/dynamic"
 import Image from "next/image"
 import useEmblaCarousel from "embla-carousel-react"
-import { ChevronLeft, ChevronRight, Maximize2 } from "lucide-react"
+import { ChevronLeft, ChevronRight, Maximize2, Play } from "lucide-react"
 import type { ProjectImage } from "@/lib/projects"
 import { useLanguage, type Lang } from "@/lib/i18n"
 
@@ -42,7 +42,7 @@ const copy: Record<
   },
 }
 
-function GalleryImage({
+function GalleryMedia({
   image,
   alt,
   priority,
@@ -55,6 +55,21 @@ function GalleryImage({
   sizes: string
   className?: string
 }) {
+  if (image.kind === "video") {
+    return (
+      <video
+        className={`absolute inset-0 h-full w-full ${className}`}
+        src={image.src}
+        poster={image.poster}
+        controls
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        aria-label={alt}
+      />
+    )
+  }
   return (
     <Image
       src={image.src}
@@ -64,6 +79,43 @@ function GalleryImage({
       unoptimized={image.src.endsWith(".svg")}
       sizes={sizes}
       className={className}
+    />
+  )
+}
+
+function GalleryThumb({ image }: { image: ProjectImage }) {
+  if (image.kind === "video") {
+    if (image.poster) {
+      return (
+        <Image
+          src={image.poster}
+          alt=""
+          fill
+          unoptimized={image.poster.endsWith(".svg")}
+          sizes="200px"
+          className="object-cover"
+        />
+      )
+    }
+    return (
+      <video
+        className="absolute inset-0 h-full w-full object-cover"
+        src={image.src}
+        muted
+        playsInline
+        preload="metadata"
+        aria-hidden="true"
+      />
+    )
+  }
+  return (
+    <Image
+      src={image.src}
+      alt=""
+      fill
+      unoptimized={image.src.endsWith(".svg")}
+      sizes="200px"
+      className="object-cover"
     />
   )
 }
@@ -138,7 +190,7 @@ export function ProjectGallery({ images }: { images: ProjectImage[] }) {
                   aria-label={t.counter(i + 1, images.length)}
                   aria-hidden={i !== selected}
                 >
-                  <GalleryImage
+                  <GalleryMedia
                     image={image}
                     alt={lang === "es" ? image.altEs : image.altEn}
                     priority={i === 0}
@@ -149,7 +201,7 @@ export function ProjectGallery({ images }: { images: ProjectImage[] }) {
               ))}
             </div>
           ) : (
-            <GalleryImage
+            <GalleryMedia
               image={current}
               alt={currentAlt}
               priority
@@ -209,7 +261,12 @@ export function ProjectGallery({ images }: { images: ProjectImage[] }) {
                     : "border-border opacity-60 hover:opacity-100"
                 }`}
               >
-                <GalleryImage image={image} alt="" sizes="200px" />
+                <GalleryThumb image={image} />
+                {image.kind === "video" && (
+                  <span className="pointer-events-none absolute inset-0 grid place-items-center bg-background/40">
+                    <Play className="w-4 h-4 text-foreground" aria-hidden="true" />
+                  </span>
+                )}
               </button>
             </li>
           ))}

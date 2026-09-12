@@ -4,6 +4,7 @@ import Link from "next/link"
 import { useState, useEffect, useRef } from "react"
 import { Menu, X, Github, Linkedin } from "lucide-react"
 import { useLanguage, type Lang } from "@/lib/i18n"
+import { BrandMark } from "@/components/brand-mark"
 
 const navItems: Record<Lang, { name: string; href: string }[]> = {
   es: [
@@ -126,8 +127,9 @@ export function Navigation() {
         <div className="flex items-center justify-between">
           <Link
             href="/#hero"
-            className="text-primary font-bold text-xl hover:text-primary/80 transition-colors"
+            className="flex items-center gap-2.5 text-primary font-bold text-xl hover:text-primary/80 transition-colors"
           >
+            <BrandMark className="w-7 h-7 shrink-0" />
             Martin Nomdedeu
           </Link>
 

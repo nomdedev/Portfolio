@@ -88,7 +88,7 @@ export function ProjectDetail({
 }: {
   project: Project
   images: ProjectImage[]
-  diagram?: string | null
+  diagram?: { src: string; aspect: number } | null
   prev?: Project
   next?: Project
 }) {
@@ -207,10 +207,11 @@ export function ProjectDetail({
             </h2>
             <div className="overflow-hidden rounded-lg border border-border bg-card">
               <iframe
-                src={diagram}
+                src={diagram.src}
                 title={`${t.flow}: ${project.title}`}
                 loading="lazy"
-                className="h-[560px] w-full"
+                className="block w-full"
+                style={{ aspectRatio: diagram.aspect }}
               />
             </div>
           </section>
