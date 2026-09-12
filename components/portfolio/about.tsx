@@ -2,6 +2,7 @@
 
 import { useLanguage, type Lang } from "@/lib/i18n"
 import { Reveal } from "@/components/portfolio/reveal"
+import { Spotlight } from "@/components/portfolio/motion"
 
 const copy: Record<
   Lang,
@@ -68,12 +69,14 @@ export function About() {
       <dl className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl">
         {t.metrics.map((metric, i) => (
           <Reveal key={metric.label} delay={i * 100}>
-            <div className="border border-border rounded-lg p-6 text-center hover:border-primary/50 hover:-translate-y-1 transition-all duration-300">
+            <Spotlight className="h-full rounded-lg">
+            <div className="border border-border rounded-lg p-6 text-center hover:border-primary/50 hover:-translate-y-1 transition-all duration-300 h-full">
               <dd className="text-3xl md:text-4xl font-bold text-primary mb-2">
                 {metric.value}
               </dd>
               <dt className="text-sm text-muted-foreground">{metric.label}</dt>
             </div>
+            </Spotlight>
           </Reveal>
         ))}
       </dl>

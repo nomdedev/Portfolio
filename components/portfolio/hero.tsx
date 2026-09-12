@@ -4,6 +4,7 @@ import { Github, Linkedin, Mail, ArrowDown, Download, MapPin } from "lucide-reac
 import Link from "next/link"
 import { useLanguage, type Lang } from "@/lib/i18n"
 import { Reveal } from "@/components/portfolio/reveal"
+import { Magnetic } from "@/components/portfolio/motion"
 
 const content: Record<
   Lang,
@@ -89,12 +90,14 @@ export function Hero() {
 
         <Reveal delay={220}>
           <div className="flex flex-wrap gap-4 mb-12">
-            <Link
-              href="#projects"
-              className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-3 rounded-md font-mono text-sm hover:bg-primary/90 transition-all duration-300 hover:-translate-y-0.5"
-            >
-              {t.projectsCta}
-            </Link>
+            <Magnetic>
+              <Link
+                href="#projects"
+                className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-3 rounded-md font-mono text-sm hover:bg-primary/90 transition-colors duration-300"
+              >
+                {t.projectsCta}
+              </Link>
+            </Magnetic>
             <a
               href={CV_URL}
               target="_blank"

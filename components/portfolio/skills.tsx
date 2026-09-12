@@ -2,6 +2,7 @@
 
 import { useLanguage, type Lang } from "@/lib/i18n"
 import { Reveal } from "@/components/portfolio/reveal"
+import { Spotlight } from "@/components/portfolio/motion"
 
 const groups: Record<Lang, { title: string; skills: string[] }[]> = {
   es: [
@@ -67,6 +68,7 @@ export function Skills() {
       <div className="grid md:grid-cols-2 gap-6">
         {groups[lang].map((group, i) => (
           <Reveal key={group.title} delay={(i % 2) * 100}>
+            <Spotlight className="h-full rounded-lg">
             <div className="border border-border rounded-lg p-6 hover:border-primary/50 transition-colors h-full">
               <h3 className="font-semibold text-foreground mb-4">{group.title}</h3>
               <ul className="flex flex-wrap gap-2">
@@ -80,6 +82,7 @@ export function Skills() {
                 ))}
               </ul>
             </div>
+            </Spotlight>
           </Reveal>
         ))}
       </div>

@@ -3,6 +3,7 @@
 import { GraduationCap } from "lucide-react"
 import { useLanguage, type Lang } from "@/lib/i18n"
 import { Reveal } from "@/components/portfolio/reveal"
+import { Spotlight } from "@/components/portfolio/motion"
 
 const copy: Record<
   Lang,
@@ -46,6 +47,7 @@ export function Teaching() {
       </Reveal>
 
       <Reveal delay={120}>
+        <Spotlight className="rounded-lg">
         <div className="flex gap-5 border border-border rounded-lg p-6 md:p-8 hover:border-primary/50 hover:-translate-y-1 transition-all duration-300">
           <div className="hidden sm:flex w-12 h-12 shrink-0 items-center justify-center rounded-lg bg-primary/10">
             <GraduationCap className="w-6 h-6 text-primary" aria-hidden="true" />
@@ -59,6 +61,7 @@ export function Teaching() {
             </p>
           </div>
         </div>
+        </Spotlight>
       </Reveal>
     </section>
   )

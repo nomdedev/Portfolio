@@ -12,6 +12,7 @@ import {
 } from "@/lib/projects"
 import { useLanguage, type Lang } from "@/lib/i18n"
 import { Reveal } from "@/components/portfolio/reveal"
+import { Spotlight } from "@/components/portfolio/motion"
 
 const copy: Record<
   Lang,
@@ -70,6 +71,7 @@ function ProjectCard({
 }) {
   const t = copy[lang]
   return (
+    <Spotlight className="h-full rounded-lg">
     <article
       className={`group flex flex-col h-full bg-card rounded-lg border p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-[0_12px_40px_-16px_var(--ring)] ${
         featured ? "border-primary/40 md:p-8" : "border-border"
@@ -124,6 +126,7 @@ function ProjectCard({
         </Link>
       )}
     </article>
+    </Spotlight>
   )
 }
 

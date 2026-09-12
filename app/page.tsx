@@ -7,6 +7,7 @@ import { Projects } from "@/components/portfolio/projects"
 import { Experience } from "@/components/portfolio/experience"
 import { Teaching } from "@/components/portfolio/teaching"
 import { Skills } from "@/components/portfolio/skills"
+import { Ticker } from "@/components/portfolio/ticker"
 import { Contact } from "@/components/portfolio/contact"
 import { Footer } from "@/components/portfolio/footer"
 import { SideElements } from "@/components/portfolio/side-elements"
@@ -19,6 +20,7 @@ export default function HomePage() {
         <Navigation />
         <SideElements />
         <Hero />
+        <Ticker />
         <About />
         <Projects />
         <Experience />

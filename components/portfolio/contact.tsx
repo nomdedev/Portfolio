@@ -4,6 +4,7 @@ import { Mail, Linkedin, Github } from "lucide-react"
 import Link from "next/link"
 import { useLanguage, type Lang } from "@/lib/i18n"
 import { Reveal } from "@/components/portfolio/reveal"
+import { Magnetic } from "@/components/portfolio/motion"
 
 const EMAIL = "martin.nomdedeu.dev@gmail.com"
 
@@ -86,13 +87,15 @@ export function Contact() {
 
       <Reveal delay={220}>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Link
-            href={`mailto:${EMAIL}`}
-            className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-4 rounded-md font-mono text-sm hover:bg-primary/90 hover:-translate-y-0.5 transition-all duration-300"
-          >
-            <Mail className="w-5 h-5" aria-hidden="true" />
-            {t.emailCta}
-          </Link>
+          <Magnetic>
+            <Link
+              href={`mailto:${EMAIL}`}
+              className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-4 rounded-md font-mono text-sm hover:bg-primary/90 transition-colors duration-300"
+            >
+              <Mail className="w-5 h-5" aria-hidden="true" />
+              {t.emailCta}
+            </Link>
+          </Magnetic>
           <Link
             href="https://linkedin.com/in/martin-nomdedeu"
             target="_blank"

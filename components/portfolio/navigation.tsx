@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Menu, X, Github, Linkedin } from "lucide-react"
 import { useLanguage, type Lang } from "@/lib/i18n"
 
@@ -58,14 +58,48 @@ export function Navigation() {
   const { lang } = useLanguage()
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [activeSection, setActiveSection] = useState("#hero")
+  const progressRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
+    let frame = 0
+    const paint = () => {
+      frame = 0
+      const y = window.scrollY
+      setIsScrolled(y > 50)
+      const max = document.documentElement.scrollHeight - window.innerHeight
+      if (progressRef.current) {
+        progressRef.current.style.transform = `scaleX(${max > 0 ? Math.min(1, y / max) : 0})`
+      }
     }
-    handleScroll()
+    const handleScroll = () => {
+      if (frame) return
+      frame = window.requestAnimationFrame(paint)
+    }
+    paint()
     window.addEventListener("scroll", handleScroll, { passive: true })
-    return () => window.removeEventListener("scroll", handleScroll)
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+      if (frame) window.cancelAnimationFrame(frame)
+    }
+  }, [])
+
+  // Scrollspy: resalta la sección visible
+  useEffect(() => {
+    const ids = ["hero", "about", "projects", "experience", "teaching", "contact"]
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) setActiveSection(`#${entry.target.id}`)
+        }
+      },
+      { rootMargin: "-40% 0px -55% 0px" }
+    )
+    ids.forEach((id) => {
+      const el = document.getElementById(id)
+      if (el) observer.observe(el)
+    })
+    return () => observer.disconnect()
   }, [])
 
   useEffect(() => {
@@ -99,16 +133,22 @@ export function Navigation() {
 
           {/* Desktop Navigation */}
           <ul className="hidden md:flex items-center gap-8">
-            {items.map((item, index) => (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  className="text-muted-foreground hover:text-primary transition-colors duration-300 font-mono text-sm"
-                >
-                  <span className="text-primary">0{index + 1}.</span> {item.name}
-                </Link>
-              </li>
-            ))}
+            {items.map((item, index) => {
+              const active = activeSection === item.href
+              return (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    aria-current={active ? "location" : undefined}
+                    className={`transition-colors duration-300 font-mono text-sm ${
+                      active ? "text-primary" : "text-muted-foreground hover:text-primary"
+                    }`}
+                  >
+                    <span className="text-primary">0{index + 1}.</span> {item.name}
+                  </Link>
+                </li>
+              )
+            })}
             <li className="flex items-center gap-4 ml-4">
               <a
                 href="https://github.com/nomdedev"
@@ -195,6 +235,12 @@ export function Navigation() {
           </div>
         )}
       </nav>
+      {/* Barra de progreso de scroll */}
+      <div
+        ref={progressRef}
+        aria-hidden="true"
+        className="h-px origin-left scale-x-0 bg-primary"
+      />
     </header>
   )
 }

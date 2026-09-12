@@ -6,7 +6,7 @@ const LINK_DIST = 130
 const MOUSE_DIST = 170
 const ACCENT = "52,211,153" // esmeralda del sistema
 
-type Particle = { x: number; y: number; vx: number; vy: number; r: number }
+type Particle = { x: number; y: number; vx: number; vy: number; r: number; tw: number }
 
 export function AnimatedBackground() {
   const parallaxRef = useRef<HTMLDivElement>(null)
@@ -62,6 +62,7 @@ export function AnimatedBackground() {
         vx: (Math.random() - 0.5) * 0.35,
         vy: (Math.random() - 0.5) * 0.35,
         r: Math.random() * 1.4 + 0.6,
+        tw: Math.random() * Math.PI * 2,
       }))
     }
 
@@ -108,7 +109,9 @@ export function AnimatedBackground() {
       }
 
       ctx.fillStyle = `rgba(${ACCENT},0.5)`
+      const now = performance.now() / 1000
       for (const p of pts) {
+        ctx.fillStyle = `rgba(${ACCENT},${(0.32 + 0.25 * Math.sin(now * 1.2 + p.tw)).toFixed(3)})`
         ctx.beginPath()
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
         ctx.fill()
