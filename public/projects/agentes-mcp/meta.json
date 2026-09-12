@@ -1,0 +1,26 @@
+{
+  "01-cover": {
+    "altEs": "Portada de Agentes IA + MCP",
+    "altEn": "Agentes IA + MCP cover",
+    "captionEs": "Agentes con acceso a datos de mercado, análisis técnico y herramientas externas vía MCP y TradingView para decisiones automatizadas.",
+    "captionEn": "Agents with access to market data, technical analysis and external tools via MCP and TradingView for automated decisions."
+  },
+  "02-vista": {
+    "altEs": "Tools MCP de mercado y análisis técnico",
+    "altEn": "MCP market and TA tools",
+    "captionEs": "Tools MCP de mercado y análisis técnico",
+    "captionEn": "MCP market and TA tools"
+  },
+  "03-flujo": {
+    "altEs": "Decisiones con datos en vivo",
+    "altEn": "Live-data decisions",
+    "captionEs": "Decisiones con datos en vivo",
+    "captionEn": "Live-data decisions"
+  },
+  "04-detalle": {
+    "altEs": "Workflows automatizados trazables",
+    "altEn": "Traceable automated workflows",
+    "captionEs": "Workflows automatizados trazables",
+    "captionEn": "Traceable automated workflows"
+  }
+}

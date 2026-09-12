@@ -1,0 +1,26 @@
+{
+  "01-cover": {
+    "altEs": "Portada de Predicción de Tenis ATP",
+    "altEn": "Predicción de Tenis ATP cover",
+    "captionEs": "Modelos de clasificación (Random Forest, XGBoost) sobre datos históricos ATP para estimar probabilidades de victoria por partido y torneo. Feature en…",
+    "captionEn": "Classification models (Random Forest, XGBoost) over historical ATP data to estimate win probabilities per match and tournament. Feature engineering o…"
+  },
+  "02-vista": {
+    "altEs": "Probabilidad de victoria por partido con intervalos de confianza",
+    "altEn": "Per-match win probability with confidence intervals",
+    "captionEs": "Probabilidad de victoria por partido con intervalos de confianza",
+    "captionEn": "Per-match win probability with confidence intervals"
+  },
+  "03-flujo": {
+    "altEs": "Simulación de torneos completos y chances por ronda",
+    "altEn": "Full-tournament simulation with round-by-round chances",
+    "captionEs": "Simulación de torneos completos y chances por ronda",
+    "captionEn": "Full-tournament simulation with round-by-round chances"
+  },
+  "04-detalle": {
+    "altEs": "Features tenísticas: superficie, forma, H2H y ranking",
+    "altEn": "Tennis features: surface, form, H2H and ranking",
+    "captionEs": "Features tenísticas: superficie, forma, H2H y ranking",
+    "captionEn": "Tennis features: surface, form, H2H and ranking"
+  }
+}

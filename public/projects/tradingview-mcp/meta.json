@@ -1,0 +1,26 @@
+{
+  "01-cover": {
+    "altEs": "Portada de tradingview-mcp",
+    "altEn": "tradingview-mcp cover",
+    "captionEs": "Servidor MCP para análisis de gráficos de TradingView asistido por IA: conecta Claude Code con TradingView Desktop y automatiza workflows personales…",
+    "captionEn": "MCP server for AI-assisted TradingView chart analysis: connects Claude Code with TradingView Desktop and automates personal technical-analysis workfl…"
+  },
+  "02-vista": {
+    "altEs": "Servidor MCP con tools de captura de charts",
+    "altEn": "MCP server with chart-capture tools",
+    "captionEs": "Servidor MCP con tools de captura de charts",
+    "captionEn": "MCP server with chart-capture tools"
+  },
+  "03-flujo": {
+    "altEs": "Análisis técnico asistido por IA",
+    "altEn": "AI-assisted technical analysis",
+    "captionEs": "Análisis técnico asistido por IA",
+    "captionEn": "AI-assisted technical analysis"
+  },
+  "04-detalle": {
+    "altEs": "Workflow automatizado de lectura de gráficos",
+    "altEn": "Automated chart-reading workflow",
+    "captionEs": "Workflow automatizado de lectura de gráficos",
+    "captionEn": "Automated chart-reading workflow"
+  }
+}

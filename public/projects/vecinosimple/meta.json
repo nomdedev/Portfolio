@@ -1,0 +1,26 @@
+{
+  "01-cover": {
+    "altEs": "Portada de VecinoSimple",
+    "altEn": "VecinoSimple cover",
+    "captionEs": "SaaS B2B2C para administración de consorcios: 28 módulos, 195+ endpoints, 3 apps y RBAC de 8 roles con liquidación automática de expensas.",
+    "captionEn": "B2B2C SaaS for building management: 28 modules, 195+ endpoints, 3 apps and 8-role RBAC with automatic expense settlement."
+  },
+  "02-vista": {
+    "altEs": "28 módulos de gestión",
+    "altEn": "28 management modules",
+    "captionEs": "28 módulos de gestión",
+    "captionEn": "28 management modules"
+  },
+  "03-flujo": {
+    "altEs": "Liquidación automática de expensas",
+    "altEn": "Automatic expense settlement",
+    "captionEs": "Liquidación automática de expensas",
+    "captionEn": "Automatic expense settlement"
+  },
+  "04-detalle": {
+    "altEs": "RBAC de 8 roles + 3 apps",
+    "altEn": "8-role RBAC + 3 apps",
+    "captionEs": "RBAC de 8 roles + 3 apps",
+    "captionEn": "8-role RBAC + 3 apps"
+  }
+}

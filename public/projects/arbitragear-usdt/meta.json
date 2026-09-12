@@ -1,0 +1,26 @@
+{
+  "01-cover": {
+    "altEs": "Portada de ArbitrageAR-USDT",
+    "altEn": "ArbitrageAR-USDT cover",
+    "captionEs": "Extensión Chrome que detecta arbitraje Dólar Oficial ↔ USDT en 30+ exchanges, con simulador de ganancias, notificaciones inteligentes y 47 tests. Aud…",
+    "captionEn": "Chrome extension detecting Official USD ↔ USDT arbitrage across 30+ exchanges, with profit simulator, smart notifications and 47 tests. 2026 audit: s…"
+  },
+  "02-vista": {
+    "altEs": "Monitoreo de 30+ exchanges",
+    "altEn": "30+ exchange monitoring",
+    "captionEs": "Monitoreo de 30+ exchanges",
+    "captionEn": "30+ exchange monitoring"
+  },
+  "03-flujo": {
+    "altEs": "Simulador de ganancias con comisiones",
+    "altEn": "Fee-aware profit simulator",
+    "captionEs": "Simulador de ganancias con comisiones",
+    "captionEn": "Fee-aware profit simulator"
+  },
+  "04-detalle": {
+    "altEs": "Notificaciones inteligentes de spread",
+    "altEn": "Smart spread notifications",
+    "captionEs": "Notificaciones inteligentes de spread",
+    "captionEn": "Smart spread notifications"
+  }
+}

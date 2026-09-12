@@ -1,0 +1,26 @@
+{
+  "01-cover": {
+    "altEs": "Portada de couple-finance",
+    "altEn": "couple-finance cover",
+    "captionEs": "App de finanzas compartidas para parejas: gastos comunes, balances y presupuestos en una experiencia simple.",
+    "captionEn": "Shared finances app for couples: common expenses, balances and budgets in a simple experience."
+  },
+  "02-vista": {
+    "altEs": "Gastos comunes",
+    "altEn": "Common expenses",
+    "captionEs": "Gastos comunes",
+    "captionEn": "Common expenses"
+  },
+  "03-flujo": {
+    "altEs": "Balances automáticos",
+    "altEn": "Automatic balances",
+    "captionEs": "Balances automáticos",
+    "captionEn": "Automatic balances"
+  },
+  "04-detalle": {
+    "altEs": "Presupuestos por categoría",
+    "altEn": "Per-category budgets",
+    "captionEs": "Presupuestos por categoría",
+    "captionEn": "Per-category budgets"
+  }
+}

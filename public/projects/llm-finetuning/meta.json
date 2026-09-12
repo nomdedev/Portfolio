@@ -1,0 +1,26 @@
+{
+  "01-cover": {
+    "altEs": "Portada de Fine-tuning de LLMs",
+    "altEn": "Fine-tuning de LLMs cover",
+    "captionEs": "Fine-tuning de modelos de lenguaje (Hugging Face/Transformers) para clasificación, extracción de información y análisis de documentos. Adaptadores Lo…",
+    "captionEn": "Fine-tuning of language models (Hugging Face/Transformers) for classification, information extraction and document analysis. LoRA/QLoRA adapters with…"
+  },
+  "02-vista": {
+    "altEs": "Adaptadores LoRA/QLoRA entrenables en GPU de consumo",
+    "altEn": "LoRA/QLoRA adapters trainable on consumer GPUs",
+    "captionEs": "Adaptadores LoRA/QLoRA entrenables en GPU de consumo",
+    "captionEn": "LoRA/QLoRA adapters trainable on consumer GPUs"
+  },
+  "03-flujo": {
+    "altEs": "Datasets en formato de instrucciones",
+    "altEn": "Instruction-format datasets",
+    "captionEs": "Datasets en formato de instrucciones",
+    "captionEn": "Instruction-format datasets"
+  },
+  "04-detalle": {
+    "altEs": "Benchmarking base vs. ajustado",
+    "altEn": "Base vs. tuned benchmarking",
+    "captionEs": "Benchmarking base vs. ajustado",
+    "captionEn": "Base vs. tuned benchmarking"
+  }
+}

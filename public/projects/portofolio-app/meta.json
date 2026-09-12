@@ -1,0 +1,26 @@
+{
+  "01-cover": {
+    "altEs": "Portada de Portofolio.app",
+    "altEn": "Portofolio.app cover",
+    "captionEs": "Portfolio manager para tracking de finanzas personales: visibilidad integral de carteras, analytics de performance y alertas.",
+    "captionEn": "Portfolio manager for personal finance tracking: full portfolio visibility, performance analytics and alerts."
+  },
+  "02-vista": {
+    "altEs": "Vista integral de carteras",
+    "altEn": "Full portfolio view",
+    "captionEs": "Vista integral de carteras",
+    "captionEn": "Full portfolio view"
+  },
+  "03-flujo": {
+    "altEs": "Analytics de performance",
+    "altEn": "Performance analytics",
+    "captionEs": "Analytics de performance",
+    "captionEn": "Performance analytics"
+  },
+  "04-detalle": {
+    "altEs": "Alertas",
+    "altEn": "Alerts",
+    "captionEs": "Alertas",
+    "captionEn": "Alerts"
+  }
+}

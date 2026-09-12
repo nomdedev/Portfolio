@@ -1,0 +1,26 @@
+{
+  "01-cover": {
+    "altEs": "Portada de tradingIA",
+    "altEn": "tradingIA cover",
+    "captionEs": "Plataforma de trading algorítmico con 5+ estrategias, walk-forward optimization, simulación Monte Carlo, dashboard de riesgo VaR/CVaR y paper trading…",
+    "captionEn": "Algorithmic trading platform with 5+ strategies, walk-forward optimization, Monte Carlo simulation, VaR/CVaR risk dashboard and live paper trading."
+  },
+  "02-vista": {
+    "altEs": "5+ estrategias modulares",
+    "altEn": "5+ modular strategies",
+    "captionEs": "5+ estrategias modulares",
+    "captionEn": "5+ modular strategies"
+  },
+  "03-flujo": {
+    "altEs": "Walk-forward optimization",
+    "altEn": "Walk-forward optimization",
+    "captionEs": "Walk-forward optimization",
+    "captionEn": "Walk-forward optimization"
+  },
+  "04-detalle": {
+    "altEs": "Dashboard de riesgo VaR/CVaR",
+    "altEn": "VaR/CVaR risk dashboard",
+    "captionEs": "Dashboard de riesgo VaR/CVaR",
+    "captionEn": "VaR/CVaR risk dashboard"
+  }
+}

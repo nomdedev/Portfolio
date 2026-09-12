@@ -1,0 +1,26 @@
+{
+  "01-cover": {
+    "altEs": "Portada de Cotizador Sumed",
+    "altEn": "Cotizador Sumed cover",
+    "captionEs": "Cotizador que integra bots conversacionales, modelado de datos y procesos en Microsoft Fabric para crear y gestionar cotizaciones de punta a punta, c…",
+    "captionEn": "Quoting system integrating conversational bots, data modeling and Microsoft Fabric processes to create and manage quotes end to end, with full applic…"
+  },
+  "02-vista": {
+    "altEs": "Bots conversacionales para alta y consulta de cotizaciones",
+    "altEn": "Conversational bots for creating and querying quotes",
+    "captionEs": "Bots conversacionales para alta y consulta de cotizaciones",
+    "captionEn": "Conversational bots for creating and querying quotes"
+  },
+  "03-flujo": {
+    "altEs": "Modelado y normalización de datos",
+    "altEn": "Data modeling and normalization",
+    "captionEs": "Modelado y normalización de datos",
+    "captionEn": "Data modeling and normalization"
+  },
+  "04-detalle": {
+    "altEs": "Procesos en Microsoft Fabric",
+    "altEn": "Microsoft Fabric processes",
+    "captionEs": "Procesos en Microsoft Fabric",
+    "captionEn": "Microsoft Fabric processes"
+  }
+}

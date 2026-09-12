@@ -13,6 +13,7 @@
     "start": "next start",
     "test:serve": "next build && next start",
     "lint": "eslint .",
+    "media:report": "node scripts/media-report.mjs",
     "test": "playwright test"
   },
   "dependencies": {

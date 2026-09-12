@@ -1,0 +1,26 @@
+{
+  "01-cover": {
+    "altEs": "Portada de Mondial-Xboost",
+    "altEn": "Mondial-Xboost cover",
+    "captionEs": "Sistema de predicción de partidos de fútbol con XGBoost optimizado con Optuna sobre ~49.000 partidos, simulación Monte Carlo de 10.000 torneos y app…",
+    "captionEn": "Football match prediction system with Optuna-tuned XGBoost over ~49,000 matches, 10,000-tournament Monte Carlo simulation and a live dashboard app."
+  },
+  "02-vista": {
+    "altEs": "XGBoost optimizado con Optuna",
+    "altEn": "Optuna-tuned XGBoost",
+    "captionEs": "XGBoost optimizado con Optuna",
+    "captionEn": "Optuna-tuned XGBoost"
+  },
+  "03-flujo": {
+    "altEs": "Simulación Monte Carlo de 10.000 torneos",
+    "altEn": "10,000-tournament Monte Carlo simulation",
+    "captionEs": "Simulación Monte Carlo de 10.000 torneos",
+    "captionEn": "10,000-tournament Monte Carlo simulation"
+  },
+  "04-detalle": {
+    "altEs": "Dashboard en vivo con predicciones",
+    "altEn": "Live prediction dashboard",
+    "captionEs": "Dashboard en vivo con predicciones",
+    "captionEn": "Live prediction dashboard"
+  }
+}

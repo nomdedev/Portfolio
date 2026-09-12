@@ -1,0 +1,26 @@
+{
+  "01-cover": {
+    "altEs": "Portada de Datos en Fabric",
+    "altEn": "Datos en Fabric cover",
+    "captionEs": "Pipeline end-to-end en Microsoft Fabric con capas Bronze/Silver/Gold sobre Lakehouse y Data Warehouse e ingesta diaria automática desde SAP: −80% en…",
+    "captionEn": "End-to-end pipeline in Microsoft Fabric with Bronze/Silver/Gold layers over Lakehouse and Data Warehouse with daily automatic SAP ingestion: −80% in…"
+  },
+  "02-vista": {
+    "altEs": "Ingesta SAP diaria automática",
+    "altEn": "Automatic daily SAP ingestion",
+    "captionEs": "Ingesta SAP diaria automática",
+    "captionEn": "Automatic daily SAP ingestion"
+  },
+  "03-flujo": {
+    "altEs": "Arquitectura Bronze/Silver/Gold",
+    "altEn": "Bronze/Silver/Gold architecture",
+    "captionEs": "Arquitectura Bronze/Silver/Gold",
+    "captionEn": "Bronze/Silver/Gold architecture"
+  },
+  "04-detalle": {
+    "altEs": "Lakehouse + Data Warehouse",
+    "altEn": "Lakehouse + Data Warehouse",
+    "captionEs": "Lakehouse + Data Warehouse",
+    "captionEn": "Lakehouse + Data Warehouse"
+  }
+}

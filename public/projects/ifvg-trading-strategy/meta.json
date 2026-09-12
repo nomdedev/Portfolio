@@ -1,0 +1,26 @@
+{
+  "01-cover": {
+    "altEs": "Portada de IFVG Trading Strategy",
+    "altEn": "IFVG Trading Strategy cover",
+    "captionEs": "Estrategia de trading basada en Imbalance/Fair Value Gaps, con backtesting y análisis de performance sobre datos históricos.",
+    "captionEn": "Trading strategy based on Imbalance/Fair Value Gaps, with backtesting and performance analysis over historical data."
+  },
+  "02-vista": {
+    "altEs": "Detección automática de FVG",
+    "altEn": "Automatic FVG detection",
+    "captionEs": "Detección automática de FVG",
+    "captionEn": "Automatic FVG detection"
+  },
+  "03-flujo": {
+    "altEs": "Reglas sistemáticas de entrada/salida",
+    "altEn": "Systematic entry/exit rules",
+    "captionEs": "Reglas sistemáticas de entrada/salida",
+    "captionEn": "Systematic entry/exit rules"
+  },
+  "04-detalle": {
+    "altEs": "Backtesting con métricas de performance",
+    "altEn": "Backtesting with performance metrics",
+    "captionEs": "Backtesting con métricas de performance",
+    "captionEn": "Backtesting with performance metrics"
+  }
+}

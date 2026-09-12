@@ -1,0 +1,26 @@
+{
+  "01-cover": {
+    "altEs": "Portada de arbitrARS-bot",
+    "altEn": "arbitrARS-bot cover",
+    "captionEs": "Bot de arbitraje con pesos argentinos: monitoreo continuo de spreads, ejecución de reglas y alertas en tiempo real.",
+    "captionEn": "Arbitrage bot for Argentine pesos: continuous spread monitoring, rule execution and real-time alerts."
+  },
+  "02-vista": {
+    "altEs": "Monitoreo continuo de spreads",
+    "altEn": "Continuous spread monitoring",
+    "captionEs": "Monitoreo continuo de spreads",
+    "captionEn": "Continuous spread monitoring"
+  },
+  "03-flujo": {
+    "altEs": "Reglas de ejecución configurables",
+    "altEn": "Configurable execution rules",
+    "captionEs": "Reglas de ejecución configurables",
+    "captionEn": "Configurable execution rules"
+  },
+  "04-detalle": {
+    "altEs": "Alertas en tiempo real",
+    "altEn": "Real-time alerts",
+    "captionEs": "Alertas en tiempo real",
+    "captionEn": "Real-time alerts"
+  }
+}

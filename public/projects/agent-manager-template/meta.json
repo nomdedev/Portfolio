@@ -1,0 +1,26 @@
+{
+  "01-cover": {
+    "altEs": "Portada de agent-manager-template",
+    "altEn": "agent-manager-template cover",
+    "captionEs": "Template reutilizable de Claude Code: estándar de 12 reglas, pipeline de 7 fases, hooks, agentes, skills y commands. Producción lista desde el día un…",
+    "captionEn": "Reusable Claude Code template: 12-rule standard, 7-phase pipeline, hooks, agents, skills and commands. Production-ready from day one."
+  },
+  "02-vista": {
+    "altEs": "Estándar de 12 reglas",
+    "altEn": "12-rule standard",
+    "captionEs": "Estándar de 12 reglas",
+    "captionEn": "12-rule standard"
+  },
+  "03-flujo": {
+    "altEs": "Pipeline de 7 fases",
+    "altEn": "7-phase pipeline",
+    "captionEs": "Pipeline de 7 fases",
+    "captionEn": "7-phase pipeline"
+  },
+  "04-detalle": {
+    "altEs": "Agentes, skills y commands incluidos",
+    "altEn": "Agents, skills and commands included",
+    "captionEs": "Agentes, skills y commands incluidos",
+    "captionEn": "Agents, skills and commands included"
+  }
+}

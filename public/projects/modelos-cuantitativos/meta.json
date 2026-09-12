@@ -1,0 +1,26 @@
+{
+  "01-cover": {
+    "altEs": "Portada de Modelos Cuantitativos",
+    "altEn": "Modelos Cuantitativos cover",
+    "captionEs": "Feature engineering sobre precios, volumen, retornos y volatilidad. Backtesting walk-forward con control de look-ahead bias y data leakage. Métricas:…",
+    "captionEn": "Feature engineering over prices, volume, returns and volatility. Walk-forward backtesting with look-ahead bias and data leakage control. Metrics: acc…"
+  },
+  "02-vista": {
+    "altEs": "Features de precio, volumen y volatilidad",
+    "altEn": "Price, volume and volatility features",
+    "captionEs": "Features de precio, volumen y volatilidad",
+    "captionEn": "Price, volume and volatility features"
+  },
+  "03-flujo": {
+    "altEs": "Walk-forward sin look-ahead bias",
+    "altEn": "Look-ahead-bias-free walk-forward",
+    "captionEs": "Walk-forward sin look-ahead bias",
+    "captionEn": "Look-ahead-bias-free walk-forward"
+  },
+  "04-detalle": {
+    "altEs": "Métricas ML + métricas de trading",
+    "altEn": "ML + trading metrics",
+    "captionEs": "Métricas ML + métricas de trading",
+    "captionEn": "ML + trading metrics"
+  }
+}

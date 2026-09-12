@@ -1,0 +1,26 @@
+{
+  "01-cover": {
+    "altEs": "Portada de ComoInvertirOnline",
+    "altEn": "ComoInvertirOnline cover",
+    "captionEs": "Sitio de contenido y herramientas para invertir online: guías, comparadores y calculadoras para el inversor minorista.",
+    "captionEn": "Content and tools site for online investing: guides, comparators and calculators for retail investors."
+  },
+  "02-vista": {
+    "altEs": "Guías para minoristas",
+    "altEn": "Retail guides",
+    "captionEs": "Guías para minoristas",
+    "captionEn": "Retail guides"
+  },
+  "03-flujo": {
+    "altEs": "Comparadores",
+    "altEn": "Comparators",
+    "captionEs": "Comparadores",
+    "captionEn": "Comparators"
+  },
+  "04-detalle": {
+    "altEs": "Calculadoras interactivas",
+    "altEn": "Interactive calculators",
+    "captionEs": "Calculadoras interactivas",
+    "captionEn": "Interactive calculators"
+  }
+}

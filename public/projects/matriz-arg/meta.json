@@ -1,0 +1,26 @@
+{
+  "01-cover": {
+    "altEs": "Portada de Extensión Matriz ARG",
+    "altEn": "Extensión Matriz ARG cover",
+    "captionEs": "Extensión para visualizar la matriz económica argentina: indicadores y relaciones entre variables en una vista interactiva.",
+    "captionEn": "Extension to visualize the Argentine economic matrix: indicators and variable relationships in an interactive view."
+  },
+  "02-vista": {
+    "altEs": "Indicadores macro argentinos",
+    "altEn": "Argentine macro indicators",
+    "captionEs": "Indicadores macro argentinos",
+    "captionEn": "Argentine macro indicators"
+  },
+  "03-flujo": {
+    "altEs": "Vista interactiva de relaciones",
+    "altEn": "Interactive relationship view",
+    "captionEs": "Vista interactiva de relaciones",
+    "captionEn": "Interactive relationship view"
+  },
+  "04-detalle": {
+    "altEs": "Lectura rápida de contexto",
+    "altEn": "Quick context reads",
+    "captionEs": "Lectura rápida de contexto",
+    "captionEn": "Quick context reads"
+  }
+}

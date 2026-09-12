@@ -2,6 +2,12 @@
 
 Cada proyecto tiene su propia carpeta. El código **descubre las imágenes automáticamente**: no hace falta tocar nada para agregar, quitar o reordenar.
 
+Para ver el estado de carga de cada proyecto:
+
+```bash
+npm run media:report
+```
+
 ## Estructura
 
 ```
