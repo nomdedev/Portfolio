@@ -9,8 +9,13 @@ const socialLinks = [
 export function SideElements() {
   return (
     <>
-      {/* Left Side - Social Links */}
-      <div className="hidden md:flex fixed left-6 lg:left-12 bottom-0 flex-col items-center gap-6">
+      {/* Left Side - Social Links — desde lg: entre 768 y 1023 el riel (24→68)
+          pisaba el contenido, que arranca en 48. A 1024 el contenido arranca en
+          96 y con offset 24px quedan 28px de aire (antes 4px con left-12). */}
+      <div
+        data-rail="left"
+        className="hidden lg:flex fixed left-6 bottom-0 flex-col items-center gap-6"
+      >
         {socialLinks.map((link) => (
           <Link
             key={link.name}
@@ -26,8 +31,11 @@ export function SideElements() {
         <div className="w-px h-24 bg-muted-foreground" aria-hidden="true" />
       </div>
 
-      {/* Right Side - Email */}
-      <div className="hidden md:flex fixed right-6 lg:right-12 bottom-0 flex-col items-center gap-6">
+      {/* Right Side - Email — misma regla que el riel izquierdo (desde lg). */}
+      <div
+        data-rail="right"
+        className="hidden lg:flex fixed right-6 bottom-0 flex-col items-center gap-6"
+      >
         <Link
           href="mailto:martin.nomdedeu.dev@gmail.com"
           aria-label="Enviar correo a Martin Nomdedeu"

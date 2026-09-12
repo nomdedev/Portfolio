@@ -15,6 +15,7 @@ const copy: Record<
     title: string
     subtitle: string
     emailCta: string
+    githubCta: string
     linkedinCta: string
   }
 > = {
@@ -24,7 +25,8 @@ const copy: Record<
     subtitle:
       "Disponible para roles y proyectos en Data Science, Machine Learning, IA aplicada y automatización.",
     emailCta: "Enviar email",
-    linkedinCta: "Conectar en LinkedIn",
+    githubCta: "GitHub",
+    linkedinCta: "LinkedIn",
   },
   en: {
     index: "06. Contact",
@@ -32,7 +34,8 @@ const copy: Record<
     subtitle:
       "Available for roles and projects in Data Science, Machine Learning, applied AI and automation.",
     emailCta: "Send email",
-    linkedinCta: "Connect on LinkedIn",
+    githubCta: "GitHub",
+    linkedinCta: "LinkedIn",
   },
 }
 
@@ -46,61 +49,56 @@ export function Contact() {
       className="py-24 px-6 md:px-12 lg:px-24 max-w-2xl mx-auto text-center"
     >
       <Reveal>
-        <p className="text-primary font-mono text-sm mb-4">{t.index}</p>
-        <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
+        <p className="text-primary font-mono text-sm uppercase tracking-wider mb-4">
+          {t.index}
+        </p>
+        <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6 text-balance">
           {t.title}
         </h2>
-        <p className="text-muted-foreground leading-relaxed mb-12 max-w-lg mx-auto">
+        <p className="text-muted-foreground leading-relaxed max-w-lg mx-auto mb-12">
           {t.subtitle}
         </p>
       </Reveal>
 
+      {/* Un único CTA sólido: el acento esmeralda marca acción, no decora (DESIGN.md §2) */}
       <Reveal delay={120}>
-        <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4 mb-12">
-          <Link
-            href={`mailto:${EMAIL}`}
-            className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors duration-300"
-          >
-            <Mail className="w-5 h-5" aria-hidden="true" />
-            <span className="text-sm">{EMAIL}</span>
-          </Link>
-          <Link
-            href="https://linkedin.com/in/martin-nomdedeu"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors duration-300"
-          >
-            <Linkedin className="w-5 h-5" aria-hidden="true" />
-            <span className="text-sm">LinkedIn</span>
-          </Link>
-          <Link
-            href="https://github.com/nomdedev"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors duration-300"
-          >
-            <Github className="w-5 h-5" aria-hidden="true" />
-            <span className="text-sm">GitHub</span>
-          </Link>
-        </div>
-      </Reveal>
-
-      <Reveal delay={220}>
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <div className="flex justify-center mb-6">
           <Magnetic>
             <Link
               href={`mailto:${EMAIL}`}
-              className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-4 rounded-md font-mono text-sm hover:bg-primary/90 transition-colors duration-300"
+              className="inline-flex min-h-[44px] items-center gap-2 bg-primary text-primary-foreground px-8 py-4 rounded-md font-mono text-sm hover:bg-primary/90 transition-colors duration-300"
             >
               <Mail className="w-5 h-5" aria-hidden="true" />
               {t.emailCta}
             </Link>
           </Magnetic>
+        </div>
+        <p className="mb-12">
+          <Link
+            href={`mailto:${EMAIL}`}
+            className="inline-flex min-h-[44px] items-center font-mono text-sm text-muted-foreground hover:text-primary transition-colors duration-300"
+          >
+            {EMAIL}
+          </Link>
+        </p>
+      </Reveal>
+
+      <Reveal delay={220}>
+        <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
+          <Link
+            href="https://github.com/nomdedev"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-[44px] items-center gap-2 font-mono text-xs uppercase tracking-wider text-muted-foreground hover:text-primary transition-colors duration-300"
+          >
+            <Github className="w-5 h-5" aria-hidden="true" />
+            {t.githubCta}
+          </Link>
           <Link
             href="https://linkedin.com/in/martin-nomdedeu"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 border border-primary text-primary px-8 py-4 rounded-md font-mono text-sm hover:bg-primary/10 hover:-translate-y-1 transition-[transform,border-color,background-color] duration-300"
+            className="inline-flex min-h-[44px] items-center gap-2 font-mono text-xs uppercase tracking-wider text-muted-foreground hover:text-primary transition-colors duration-300"
           >
             <Linkedin className="w-5 h-5" aria-hidden="true" />
             {t.linkedinCta}

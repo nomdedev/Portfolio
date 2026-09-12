@@ -162,10 +162,25 @@
   mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black 30%, transparent 75%);
 }
 
-.hero-glow {
+/* Glow acoplado al scroll: una única aura suave que acompaña la lectura.
+   Sin JS `--scroll-progress` vale 0 → el aura queda arriba (hero).
+   La escribe `lib/scroll-driver.ts` (rAF + un solo listener de scroll). */
+@property --scroll-progress {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --scroll-vel {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+.scroll-glow {
   background: radial-gradient(
-    ellipse 60% 45% at 50% 0%,
-    oklch(0.78 0.17 160 / 0.12),
+    ellipse 58% 42% at 50% calc(4% + var(--scroll-progress, 0) * 38%),
+    oklch(0.78 0.17 160 / 0.11),
     transparent 70%
   );
 }

@@ -16,7 +16,10 @@ import { LanguageProvider } from "@/lib/i18n"
 export default function HomePage() {
   return (
     <LanguageProvider>
-      <main className="min-h-screen bg-background">
+      {/* Fondo transparente a propósito: la capa `AnimatedBackground` (fixed, -z-10)
+          se pinta DEBAJO de los fondos de bloques en flujo. Cualquier `bg-background`
+          acá taparía el fondo animado por completo. */}
+      <main className="min-h-svh">
         <Navigation />
         <SideElements />
         <Hero />

@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" role="img" aria-label="Pulso">
+  <path d="M6 32 H20 L24 26 L29 40 L36 14 L42 46 L46 32 H52" stroke="#F1F5F9" stroke-width="4.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="57" cy="32" r="5" fill="#34D399"/>
+</svg>

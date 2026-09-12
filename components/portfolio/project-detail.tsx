@@ -218,7 +218,7 @@ export function ProjectDetail({
         </Reveal>
       )}
 
-      <div className="grid md:grid-cols-[1fr_280px] gap-10">
+      <div className="grid gap-10 lg:grid-cols-[1fr_280px]">
         {/* Main column */}
         <div className="space-y-12 min-w-0">
           <section id="resumen" className="scroll-mt-24">
@@ -275,7 +275,7 @@ export function ProjectDetail({
         </div>
 
         {/* Sidebar */}
-        <aside className="space-y-6 md:sticky md:top-24 h-fit">
+        <aside className="space-y-6 lg:sticky lg:top-24 h-fit">
           <nav aria-label={t.tocTitle} className="bg-card border border-border rounded-lg p-5">
             <h3 className="font-mono text-xs uppercase tracking-wider text-muted-foreground mb-3">
               {t.tocTitle}

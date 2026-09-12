@@ -12,6 +12,7 @@ import {
 } from "@/lib/projects"
 import { useLanguage, type Lang } from "@/lib/i18n"
 import { Reveal } from "@/components/portfolio/reveal"
+import { SectionHeader } from "@/components/portfolio/section-header"
 import { Spotlight } from "@/components/portfolio/motion"
 
 const copy: Record<
@@ -84,17 +85,21 @@ function ProjectCard({
         <span className="font-mono text-xs text-primary">
           {categoryLabel(category, lang)}
         </span>
-        {featured && (
-          <span className="font-mono text-xs px-2 py-0.5 rounded-full bg-primary text-primary-foreground">
-            {t.featuredLabel}
+        {featured || isPrivate ? (
+          <span className="ml-auto flex items-center gap-2">
+            {featured && (
+              <span className="font-mono text-xs px-2 py-0.5 rounded-full bg-primary text-primary-foreground">
+                {t.featuredLabel}
+              </span>
+            )}
+            {isPrivate && (
+              <span className="inline-flex items-center gap-1 font-mono text-xs px-2 py-0.5 rounded-full border border-border text-muted-foreground">
+                <Lock className="w-3 h-3" aria-hidden="true" />
+                {t.privateLabel}
+              </span>
+            )}
           </span>
-        )}
-        {isPrivate && (
-          <span className="inline-flex items-center gap-1 font-mono text-xs px-2 py-0.5 rounded-full border border-border text-muted-foreground">
-            <Lock className="w-3 h-3" aria-hidden="true" />
-            {t.privateLabel}
-          </span>
-        )}
+        ) : null}
       </div>
       <h3
         className={`font-bold text-foreground mb-2 group-hover:text-primary transition-colors ${
@@ -155,15 +160,10 @@ export function Projects() {
   return (
     <section
       id="projects"
-      className="py-24 px-6 md:px-12 lg:px-24 max-w-6xl mx-auto"
+      className="py-24 px-6 md:px-12 lg:px-24 max-w-6xl 2xl:max-w-7xl mx-auto"
     >
       <Reveal>
-        <h2 className="flex items-center gap-4 text-2xl md:text-3xl font-bold text-foreground mb-4">
-          <span className="text-primary font-mono text-xl">{t.index}</span>
-          {t.title}
-          <span className="h-px bg-border flex-1 max-w-xs" />
-        </h2>
-        <p className="text-muted-foreground max-w-2xl mb-10">{t.subtitle}</p>
+        <SectionHeader index={t.index} title={t.title} subtitle={t.subtitle} />
       </Reveal>
 
       {/* Destacados */}
@@ -187,29 +187,31 @@ export function Projects() {
 
       {/* Filtros */}
       <Reveal>
-        <div className="flex flex-wrap gap-2 mb-4" role="group" aria-label={t.title}>
-          {categories.map((c) => {
-            const active = filter === c.id
-            return (
-              <button
-                key={c.id}
-                type="button"
-                onClick={() => setFilter(c.id)}
-                aria-pressed={active}
-                className={`font-mono text-sm px-4 py-2 rounded-full border transition-[transform,border-color,background-color,color] duration-150 active:scale-[0.97] ${
-                  active
-                    ? "bg-primary text-primary-foreground border-primary"
-                    : "border-border text-muted-foreground hover:border-primary hover:text-primary"
-                }`}
-              >
-                {lang === "es" ? c.labelEs : c.labelEn}
-              </button>
-            )
-          })}
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-4 mb-6">
+          <div className="flex flex-wrap gap-2" role="group" aria-label={t.title}>
+            {categories.map((c) => {
+              const active = filter === c.id
+              return (
+                <button
+                  key={c.id}
+                  type="button"
+                  onClick={() => setFilter(c.id)}
+                  aria-pressed={active}
+                  className={`font-mono text-sm px-4 py-2 rounded-full border transition-[transform,border-color,background-color,color] duration-150 active:scale-[0.97] ${
+                    active
+                      ? "bg-primary text-primary-foreground border-primary"
+                      : "border-border text-muted-foreground hover:border-primary hover:text-primary"
+                  }`}
+                >
+                  {lang === "es" ? c.labelEs : c.labelEn}
+                </button>
+              )
+            })}
+          </div>
+          <p className="ml-auto font-mono text-xs text-primary" aria-live="polite">
+            {t.results(rest.length)}
+          </p>
         </div>
-        <p className="font-mono text-xs text-muted-foreground mb-6" aria-live="polite">
-          {t.results(rest.length)}
-        </p>
       </Reveal>
 
       {/* Grilla filtrable con stagger */}

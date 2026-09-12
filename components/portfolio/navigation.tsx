@@ -61,6 +61,8 @@ export function Navigation() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState("/#hero")
   const progressRef = useRef<HTMLDivElement>(null)
+  const menuPanelRef = useRef<HTMLDivElement>(null)
+  const menuButtonRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
     let frame = 0
@@ -103,13 +105,42 @@ export function Navigation() {
     return () => observer.disconnect()
   }, [])
 
+  // Menú móvil: Escape cierra, Tab queda contenido en el panel, el fondo no
+  // scrollea mientras está abierto y al cerrar el foco vuelve al botón.
   useEffect(() => {
     if (!isMobileMenuOpen) return
+    const panel = menuPanelRef.current
+    const button = menuButtonRef.current
+    document.body.style.overflow = "hidden"
+    const focusables = () =>
+      panel ? Array.from(panel.querySelectorAll<HTMLElement>('a[href], button:not([disabled])')) : []
+    focusables()[0]?.focus()
     const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setIsMobileMenuOpen(false)
+      if (e.key === "Escape") {
+        setIsMobileMenuOpen(false)
+        return
+      }
+      if (e.key !== "Tab") return
+      const items = focusables()
+      if (items.length === 0) return
+      const first = items[0]
+      const last = items[items.length - 1]
+      const active = document.activeElement as HTMLElement | null
+      const inside = active ? panel?.contains(active) : false
+      if (e.shiftKey && (active === first || !inside)) {
+        e.preventDefault()
+        last.focus()
+      } else if (!e.shiftKey && active === last) {
+        e.preventDefault()
+        first.focus()
+      }
     }
     window.addEventListener("keydown", handleKey)
-    return () => window.removeEventListener("keydown", handleKey)
+    return () => {
+      window.removeEventListener("keydown", handleKey)
+      document.body.style.overflow = ""
+      button?.focus()
+    }
   }, [isMobileMenuOpen])
 
   const items = navItems[lang]
@@ -123,18 +154,28 @@ export function Navigation() {
           : "bg-transparent"
       }`}
     >
-      <nav aria-label="Principal" className="max-w-6xl mx-auto px-6 md:px-12 lg:px-24 py-4">
+      <nav
+        aria-label="Principal"
+        className="max-w-6xl 2xl:max-w-7xl mx-auto px-6 md:px-12 lg:px-24 py-4"
+      >
         <div className="flex items-center justify-between">
           <Link
             href="/#hero"
-            className="flex items-center gap-2.5 text-primary font-bold text-xl hover:text-primary/80 transition-colors"
+            className="flex items-center gap-2.5 shrink-0 text-foreground hover:text-primary transition-colors duration-300"
           >
             <BrandMark className="w-7 h-7 shrink-0" />
-            Martin Nomdedeu
+            {/* Lockup BRAND.md: símbolo + NOMDEDEU en mayúsculas con tracking amplio (~28px total) */}
+            <span className="text-sm font-semibold uppercase tracking-[0.25em]">
+              Nomdedeu
+            </span>
           </Link>
 
-          {/* Desktop Navigation */}
-          <ul className="hidden md:flex items-center gap-8">
+          {/* Desktop Navigation — desde lg (1024) compactando: los índices `0N.`
+              quedan sólo en xl (miden 125px en total, medido) y el gap baja a 24px.
+              Medición a 1024 forzando la lista: disponible 824px vs necesario 935px
+              (ES) / 885px (EN); ocultando índices + gap-6 entran con +47px / +97px.
+              `data-testid` lo usa tests/responsive.spec.ts. */}
+          <ul data-testid="nav-desktop" className="hidden lg:flex items-center gap-6 xl:gap-8">
             {items.map((item, index) => {
               const active = activeSection === item.href
               return (
@@ -142,42 +183,32 @@ export function Navigation() {
                   <Link
                     href={item.href}
                     aria-current={active ? "location" : undefined}
-                    className={`transition-colors duration-300 font-mono text-sm ${
+                    className={`relative whitespace-nowrap transition-colors duration-300 font-mono text-sm ${
                       active ? "text-primary" : "text-muted-foreground hover:text-primary"
                     }`}
                   >
-                    <span className="text-primary">0{index + 1}.</span> {item.name}
+                    <span className="hidden text-primary xl:inline">0{index + 1}.{" "}</span>
+                    {item.name}
+                    {active ? (
+                      <span
+                        aria-hidden="true"
+                        className="absolute -bottom-1.5 left-0 right-0 h-0.5 bg-primary"
+                      />
+                    ) : null}
                   </Link>
                 </li>
               )
             })}
-            <li className="flex items-center gap-4 ml-4">
-              <a
-                href="https://github.com/nomdedev"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-primary transition-colors duration-300"
-                aria-label="GitHub de Martin Nomdedeu"
-              >
-                <Github className="w-5 h-5" />
-              </a>
-              <a
-                href="https://linkedin.com/in/martin-nomdedeu"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-primary transition-colors duration-300"
-                aria-label="LinkedIn de Martin Nomdedeu"
-              >
-                <Linkedin className="w-5 h-5" />
-              </a>
+            <li className="ml-4">
               <LanguageToggle />
             </li>
           </ul>
 
           {/* Mobile Menu Button */}
-          <div className="flex md:hidden items-center gap-2">
+          <div className="flex lg:hidden items-center gap-2">
             <LanguageToggle />
             <button
+              ref={menuButtonRef}
               type="button"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="text-primary p-2 min-w-[44px] min-h-[44px] grid place-items-center"
@@ -197,8 +228,9 @@ export function Navigation() {
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
           <div
+            ref={menuPanelRef}
             id="mobile-menu"
-            className="md:hidden absolute top-full left-0 right-0 bg-background/95 backdrop-blur-md border-t border-border"
+            className="lg:hidden absolute top-full left-0 right-0 bg-background/95 backdrop-blur-md border-t border-border"
           >
             <ul className="flex flex-col items-center py-8 gap-6">
               {items.map((item, index) => (

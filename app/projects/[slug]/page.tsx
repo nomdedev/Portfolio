@@ -57,7 +57,7 @@ export default async function ProjectPage({
 
   return (
     <LanguageProvider>
-      <main className="min-h-screen bg-background">
+      <main className="min-h-svh">
         <Navigation />
         <ProjectDetail project={project} images={images} diagram={diagram} prev={prev} next={next} />
         <Footer />

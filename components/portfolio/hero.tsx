@@ -5,6 +5,7 @@ import Link from "next/link"
 import { useLanguage, type Lang } from "@/lib/i18n"
 import { Reveal } from "@/components/portfolio/reveal"
 import { Magnetic } from "@/components/portfolio/motion"
+import { areaCount, projectCount, yearsInData } from "@/lib/stats"
 
 const content: Record<
   Lang,
@@ -19,6 +20,9 @@ const content: Record<
     location: string
     scrollLabel: string
     emailLabel: string
+    yearsLabel: string
+    projectsLabel: string
+    areasLabel: string
   }
 > = {
   es: {
@@ -32,6 +36,9 @@ const content: Record<
     location: "La Plata, Buenos Aires, Argentina",
     scrollLabel: "Desplázate para explorar",
     emailLabel: "Enviar correo a Martin Nomdedeu",
+    yearsLabel: "Años en datos e IA",
+    projectsLabel: "Proyectos publicados",
+    areasLabel: "Áreas de trabajo",
   },
   en: {
     greeting: "Hi, I'm",
@@ -44,6 +51,9 @@ const content: Record<
     location: "La Plata, Buenos Aires, Argentina",
     scrollLabel: "Scroll to explore",
     emailLabel: "Email Martin Nomdedeu",
+    yearsLabel: "Years in data & AI",
+    projectsLabel: "Published projects",
+    areasLabel: "Working areas",
   },
 }
 
@@ -54,42 +64,65 @@ export function Hero() {
   const { lang } = useLanguage()
   const t = content[lang]
 
+  const stats = [
+    { value: `+${yearsInData}`, label: t.yearsLabel },
+    { value: String(projectCount), label: t.projectsLabel },
+    { value: String(areaCount), label: t.areasLabel },
+  ]
+
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex flex-col px-6 md:px-12 lg:px-24 pt-28 pb-16"
+      className="relative min-h-svh flex flex-col px-6 md:px-12 lg:px-24 pt-20 sm:pt-28 pb-16"
     >
-      <div className="max-w-5xl m-auto w-full">
-        <Reveal>
-          <p className="text-primary font-mono text-sm md:text-base mb-4 tracking-wide">
+      {/* flex-col + order-*: hasta `lg` el primer pantallazo es identidad + CTAs
+          + redes (lo que decide) y la bio/stats pasa debajo; desde lg vuelve el
+          orden del DOM. Medido: a 360x640 el CTA estaba 171px bajo el pliegue y
+          el recorte de espaciado por sí solo no alcanzaba (faltaban ~100px). */}
+      <div className="flex w-full max-w-5xl m-auto flex-col">
+        <Reveal className="order-1 lg:order-none">
+          <p className="text-primary font-mono text-sm md:text-base mb-3 sm:mb-4 tracking-wide">
             {t.greeting}
           </p>
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-foreground mb-4 text-balance">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-foreground mb-3 sm:mb-4 text-balance">
             Martin Nomdedeu
           </h1>
-          <p className="text-lg md:text-2xl font-semibold text-foreground/90 mb-3">
+          <p className="text-lg md:text-2xl font-semibold text-foreground/90 mb-2 sm:mb-3">
             {t.title}
           </p>
           <p
             key={lang}
-            className="role-enter text-xl md:text-3xl font-bold text-primary mb-6 text-balance"
+            className="role-enter text-xl md:text-3xl font-bold text-primary mb-5 sm:mb-6 text-balance"
           >
             {t.positioning}
           </p>
         </Reveal>
 
-        <Reveal delay={120}>
-          <p className="text-muted-foreground text-base md:text-lg max-w-2xl leading-relaxed mb-4">
+        <Reveal delay={120} className="order-4 lg:order-none">
+          <p className="text-muted-foreground text-sm sm:text-base md:text-lg max-w-2xl leading-relaxed mb-3 sm:mb-4">
             {t.bio}
           </p>
-          <p className="flex items-center gap-2 font-mono text-sm text-muted-foreground mb-10">
+          <p className="flex items-center gap-2 font-mono text-sm text-muted-foreground mb-4 sm:mb-6">
             <MapPin className="w-4 h-4 text-primary" aria-hidden="true" />
             {t.location}
           </p>
+
+          <dl className="flex flex-wrap items-center gap-x-6 gap-y-2 sm:gap-y-3 border-t border-border pt-5 sm:pt-6 mb-6 sm:mb-10">
+            {stats.map((stat) => (
+              <div key={stat.label} className="flex items-baseline gap-2">
+                <dd className="font-mono text-sm font-semibold text-foreground">
+                  {stat.value}
+                </dd>
+                <dt className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
+                  {stat.label}
+                </dt>
+              </div>
+            ))}
+          </dl>
         </Reveal>
 
-        <Reveal delay={220}>
-          <div className="flex flex-wrap gap-4 mb-12">
+        <Reveal delay={220} className="order-2 lg:order-none">
+          <div className="flex flex-wrap gap-3 sm:gap-4 mb-8 sm:mb-12">
             <Magnetic>
               <Link
                 href="#projects"
@@ -116,13 +149,13 @@ export function Hero() {
           </div>
         </Reveal>
 
-        <Reveal delay={320}>
-          <div className="flex items-center gap-6">
+        <Reveal delay={320} className="order-3 lg:order-none">
+          <div className="flex items-center gap-2">
             <Link
               href="https://github.com/nomdedev"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-muted-foreground hover:text-primary hover:-translate-y-1 transition-[transform,color] duration-300"
+              className="inline-grid place-items-center min-w-[44px] min-h-[44px] text-muted-foreground hover:text-primary hover:-translate-y-1 transition-[transform,color] duration-300"
               aria-label="GitHub de Martin Nomdedeu"
             >
               <Github className="w-6 h-6" />
@@ -131,14 +164,14 @@ export function Hero() {
               href="https://linkedin.com/in/martin-nomdedeu"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-muted-foreground hover:text-primary hover:-translate-y-1 transition-[transform,color] duration-300"
+              className="inline-grid place-items-center min-w-[44px] min-h-[44px] text-muted-foreground hover:text-primary hover:-translate-y-1 transition-[transform,color] duration-300"
               aria-label="LinkedIn de Martin Nomdedeu"
             >
               <Linkedin className="w-6 h-6" />
             </Link>
             <Link
               href="mailto:martin.nomdedeu.dev@gmail.com"
-              className="text-muted-foreground hover:text-primary hover:-translate-y-1 transition-[transform,color] duration-300"
+              className="inline-grid place-items-center min-w-[44px] min-h-[44px] text-muted-foreground hover:text-primary hover:-translate-y-1 transition-[transform,color] duration-300"
               aria-label={t.emailLabel}
             >
               <Mail className="w-6 h-6" />
@@ -147,7 +180,9 @@ export function Hero() {
         </Reveal>
       </div>
 
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+      {/* T7: el cue queda debajo del pliegue en móvil (medido a 360x640: y=987
+          con viewport 640). Se muestra sólo desde `md`, donde sí se ve. */}
+      <div className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 animate-bounce md:block">
         <ArrowDown className="w-6 h-6 text-muted-foreground" aria-hidden="true" />
         <span className="sr-only">{t.scrollLabel}</span>
       </div>

@@ -2,6 +2,7 @@
 
 import { useLanguage, type Lang } from "@/lib/i18n"
 import { Reveal } from "@/components/portfolio/reveal"
+import { SectionHeader } from "@/components/portfolio/section-header"
 import { Spotlight } from "@/components/portfolio/motion"
 
 const groups: Record<Lang, { title: string; skills: string[] }[]> = {
@@ -43,9 +44,17 @@ const groups: Record<Lang, { title: string; skills: string[] }[]> = {
   ],
 }
 
-const copy: Record<Lang, { index: string; title: string }> = {
-  es: { index: "05.", title: "Skills" },
-  en: { index: "05.", title: "Skills" },
+const copy: Record<Lang, { index: string; title: string; subtitle: string }> = {
+  es: {
+    index: "05.",
+    title: "Skills",
+    subtitle: "Competencias y stack que uso en producción, agrupados por disciplina.",
+  },
+  en: {
+    index: "05.",
+    title: "Skills",
+    subtitle: "Skills and stack I use in production, grouped by discipline.",
+  },
 }
 
 export function Skills() {
@@ -55,14 +64,10 @@ export function Skills() {
   return (
     <section
       id="skills"
-      className="py-24 px-6 md:px-12 lg:px-24 max-w-6xl mx-auto"
+      className="py-24 px-6 md:px-12 lg:px-24 max-w-6xl 2xl:max-w-7xl mx-auto"
     >
       <Reveal>
-        <h2 className="flex items-center gap-4 text-2xl md:text-3xl font-bold text-foreground mb-10">
-          <span className="text-primary font-mono text-xl">{t.index}</span>
-          {t.title}
-          <span className="h-px bg-border flex-1 max-w-xs" />
-        </h2>
+        <SectionHeader index={t.index} title={t.title} subtitle={t.subtitle} />
       </Reveal>
 
       <div className="grid md:grid-cols-2 gap-6">
@@ -70,7 +75,14 @@ export function Skills() {
           <Reveal key={group.title} delay={(i % 2) * 100}>
             <Spotlight className="h-full rounded-lg">
             <div className="border border-border rounded-lg p-6 hover:border-primary/50 transition-colors h-full">
-              <h3 className="font-semibold text-foreground mb-4">{group.title}</h3>
+              <div className="flex items-baseline justify-between gap-4 mb-4">
+                <h3 className="font-mono text-xs uppercase tracking-wider text-foreground">
+                  {group.title}
+                </h3>
+                <span className="font-mono text-xs text-muted-foreground">
+                  [{String(i + 1).padStart(2, "0")}]
+                </span>
+              </div>
               <ul className="flex flex-wrap gap-2">
                 {group.skills.map((skill) => (
                   <li
