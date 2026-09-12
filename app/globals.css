@@ -203,6 +203,21 @@
   animation: card-enter 0.4s ease-out both;
 }
 
+/* Scroll reveal: fade-and-rise (activado por <Reveal />) */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.7s ease-out,
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 /* Reduced motion: static, no movement */
 @media (prefers-reduced-motion: reduce) {
   html {
@@ -214,5 +229,6 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
   }
 }

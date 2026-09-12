@@ -1,7 +1,7 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
 import { useLanguage, type Lang } from "@/lib/i18n"
+import { Reveal } from "@/components/portfolio/reveal"
 
 const groups: Record<Lang, { title: string; skills: string[] }[]> = {
   es: [
@@ -50,45 +50,24 @@ const copy: Record<Lang, { index: string; title: string }> = {
 export function Skills() {
   const { lang } = useLanguage()
   const t = copy[lang]
-  const [isVisible, setIsVisible] = useState(false)
-  const sectionRef = useRef<HTMLElement | null>(null)
-
-  useEffect(() => {
-    const el = sectionRef.current
-    if (!el) return
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true)
-      },
-      { threshold: 0.1 }
-    )
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [])
 
   return (
     <section
       id="skills"
-      ref={sectionRef}
       className="py-24 px-6 md:px-12 lg:px-24 max-w-6xl mx-auto"
     >
-      <div
-        className={`transition-all duration-700 ${
-          isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
-        }`}
-      >
+      <Reveal>
         <h2 className="flex items-center gap-4 text-2xl md:text-3xl font-bold text-foreground mb-10">
           <span className="text-primary font-mono text-xl">{t.index}</span>
           {t.title}
           <span className="h-px bg-border flex-1 max-w-xs" />
         </h2>
+      </Reveal>
 
-        <div className="grid md:grid-cols-2 gap-6">
-          {groups[lang].map((group) => (
-            <div
-              key={group.title}
-              className="border border-border rounded-lg p-6 hover:border-primary/50 transition-colors"
-            >
+      <div className="grid md:grid-cols-2 gap-6">
+        {groups[lang].map((group, i) => (
+          <Reveal key={group.title} delay={(i % 2) * 100}>
+            <div className="border border-border rounded-lg p-6 hover:border-primary/50 transition-colors h-full">
               <h3 className="font-semibold text-foreground mb-4">{group.title}</h3>
               <ul className="flex flex-wrap gap-2">
                 {group.skills.map((skill) => (
@@ -101,8 +80,8 @@ export function Skills() {
                 ))}
               </ul>
             </div>
-          ))}
-        </div>
+          </Reveal>
+        ))}
       </div>
     </section>
   )

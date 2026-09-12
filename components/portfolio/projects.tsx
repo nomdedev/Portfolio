@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useState } from "react"
 import { Github, Lock } from "lucide-react"
 import Link from "next/link"
 import {
@@ -11,6 +11,7 @@ import {
   type CategoryId,
 } from "@/lib/projects"
 import { useLanguage, type Lang } from "@/lib/i18n"
+import { Reveal } from "@/components/portfolio/reveal"
 
 const copy: Record<
   Lang,
@@ -70,7 +71,7 @@ function ProjectCard({
   const t = copy[lang]
   return (
     <article
-      className={`group flex flex-col bg-card rounded-lg border p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-[0_12px_40px_-16px_var(--ring)] ${
+      className={`group flex flex-col h-full bg-card rounded-lg border p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-[0_12px_40px_-16px_var(--ring)] ${
         featured ? "border-primary/40 md:p-8" : "border-border"
       }`}
     >
@@ -115,7 +116,7 @@ function ProjectCard({
           href={github}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 font-mono text-sm text-muted-foreground hover:text-primary transition-colors"
+          className="inline-flex items-center gap-2 font-mono text-sm text-muted-foreground hover:text-primary hover:gap-3 transition-all"
           aria-label={`${t.viewCode}: ${title}`}
         >
           <Github className="w-4 h-4" />
@@ -129,48 +130,29 @@ function ProjectCard({
 export function Projects() {
   const { lang } = useLanguage()
   const t = copy[lang]
-  const [isVisible, setIsVisible] = useState(false)
   const [filter, setFilter] = useState<CategoryId | "all">("all")
-  const sectionRef = useRef<HTMLElement | null>(null)
-
-  useEffect(() => {
-    const el = sectionRef.current
-    if (!el) return
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true)
-      },
-      { threshold: 0.05 }
-    )
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [])
 
   const rest = projects.filter((p) => !p.featured && (filter === "all" || p.category === filter))
 
   return (
     <section
       id="projects"
-      ref={sectionRef}
       className="py-24 px-6 md:px-12 lg:px-24 max-w-6xl mx-auto"
     >
-      <div
-        className={`transition-all duration-700 ${
-          isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
-        }`}
-      >
+      <Reveal>
         <h2 className="flex items-center gap-4 text-2xl md:text-3xl font-bold text-foreground mb-4">
           <span className="text-primary font-mono text-xl">{t.index}</span>
           {t.title}
           <span className="h-px bg-border flex-1 max-w-xs" />
         </h2>
         <p className="text-muted-foreground max-w-2xl mb-10">{t.subtitle}</p>
+      </Reveal>
 
-        {/* Destacados */}
-        <div className="grid md:grid-cols-3 gap-6 mb-14">
-          {featuredProjects.map((p) => (
+      {/* Destacados */}
+      <div className="grid md:grid-cols-3 gap-6 mb-14">
+        {featuredProjects.map((p, i) => (
+          <Reveal key={p.slug} delay={i * 100}>
             <ProjectCard
-              key={p.slug}
               slug={p.slug}
               title={p.title}
               description={lang === "es" ? p.descriptionEs : p.descriptionEn}
@@ -181,10 +163,12 @@ export function Projects() {
               lang={lang}
               featured
             />
-          ))}
-        </div>
+          </Reveal>
+        ))}
+      </div>
 
-        {/* Filtros */}
+      {/* Filtros */}
+      <Reveal>
         <div className="flex flex-wrap gap-2 mb-4" role="group" aria-label={t.title}>
           {categories.map((c) => {
             const active = filter === c.id
@@ -194,7 +178,7 @@ export function Projects() {
                 type="button"
                 onClick={() => setFilter(c.id)}
                 aria-pressed={active}
-                className={`font-mono text-sm px-4 py-2 rounded-full border transition-colors duration-300 ${
+                className={`font-mono text-sm px-4 py-2 rounded-full border transition-all duration-300 active:scale-95 ${
                   active
                     ? "bg-primary text-primary-foreground border-primary"
                     : "border-border text-muted-foreground hover:border-primary hover:text-primary"
@@ -208,28 +192,24 @@ export function Projects() {
         <p className="font-mono text-xs text-muted-foreground mb-6" aria-live="polite">
           {t.results(rest.length)}
         </p>
+      </Reveal>
 
-        {/* Grilla filtrable */}
-        <div key={`${lang}-${filter}`} className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {rest.map((p, i) => (
-            <div
-              key={p.slug}
-              className="card-enter"
-              style={{ animationDelay: `${Math.min(i, 8) * 50}ms` }}
-            >
-              <ProjectCard
-                slug={p.slug}
-                title={p.title}
-                description={lang === "es" ? p.descriptionEs : p.descriptionEn}
-                stack={p.stack}
-                github={p.github}
-                isPrivate={p.isPrivate}
-                category={p.category}
-                lang={lang}
-              />
-            </div>
-          ))}
-        </div>
+      {/* Grilla filtrable con stagger */}
+      <div key={`${lang}-${filter}`} className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {rest.map((p, i) => (
+          <Reveal key={p.slug} delay={(i % 6) * 60}>
+            <ProjectCard
+              slug={p.slug}
+              title={p.title}
+              description={lang === "es" ? p.descriptionEs : p.descriptionEn}
+              stack={p.stack}
+              github={p.github}
+              isPrivate={p.isPrivate}
+              category={p.category}
+              lang={lang}
+            />
+          </Reveal>
+        ))}
       </div>
     </section>
   )

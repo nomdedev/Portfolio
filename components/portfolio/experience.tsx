@@ -1,7 +1,7 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
 import { useLanguage, type Lang } from "@/lib/i18n"
+import { Reveal } from "@/components/portfolio/reveal"
 
 type Experience = {
   title: string
@@ -68,51 +68,27 @@ const copy: Record<Lang, { index: string; title: string }> = {
 export function Experience() {
   const { lang } = useLanguage()
   const t = copy[lang]
-  const [isVisible, setIsVisible] = useState(false)
-  const sectionRef = useRef<HTMLElement | null>(null)
-
-  useEffect(() => {
-    const el = sectionRef.current
-    if (!el) return
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true)
-      },
-      { threshold: 0.1 }
-    )
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [])
 
   return (
     <section
       id="experience"
-      ref={sectionRef}
       className="py-24 px-6 md:px-12 lg:px-24 max-w-4xl mx-auto"
     >
-      <div
-        className={`transition-all duration-700 ${
-          isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
-        }`}
-      >
+      <Reveal>
         <h2 className="flex items-center gap-4 text-2xl md:text-3xl font-bold text-foreground mb-12">
           <span className="text-primary font-mono text-xl">{t.index}</span>
           {t.title}
           <span className="h-px bg-border flex-1 max-w-xs" />
         </h2>
+      </Reveal>
 
-        <ol className="relative ml-2 md:ml-4 border-l border-border space-y-10">
-          {experiences.map((exp, index) => (
-            <li
-              key={`${exp.company}-${exp.title}`}
-              className={`relative pl-8 md:pl-10 transition-all duration-500 ${
-                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              }`}
-              style={{ transitionDelay: `${index * 100}ms` }}
-            >
+      <ol className="relative ml-2 md:ml-4 border-l border-border space-y-10">
+        {experiences.map((exp, index) => (
+          <Reveal key={`${exp.company}-${exp.title}`} delay={Math.min(index, 3) * 80}>
+            <li className="relative pl-8 md:pl-10">
               <span
                 aria-hidden="true"
-                className="absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-full bg-primary ring-4 ring-primary/15"
+                className="absolute -left-[37px] md:-left-[45px] top-1.5 w-2.5 h-2.5 rounded-full bg-primary ring-4 ring-primary/15"
               />
               <p className="font-mono text-sm text-primary mb-1">
                 {lang === "es" ? exp.dateEs : exp.dateEn}
@@ -134,9 +110,9 @@ export function Experience() {
                 ))}
               </ul>
             </li>
-          ))}
-        </ol>
-      </div>
+          </Reveal>
+        ))}
+      </ol>
     </section>
   )
 }

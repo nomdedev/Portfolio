@@ -1,7 +1,7 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
 import { useLanguage, type Lang } from "@/lib/i18n"
+import { Reveal } from "@/components/portfolio/reveal"
 
 const copy: Record<
   Lang,
@@ -43,33 +43,13 @@ const copy: Record<
 export function About() {
   const { lang } = useLanguage()
   const t = copy[lang]
-  const [isVisible, setIsVisible] = useState(false)
-  const sectionRef = useRef<HTMLElement | null>(null)
-
-  useEffect(() => {
-    const el = sectionRef.current
-    if (!el) return
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true)
-      },
-      { threshold: 0.2 }
-    )
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [])
 
   return (
     <section
       id="about"
-      ref={sectionRef}
       className="py-24 px-6 md:px-12 lg:px-24 max-w-6xl mx-auto"
     >
-      <div
-        className={`transition-all duration-700 ${
-          isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
-        }`}
-      >
+      <Reveal>
         <h2 className="flex items-center gap-4 text-2xl md:text-3xl font-bold text-foreground mb-8">
           <span className="text-primary font-mono text-xl">{t.index}</span>
           {t.title}
@@ -83,21 +63,20 @@ export function About() {
             </p>
           ))}
         </div>
+      </Reveal>
 
-        <dl className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl">
-          {t.metrics.map((metric) => (
-            <div
-              key={metric.label}
-              className="border border-border rounded-lg p-6 text-center hover:border-primary/50 transition-colors"
-            >
+      <dl className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl">
+        {t.metrics.map((metric, i) => (
+          <Reveal key={metric.label} delay={i * 100}>
+            <div className="border border-border rounded-lg p-6 text-center hover:border-primary/50 hover:-translate-y-1 transition-all duration-300">
               <dd className="text-3xl md:text-4xl font-bold text-primary mb-2">
                 {metric.value}
               </dd>
               <dt className="text-sm text-muted-foreground">{metric.label}</dt>
             </div>
-          ))}
-        </dl>
-      </div>
+          </Reveal>
+        ))}
+      </dl>
     </section>
   )
 }
