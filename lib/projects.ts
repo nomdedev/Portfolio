@@ -3,13 +3,6 @@ import type { CategoryId } from "./categories"
 export { categories, categoryLabel } from "./categories"
 export type { CategoryId } from "./categories"
 
-/**
- * Prefijo para assets cuando el sitio se exporta a GitHub Pages (basePath /Portfolio).
- * En Vercel queda vacío. next/image con `unoptimized` NO añade basePath, por eso
- * lo aplicamos a mano en las rutas de imagen.
- */
-const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? ""
-
 export type ProjectImage = {
   /** Ruta pública, ej: /projects/<slug>/01-cover.webp */
   src: string
@@ -589,6 +582,97 @@ export const projects: Project[] = [
     ],
   },
 
+  {
+    slug: "cotizador-sumed",
+    category: "automation",
+    isPrivate: true,
+    title: "Cotizador Sumed",
+    descriptionEs:
+      "Cotizador que integra bots conversacionales, modelado de datos y procesos en Microsoft Fabric para crear y gestionar cotizaciones de punta a punta, con observabilidad completa de la aplicación.",
+    descriptionEn:
+      "Quoting system integrating conversational bots, data modeling and Microsoft Fabric processes to create and manage quotes end to end, with full application observability.",
+    stack: ["Bots conversacionales", "Microsoft Fabric", "Modelado de datos", "LLMs", "Observabilidad"],
+    longDescriptionEs:
+      "Cotizador interno para Sumed que digitaliza el ciclo completo de una cotización: el pedido entra por un bot conversacional, los datos se modelan y validan, las cotizaciones se generan sobre procesos en Microsoft Fabric y se gestiona su seguimiento y estado. Incluye observabilidad de la aplicación para monitorear cada etapa del flujo.",
+    longDescriptionEn:
+      "Internal quoting tool for Sumed that digitalizes the full quote lifecycle: requests arrive through a conversational bot, data is modeled and validated, quotes are generated over Microsoft Fabric processes, and their tracking and status are managed. It includes application observability to monitor every stage of the flow.",
+    howItWorksEs: [
+      "La solicitud de cotización entra por un bot conversacional.",
+      "Los datos se normalizan y modelan (productos, precios, condiciones).",
+      "Procesos en Microsoft Fabric generan y persisten la cotización.",
+      "Se gestiona el ciclo de vida de la cotización: estados, versiones y seguimiento.",
+      "Observabilidad de la app: métricas, logs y alertas por etapa del proceso.",
+    ],
+    howItWorksEn: [
+      "The quote request arrives through a conversational bot.",
+      "Data is normalized and modeled (products, prices, conditions).",
+      "Microsoft Fabric processes generate and persist the quote.",
+      "The quote lifecycle is managed: states, versions and tracking.",
+      "App observability: metrics, logs and alerts per process stage.",
+    ],
+    featuresEs: [
+      "Bots conversacionales para alta y consulta de cotizaciones",
+      "Modelado y normalización de datos",
+      "Procesos en Microsoft Fabric",
+      "Gestión del ciclo de vida de la cotización",
+      "Observabilidad end-to-end de la aplicación",
+    ],
+    featuresEn: [
+      "Conversational bots for creating and querying quotes",
+      "Data modeling and normalization",
+      "Microsoft Fabric processes",
+      "Quote lifecycle management",
+      "End-to-end application observability",
+    ],
+  },
+  {
+    slug: "pagos-recibidos",
+    category: "automation",
+    isPrivate: true,
+    title: "CobroKai",
+    descriptionEs:
+      "App de cobros que centraliza comprobantes (transferencias y cheques), extrae los datos con IA, los valida y los carga a SAP con imputación automática FICO y gestión de retenciones, con trazabilidad y observabilidad de todo el proceso.",
+    descriptionEn:
+      "Collection app that centralizes receipts (bank transfers and checks), extracts the data with AI, validates it and posts it to SAP with automatic FICO imputation and withholding management, with traceability and observability across the whole flow.",
+    stack: ["OCR / IA", "SAP (FICO)", "Microsoft Fabric", "Automatización", "Observabilidad"],
+    longDescriptionEs:
+      "CobroKai ordena el circuito de cobros de punta a punta: los comprobantes entran al panel con su imagen y estado, un motor de OCR/IA extrae banco, cuenta, importe, fechas, CUIT y CVU, y el operador valida o corrige. Desde ahí se cargan a SAP, se imputan automáticamente a las facturas abiertas por FIFO (FICO) y se gestionan las retenciones, con bandeja de comprobantes, KPIs y registro de cada acción.",
+    longDescriptionEn:
+      "CobroKai streamlines the collections workflow end to end: receipts enter the panel with their image and status, an OCR/AI engine extracts bank, account, amount, dates, tax ID and CVU, and the operator validates or corrects them. From there they are posted to SAP, automatically imputed to open invoices by FIFO (FICO) and withholdings are managed, with a receipt inbox, KPIs and a log of every action.",
+    howItWorksEs: [
+      "Los comprobantes (transferencias y cheques) ingresan y se digitalizan.",
+      "Un motor de OCR/IA extrae los datos: banco, cuenta, importe, fechas, CUIT y CVU destino.",
+      "El operador valida o corrige y el comprobante avanza de estado (pago recibido, cargado, pendiente SAP).",
+      "Se carga a SAP y se imputa automáticamente a las facturas abiertas (FICO, FIFO).",
+      "Se gestionan las retenciones de SAP con sus códigos activos.",
+      "Panel de cobro con KPIs, búsqueda y observabilidad de cada acción.",
+    ],
+    howItWorksEn: [
+      "Receipts (bank transfers and checks) come in and are digitized.",
+      "An OCR/AI engine extracts the data: bank, account, amount, dates, tax ID and destination CVU.",
+      "The operator validates or corrects it and the receipt advances through statuses (payment received, posted, pending SAP).",
+      "It is posted to SAP and automatically imputed to open invoices (FICO, FIFO).",
+      "SAP withholdings are managed with their active codes.",
+      "Collection panel with KPIs, search and observability of every action.",
+    ],
+    featuresEs: [
+      "Panel de cobro con KPIs y estados",
+      "Extracción de datos por OCR/IA (transferencias y cheques)",
+      "Carga e imputación automática a SAP (FICO, FIFO)",
+      "Gestión de retenciones de SAP",
+      "Bandeja de comprobantes con búsqueda y filtros",
+      "Trazabilidad y observabilidad del proceso",
+    ],
+    featuresEn: [
+      "Collection panel with KPIs and statuses",
+      "OCR/AI data extraction (transfers and checks)",
+      "SAP posting and automatic imputation (FICO, FIFO)",
+      "SAP withholding management",
+      "Receipt inbox with search and filters",
+      "Process traceability and observability",
+    ],
+  },
+
   // ── D. Productos & Software ───────────────────────────────────────────
   {
     slug: "vecinosimple",
@@ -689,28 +773,52 @@ export const projects: Project[] = [
     slug: "dentaldesignpanel",
     category: "products",
     isPrivate: true,
-    title: "DentalDesignPanel",
+    title: "DentalCare — Gestión Clínica",
     descriptionEs:
-      "Panel de gestión para diseño dental: seguimiento de casos, estados de producción y coordinación del laboratorio.",
+      "Plataforma de gestión para clínicas odontológicas: bot de admisión omnicanal, CRM de leads, presupuestos, seguimiento, recaptación y automatizaciones, con dashboard ejecutivo y roles y permisos.",
     descriptionEn:
-      "Management panel for dental design: case tracking, production states and lab coordination.",
-    stack: ["TypeScript", "Next.js", "Dashboards"],
+      "Management platform for dental clinics: omnichannel admission bot, lead CRM, quotes, follow-up, recapture and automations, with an executive dashboard and roles and permissions.",
+    stack: ["TypeScript", "Next.js", "Bot omnicanal", "Automatizaciones", "Dashboards"],
     longDescriptionEs:
-      "Panel privado para laboratorio de diseño dental: cada caso entra, avanza por estados de producción (diseño, revisión, entrega) y se coordina entre clínica y laboratorio con trazabilidad completa.",
+      "Suite de gestión para clínicas odontológicas que cubre todo el recorrido del paciente: la conversación entra por canales como WhatsApp, Instagram, Facebook, Web Chat o Email; un bot de admisión con árbol conversacional la califica y crea el lead en el CRM; se generan presupuestos con pipeline y estados; el equipo da seguimiento y las automatizaciones y campañas de recaptación sostienen el contacto. Todo se mide en un dashboard ejecutivo y se gobierna con roles y permisos por área.",
     longDescriptionEn:
-      "Private panel for a dental-design lab: each case enters, moves through production states (design, review, delivery) and is coordinated between clinic and lab with full traceability.",
+      "Management suite for dental clinics covering the whole patient journey: conversations arrive from channels such as WhatsApp, Instagram, Facebook, Web Chat or Email; an admission bot with a conversation tree qualifies them and creates the lead in the CRM; quotes are generated with a pipeline and statuses; the team follows up and automations and recapture campaigns keep contact alive. Everything is measured in an executive dashboard and governed with roles and permissions per area.",
     howItWorksEs: [
-      "Alta de casos con archivos y requisitos.",
-      "Flujo por estados de producción con responsables.",
-      "Coordinación clínica-laboratorio y entregas.",
+      "El paciente escribe por WhatsApp, Instagram, Facebook, Web Chat o Email.",
+      "El bot de admisión lo califica con un árbol conversacional (saludo, consentimiento, datos, motivo y urgencia).",
+      "Se crea el lead en el CRM y se asigna por reglas al área correspondiente.",
+      "Se genera el presupuesto y se hace seguimiento hasta el cierre.",
+      "Automatizaciones y campañas de recaptación sostienen el contacto (recordatorios y reactivación).",
+      "Dashboard ejecutivo y configuración de usuarios, roles y permisos.",
     ],
     howItWorksEn: [
-      "Case intake with files and requirements.",
-      "Production-state flow with owners.",
-      "Clinic-lab coordination and deliveries.",
+      "The patient writes via WhatsApp, Instagram, Facebook, Web Chat or Email.",
+      "The admission bot qualifies them with a conversation tree (greeting, consent, details, reason and urgency).",
+      "A lead is created in the CRM and assigned by rules to the right area.",
+      "A quote is generated and tracked through to closing.",
+      "Automations and recapture campaigns sustain contact (reminders and reactivation).",
+      "Executive dashboard plus user, role and permission settings.",
     ],
-    featuresEs: ["Tracking de casos", "Estados de producción", "Coordinación de laboratorio"],
-    featuresEn: ["Case tracking", "Production states", "Lab coordination"],
+    featuresEs: [
+      "Bot de admisión con árbol conversacional configurable",
+      "Bandeja omnicanal con ficha del paciente y score",
+      "CRM de leads con asignación por reglas",
+      "Presupuestos con pipeline y estados",
+      "Recaptación y fidelización por campañas",
+      "Centro de automatizaciones con disparadores",
+      "Dashboard ejecutivo con KPIs",
+      "Roles y permisos por área",
+    ],
+    featuresEn: [
+      "Admission bot with configurable conversation tree",
+      "Omnichannel inbox with patient profile and score",
+      "Lead CRM with rule-based assignment",
+      "Quotes with pipeline and statuses",
+      "Recapture and loyalty campaigns",
+      "Automation center with triggers",
+      "Executive dashboard with KPIs",
+      "Roles and permissions per area",
+    ],
   },
   {
     slug: "fabric-sumed",
@@ -756,21 +864,6 @@ export const featuredProjects = projects.filter((p) => p.featured)
 
 export function getProject(slug: string): Project | undefined {
   return projects.find((p) => p.slug === slug)
-}
-
-/**
- * Imágenes de la galería. Si el proyecto todavía no tiene capturas reales,
- * devuelve el placeholder cover de /public/projects/<slug>/01-cover.svg.
- */
-export function getProjectImages(project: Project): ProjectImage[] {
-  if (project.images && project.images.length > 0) return project.images
-  return [
-    {
-      src: `${BASE_PATH}/projects/${project.slug}/01-cover.svg`,
-      altEs: `Portada del proyecto ${project.title}`,
-      altEn: `${project.title} project cover`,
-    },
-  ]
 }
 
 export function getAdjacentProjects(slug: string): { prev?: Project; next?: Project } {

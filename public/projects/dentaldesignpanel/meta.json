@@ -1,0 +1,44 @@
+{
+  "01-cover": {
+    "altEs": "Dashboard ejecutivo de DentalCare con los KPIs de la clínica",
+    "altEn": "DentalCare executive dashboard with clinic KPIs",
+    "captionEs": "Dashboard ejecutivo: consultas entrantes, calificación del bot, conversión a turno, tendencia semanal y canal de origen",
+    "captionEn": "Executive dashboard: incoming chats, bot qualification, booking conversion, weekly trend and channel mix"
+  },
+  "02-bandeja-omnicanal": {
+    "altEs": "Bandeja omnicanal con la lista de conversaciones, el chat y la ficha del paciente",
+    "altEn": "Omnichannel inbox with conversation list, chat and patient profile",
+    "captionEs": "Bandeja omnicanal: conversaciones, chat con el bot y ficha del paciente con score y próxima acción",
+    "captionEn": "Omnichannel inbox: conversations, bot chat and patient profile with score and next action"
+  },
+  "03-bot-admision": {
+    "altEs": "Configuración del bot de admisión con su árbol conversacional",
+    "altEn": "Admission bot configuration with its conversation tree",
+    "captionEs": "Bot de admisión: métricas de desempeño y árbol conversacional editable paso a paso",
+    "captionEn": "Admission bot: performance metrics and step-by-step editable conversation tree"
+  },
+  "04-cotizaciones": {
+    "altEs": "Listado de cotizaciones y presupuestos con estados y acciones",
+    "altEn": "Quotes and estimates list with statuses and actions",
+    "captionEs": "Cotizaciones y presupuestos: pipeline, estados (aceptado, enviado, borrador) y acciones",
+    "captionEn": "Quotes and estimates: pipeline, statuses (accepted, sent, draft) and actions"
+  },
+  "05-recaptacion": {
+    "altEs": "Módulo de recaptación y fidelización con campañas y métricas",
+    "altEn": "Recapture and loyalty module with campaigns and metrics",
+    "captionEs": "Recaptación y fidelización: campañas (WhatsApp y Email), segmentos y métricas de reactivación",
+    "captionEn": "Recapture and loyalty: campaigns (WhatsApp and Email), segments and reactivation metrics"
+  },
+  "06-automatizaciones": {
+    "altEs": "Centro de automatizaciones con flujos, disparadores y ejecuciones",
+    "altEn": "Automation center with flows, triggers and executions",
+    "captionEs": "Centro de automatizaciones: flujos por categoría, disparadores y cantidad de ejecuciones",
+    "captionEn": "Automation center: flows by category, triggers and execution counts"
+  },
+  "07-configuracion": {
+    "altEs": "Configuración del sistema con usuarios, roles y permisos",
+    "altEn": "System settings with users, roles and permissions",
+    "captionEs": "Configuración: usuarios, roles, canales, plantillas y permisos por área",
+    "captionEn": "Settings: users, roles, channels, templates and per-area permissions"
+  }
+}

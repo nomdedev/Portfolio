@@ -1,0 +1,79 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Cómo funciona Extensión Matriz ARG",
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "output": "public/diagrams/matriz-arg.html"
+  },
+  "lanes": [
+    {
+      "id": "flow",
+      "label": "Trading & Quant"
+    }
+  ],
+  "mainPath": [
+    "s1",
+    "s2",
+    "s3"
+  ],
+  "nodes": [
+    {
+      "id": "s1",
+      "lane": "flow",
+      "col": 0,
+      "type": "external",
+      "label": "Recolección",
+      "width": 190
+    },
+    {
+      "id": "s2",
+      "lane": "flow",
+      "col": 1,
+      "type": "cloud",
+      "label": "Modelado de relaciones",
+      "width": 190
+    },
+    {
+      "id": "s3",
+      "lane": "flow",
+      "col": 2,
+      "type": "backend",
+      "label": "Vista interactiva",
+      "width": 190
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "s1",
+      "to": "s2",
+      "variant": "default"
+    },
+    {
+      "id": "e2",
+      "from": "s2",
+      "to": "s3",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "rose",
+      "title": "Problema",
+      "items": [
+        "Extensión para visualizar la matriz económica argentina: indicadores y relaciones entre variables en una vista interactiva."
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Solución",
+      "items": [
+        "Indicadores macro argentinos",
+        "Vista interactiva de relaciones",
+        "Lectura rápida de contexto"
+      ]
+    }
+  ]
+}

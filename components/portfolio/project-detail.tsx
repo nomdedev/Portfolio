@@ -12,6 +12,7 @@ import {
   ListOrdered,
   Lock,
   Sparkles,
+  Workflow,
 } from "lucide-react"
 import { categoryLabel } from "@/lib/categories"
 import type { Project, ProjectImage } from "@/lib/projects"
@@ -37,6 +38,7 @@ const copy: Record<
     moreProjects: string
     tocTitle: string
     galleryLabel: string
+    flow: string
   }
 > = {
   es: {
@@ -55,6 +57,7 @@ const copy: Record<
     moreProjects: "Seguir explorando",
     tocTitle: "En esta página",
     galleryLabel: "Galería",
+    flow: "Flujo del proceso",
   },
   en: {
     back: "Back to projects",
@@ -72,17 +75,20 @@ const copy: Record<
     moreProjects: "Keep exploring",
     tocTitle: "On this page",
     galleryLabel: "Gallery",
+    flow: "Process flow",
   },
 }
 
 export function ProjectDetail({
   project,
   images,
+  diagram,
   prev,
   next,
 }: {
   project: Project
   images: ProjectImage[]
+  diagram?: string | null
   prev?: Project
   next?: Project
 }) {
@@ -98,6 +104,7 @@ export function ProjectDetail({
 
   const tocItems = [
     { id: "galeria", label: t.galleryLabel },
+    ...(diagram ? [{ id: "flujo", label: t.flow }] : []),
     { id: "resumen", label: t.overview },
     ...(steps && steps.length > 0 ? [{ id: "construccion", label: t.howItWorks }] : []),
     ...(features && features.length > 0 ? [{ id: "detalles", label: t.features }] : []),
@@ -189,6 +196,26 @@ export function ProjectDetail({
           <ProjectGallery images={images} />
         </div>
       </Reveal>
+
+      {/* Flujo del proceso (diagrama archify embebido) */}
+      {diagram && (
+        <Reveal>
+          <section id="flujo" className="mb-12 scroll-mt-24">
+            <h2 className="flex items-center gap-2 text-xl font-bold text-foreground mb-4">
+              <Workflow className="w-5 h-5 text-primary" aria-hidden="true" />
+              {t.flow}
+            </h2>
+            <div className="overflow-hidden rounded-lg border border-border bg-card">
+              <iframe
+                src={diagram}
+                title={`${t.flow}: ${project.title}`}
+                loading="lazy"
+                className="h-[560px] w-full"
+              />
+            </div>
+          </section>
+        </Reveal>
+      )}
 
       <div className="grid md:grid-cols-[1fr_280px] gap-10">
         {/* Main column */}

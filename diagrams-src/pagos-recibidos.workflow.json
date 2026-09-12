@@ -1,0 +1,124 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Cómo funciona CobroKai",
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "output": "public/diagrams/pagos-recibidos.html"
+  },
+  "lanes": [
+    {
+      "id": "flow",
+      "label": "Automatización & Agentes"
+    }
+  ],
+  "mainPath": [
+    "s1",
+    "s2",
+    "s3",
+    "s4",
+    "s5",
+    "s6"
+  ],
+  "nodes": [
+    {
+      "id": "s1",
+      "lane": "flow",
+      "col": 0,
+      "type": "external",
+      "label": "Los comprobantes",
+      "width": 190
+    },
+    {
+      "id": "s2",
+      "lane": "flow",
+      "col": 1,
+      "type": "messagebus",
+      "label": "Un motor de OCR/IA",
+      "width": 190
+    },
+    {
+      "id": "s3",
+      "lane": "flow",
+      "col": 2,
+      "type": "messagebus",
+      "label": "El operador valida",
+      "width": 190
+    },
+    {
+      "id": "s4",
+      "lane": "flow",
+      "col": 3,
+      "type": "messagebus",
+      "label": "Se carga a SAP",
+      "width": 190
+    },
+    {
+      "id": "s5",
+      "lane": "flow",
+      "col": 4,
+      "type": "messagebus",
+      "label": "Se gestionan",
+      "width": 190
+    },
+    {
+      "id": "s6",
+      "lane": "flow",
+      "col": 5,
+      "type": "backend",
+      "label": "Panel de cobro",
+      "width": 190
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "s1",
+      "to": "s2",
+      "variant": "default"
+    },
+    {
+      "id": "e2",
+      "from": "s2",
+      "to": "s3",
+      "variant": "default"
+    },
+    {
+      "id": "e3",
+      "from": "s3",
+      "to": "s4",
+      "variant": "default"
+    },
+    {
+      "id": "e4",
+      "from": "s4",
+      "to": "s5",
+      "variant": "default"
+    },
+    {
+      "id": "e5",
+      "from": "s5",
+      "to": "s6",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "rose",
+      "title": "Problema",
+      "items": [
+        "App de cobros que centraliza comprobantes (transferencias y cheques), extrae los datos con IA, los valida y los carga a SAP con imputación automática FICO y gestión de retenciones, con trazabilidad y observabilidad de todo el proceso."
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Solución",
+      "items": [
+        "Panel de cobro con KPIs y estados",
+        "Extracción de datos por OCR/IA (transferencias y cheques)",
+        "Carga e imputación automática a SAP (FICO, FIFO)"
+      ]
+    }
+  ]
+}

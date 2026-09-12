@@ -1,0 +1,109 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Cómo funciona Mondial-Xboost",
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "output": "public/diagrams/mondial-xboost.html"
+  },
+  "lanes": [
+    {
+      "id": "flow",
+      "label": "Machine Learning & IA"
+    }
+  ],
+  "mainPath": [
+    "s1",
+    "s2",
+    "s3",
+    "s4",
+    "s5"
+  ],
+  "nodes": [
+    {
+      "id": "s1",
+      "lane": "flow",
+      "col": 0,
+      "type": "external",
+      "label": "Dataset de ~49.000",
+      "width": 190
+    },
+    {
+      "id": "s2",
+      "lane": "flow",
+      "col": 1,
+      "type": "backend",
+      "label": "Optimización",
+      "width": 190
+    },
+    {
+      "id": "s3",
+      "lane": "flow",
+      "col": 2,
+      "type": "backend",
+      "label": "Predicción",
+      "width": 190
+    },
+    {
+      "id": "s4",
+      "lane": "flow",
+      "col": 3,
+      "type": "backend",
+      "label": "Simulación Monte Carlo",
+      "width": 190
+    },
+    {
+      "id": "s5",
+      "lane": "flow",
+      "col": 4,
+      "type": "backend",
+      "label": "App con dashboard",
+      "width": 190
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "s1",
+      "to": "s2",
+      "variant": "default"
+    },
+    {
+      "id": "e2",
+      "from": "s2",
+      "to": "s3",
+      "variant": "default"
+    },
+    {
+      "id": "e3",
+      "from": "s3",
+      "to": "s4",
+      "variant": "default"
+    },
+    {
+      "id": "e4",
+      "from": "s4",
+      "to": "s5",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "rose",
+      "title": "Problema",
+      "items": [
+        "Sistema de predicción de partidos de fútbol con XGBoost optimizado con Optuna sobre ~49.000 partidos, simulación Monte Carlo de 10.000 torneos y app con dashboard en vivo."
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Solución",
+      "items": [
+        "XGBoost optimizado con Optuna",
+        "Simulación Monte Carlo de 10.000 torneos",
+        "Dashboard en vivo con predicciones"
+      ]
+    }
+  ]
+}

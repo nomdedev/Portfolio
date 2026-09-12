@@ -76,7 +76,7 @@ function ProjectCard({
   return (
     <Spotlight className="h-full rounded-lg">
     <article
-      className={`group flex flex-col h-full bg-card rounded-lg border p-6 transition-[transform,border-color,box-shadow] duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-[0_12px_40px_-16px_var(--ring)] ${
+      className={`relative group flex flex-col h-full bg-card rounded-lg border p-6 transition-[transform,border-color,box-shadow] duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-[0_12px_40px_-16px_var(--ring)] ${
         featured ? "border-primary/40 md:p-8" : "border-border"
       }`}
     >
@@ -101,7 +101,11 @@ function ProjectCard({
           featured ? "text-2xl" : "text-lg"
         }`}
       >
-        <Link href={`/projects/${slug}`} aria-label={`${t.viewDetails}: ${title}`}>
+        <Link
+          href={`/projects/${slug}`}
+          className="after:absolute after:inset-0 after:content-['']"
+          aria-label={`${t.viewDetails}: ${title}`}
+        >
           {title}
         </Link>
       </h3>
@@ -119,20 +123,16 @@ function ProjectCard({
         ))}
       </ul>
       <div className="flex flex-wrap items-center gap-x-5 gap-y-2 mt-auto">
-        <Link
-          href={`/projects/${slug}`}
-          className="inline-flex items-center gap-1.5 font-mono text-sm text-primary"
-          aria-label={`${t.viewDetails}: ${title}`}
-        >
+        <span className="inline-flex items-center gap-1.5 font-mono text-sm text-primary">
           {t.viewDetails}
           <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-        </Link>
+        </span>
         {github && (
           <Link
             href={github}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 font-mono text-sm text-muted-foreground hover:text-primary transition-colors duration-300"
+            className="relative z-10 inline-flex items-center gap-2 font-mono text-sm text-muted-foreground hover:text-primary transition-colors duration-300"
             aria-label={`${t.viewCode}: ${title}`}
           >
             <Github className="w-4 h-4" />

@@ -1,0 +1,95 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Cómo funciona agent-manager-template",
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "output": "public/diagrams/agent-manager-template.html"
+  },
+  "lanes": [
+    {
+      "id": "flow",
+      "label": "Automatización & Agentes"
+    }
+  ],
+  "mainPath": [
+    "s1",
+    "s2",
+    "s3",
+    "s4"
+  ],
+  "nodes": [
+    {
+      "id": "s1",
+      "lane": "flow",
+      "col": 0,
+      "type": "external",
+      "label": "Clonás el template",
+      "width": 190
+    },
+    {
+      "id": "s2",
+      "lane": "flow",
+      "col": 1,
+      "type": "messagebus",
+      "label": "Las 12 reglas definen",
+      "width": 190
+    },
+    {
+      "id": "s3",
+      "lane": "flow",
+      "col": 2,
+      "type": "messagebus",
+      "label": "El pipeline de 7 fases",
+      "width": 190
+    },
+    {
+      "id": "s4",
+      "lane": "flow",
+      "col": 3,
+      "type": "backend",
+      "label": "Hooks, agentes",
+      "width": 190
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "s1",
+      "to": "s2",
+      "variant": "default"
+    },
+    {
+      "id": "e2",
+      "from": "s2",
+      "to": "s3",
+      "variant": "default"
+    },
+    {
+      "id": "e3",
+      "from": "s3",
+      "to": "s4",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "rose",
+      "title": "Problema",
+      "items": [
+        "Template reutilizable de Claude Code: estándar de 12 reglas, pipeline de 7 fases, hooks, agentes, skills y commands.",
+        "Producción lista desde el día uno."
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Solución",
+      "items": [
+        "Estándar de 12 reglas",
+        "Pipeline de 7 fases",
+        "Agentes, skills y commands incluidos"
+      ]
+    }
+  ]
+}

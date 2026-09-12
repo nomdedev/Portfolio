@@ -1,0 +1,110 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Cómo funciona Fine-tuning de LLMs",
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "output": "public/diagrams/llm-finetuning.html"
+  },
+  "lanes": [
+    {
+      "id": "flow",
+      "label": "Machine Learning & IA"
+    }
+  ],
+  "mainPath": [
+    "s1",
+    "s2",
+    "s3",
+    "s4",
+    "s5"
+  ],
+  "nodes": [
+    {
+      "id": "s1",
+      "lane": "flow",
+      "col": 0,
+      "type": "external",
+      "label": "Selección del modelo",
+      "width": 190
+    },
+    {
+      "id": "s2",
+      "lane": "flow",
+      "col": 1,
+      "type": "backend",
+      "label": "Curaduría de datasets",
+      "width": 190
+    },
+    {
+      "id": "s3",
+      "lane": "flow",
+      "col": 2,
+      "type": "backend",
+      "label": "Entrenamiento",
+      "width": 190
+    },
+    {
+      "id": "s4",
+      "lane": "flow",
+      "col": 3,
+      "type": "backend",
+      "label": "Evaluación base vs.",
+      "width": 190
+    },
+    {
+      "id": "s5",
+      "lane": "flow",
+      "col": 4,
+      "type": "backend",
+      "label": "Export del adaptador",
+      "width": 190
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "s1",
+      "to": "s2",
+      "variant": "default"
+    },
+    {
+      "id": "e2",
+      "from": "s2",
+      "to": "s3",
+      "variant": "default"
+    },
+    {
+      "id": "e3",
+      "from": "s3",
+      "to": "s4",
+      "variant": "default"
+    },
+    {
+      "id": "e4",
+      "from": "s4",
+      "to": "s5",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "rose",
+      "title": "Problema",
+      "items": [
+        "Fine-tuning de modelos de lenguaje (Hugging Face/Transformers) para clasificación, extracción de información y análisis de documentos.",
+        "Adaptadores LoRA/QLoRA con cuantización 4-bit para GPUs de consumo, datasets en formato de instrucciones y benchmarking base vs."
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Solución",
+      "items": [
+        "Adaptadores LoRA/QLoRA entrenables en GPU de consumo",
+        "Datasets en formato de instrucciones",
+        "Benchmarking base vs. ajustado"
+      ]
+    }
+  ]
+}

@@ -143,6 +143,7 @@ export function ProjectGallery({ images }: { images: ProjectImage[] }) {
                     alt={lang === "es" ? image.altEs : image.altEn}
                     priority={i === 0}
                     sizes="(max-width: 768px) 100vw, 1024px"
+                    className="object-contain"
                   />
                 </div>
               ))}
@@ -153,6 +154,7 @@ export function ProjectGallery({ images }: { images: ProjectImage[] }) {
               alt={currentAlt}
               priority
               sizes="(max-width: 768px) 100vw, 1024px"
+              className="object-contain"
             />
           )}
 

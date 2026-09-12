@@ -1,0 +1,110 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Cómo funciona Bots Conversacionales",
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "output": "public/diagrams/bots-sumed.html"
+  },
+  "lanes": [
+    {
+      "id": "flow",
+      "label": "Automatización & Agentes"
+    }
+  ],
+  "mainPath": [
+    "s1",
+    "s2",
+    "s3",
+    "s4",
+    "s5"
+  ],
+  "nodes": [
+    {
+      "id": "s1",
+      "lane": "flow",
+      "col": 0,
+      "type": "external",
+      "label": "El usuario envía",
+      "width": 190
+    },
+    {
+      "id": "s2",
+      "lane": "flow",
+      "col": 1,
+      "type": "messagebus",
+      "label": "El bot valida, extrae",
+      "width": 190
+    },
+    {
+      "id": "s3",
+      "lane": "flow",
+      "col": 2,
+      "type": "messagebus",
+      "label": "Integración vía API",
+      "width": 190
+    },
+    {
+      "id": "s4",
+      "lane": "flow",
+      "col": 3,
+      "type": "messagebus",
+      "label": "La app de cotizaciones",
+      "width": 190
+    },
+    {
+      "id": "s5",
+      "lane": "flow",
+      "col": 4,
+      "type": "backend",
+      "label": "Tablero de seguimiento",
+      "width": 190
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "s1",
+      "to": "s2",
+      "variant": "default"
+    },
+    {
+      "id": "e2",
+      "from": "s2",
+      "to": "s3",
+      "variant": "default"
+    },
+    {
+      "id": "e3",
+      "from": "s3",
+      "to": "s4",
+      "variant": "default"
+    },
+    {
+      "id": "e4",
+      "from": "s4",
+      "to": "s5",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "rose",
+      "title": "Problema",
+      "items": [
+        "Bot de carga de comprobantes integrado a SAP (~90% de la carga automatizada) y app de cotizaciones con ML + GenAI integrada a SAP y Tango (+60% precisión).",
+        "Canales: Telegram, WhatsApp, Chatwoot y Teams."
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Solución",
+      "items": [
+        "~90% de carga de comprobantes automatizada",
+        "+60% de precisión en cotizaciones",
+        "Multicanal: Telegram, WhatsApp, Chatwoot, Teams"
+      ]
+    }
+  ]
+}

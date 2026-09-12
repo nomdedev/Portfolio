@@ -1,0 +1,95 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Cómo funciona Modelos Cuantitativos",
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "output": "public/diagrams/modelos-cuantitativos.html"
+  },
+  "lanes": [
+    {
+      "id": "flow",
+      "label": "Trading & Quant"
+    }
+  ],
+  "mainPath": [
+    "s1",
+    "s2",
+    "s3",
+    "s4"
+  ],
+  "nodes": [
+    {
+      "id": "s1",
+      "lane": "flow",
+      "col": 0,
+      "type": "external",
+      "label": "Construcción",
+      "width": 190
+    },
+    {
+      "id": "s2",
+      "lane": "flow",
+      "col": 1,
+      "type": "cloud",
+      "label": "Etiquetado",
+      "width": 190
+    },
+    {
+      "id": "s3",
+      "lane": "flow",
+      "col": 2,
+      "type": "cloud",
+      "label": "Backtesting",
+      "width": 190
+    },
+    {
+      "id": "s4",
+      "lane": "flow",
+      "col": 3,
+      "type": "backend",
+      "label": "Reporte dual",
+      "width": 190
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "s1",
+      "to": "s2",
+      "variant": "default"
+    },
+    {
+      "id": "e2",
+      "from": "s2",
+      "to": "s3",
+      "variant": "default"
+    },
+    {
+      "id": "e3",
+      "from": "s3",
+      "to": "s4",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "rose",
+      "title": "Problema",
+      "items": [
+        "Feature engineering sobre precios, volumen, retornos y volatilidad.",
+        "Backtesting walk-forward con control de look-ahead bias y data leakage."
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Solución",
+      "items": [
+        "Features de precio, volumen y volatilidad",
+        "Walk-forward sin look-ahead bias",
+        "Métricas ML + métricas de trading"
+      ]
+    }
+  ]
+}

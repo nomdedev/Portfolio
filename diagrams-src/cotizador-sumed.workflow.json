@@ -1,0 +1,109 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Cómo funciona Cotizador Sumed",
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "output": "public/diagrams/cotizador-sumed.html"
+  },
+  "lanes": [
+    {
+      "id": "flow",
+      "label": "Automatización & Agentes"
+    }
+  ],
+  "mainPath": [
+    "s1",
+    "s2",
+    "s3",
+    "s4",
+    "s5"
+  ],
+  "nodes": [
+    {
+      "id": "s1",
+      "lane": "flow",
+      "col": 0,
+      "type": "external",
+      "label": "La solicitud",
+      "width": 190
+    },
+    {
+      "id": "s2",
+      "lane": "flow",
+      "col": 1,
+      "type": "messagebus",
+      "label": "Los datos",
+      "width": 190
+    },
+    {
+      "id": "s3",
+      "lane": "flow",
+      "col": 2,
+      "type": "messagebus",
+      "label": "Procesos en Microsoft",
+      "width": 190
+    },
+    {
+      "id": "s4",
+      "lane": "flow",
+      "col": 3,
+      "type": "messagebus",
+      "label": "Se gestiona el ciclo",
+      "width": 190
+    },
+    {
+      "id": "s5",
+      "lane": "flow",
+      "col": 4,
+      "type": "backend",
+      "label": "Observabilidad",
+      "width": 190
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "s1",
+      "to": "s2",
+      "variant": "default"
+    },
+    {
+      "id": "e2",
+      "from": "s2",
+      "to": "s3",
+      "variant": "default"
+    },
+    {
+      "id": "e3",
+      "from": "s3",
+      "to": "s4",
+      "variant": "default"
+    },
+    {
+      "id": "e4",
+      "from": "s4",
+      "to": "s5",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "rose",
+      "title": "Problema",
+      "items": [
+        "Cotizador que integra bots conversacionales, modelado de datos y procesos en Microsoft Fabric para crear y gestionar cotizaciones de punta a punta, con observabilidad completa de la aplicación."
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Solución",
+      "items": [
+        "Bots conversacionales para alta y consulta de cotizaciones",
+        "Modelado y normalización de datos",
+        "Procesos en Microsoft Fabric"
+      ]
+    }
+  ]
+}

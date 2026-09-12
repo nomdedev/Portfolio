@@ -1,0 +1,94 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Cómo funciona Datos en Fabric",
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "output": "public/diagrams/fabric-sumed.html"
+  },
+  "lanes": [
+    {
+      "id": "flow",
+      "label": "Productos & Software"
+    }
+  ],
+  "mainPath": [
+    "s1",
+    "s2",
+    "s3",
+    "s4"
+  ],
+  "nodes": [
+    {
+      "id": "s1",
+      "lane": "flow",
+      "col": 0,
+      "type": "external",
+      "label": "Ingesta diaria",
+      "width": 190
+    },
+    {
+      "id": "s2",
+      "lane": "flow",
+      "col": 1,
+      "type": "frontend",
+      "label": "Limpieza y modelado",
+      "width": 190
+    },
+    {
+      "id": "s3",
+      "lane": "flow",
+      "col": 2,
+      "type": "frontend",
+      "label": "Lakehouse + Data",
+      "width": 190
+    },
+    {
+      "id": "s4",
+      "lane": "flow",
+      "col": 3,
+      "type": "backend",
+      "label": "Datasets curados",
+      "width": 190
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "s1",
+      "to": "s2",
+      "variant": "default"
+    },
+    {
+      "id": "e2",
+      "from": "s2",
+      "to": "s3",
+      "variant": "default"
+    },
+    {
+      "id": "e3",
+      "from": "s3",
+      "to": "s4",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "rose",
+      "title": "Problema",
+      "items": [
+        "Pipeline end-to-end en Microsoft Fabric con capas Bronze/Silver/Gold sobre Lakehouse y Data Warehouse e ingesta diaria automática desde SAP: −80% en tiempos de información crítica."
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Solución",
+      "items": [
+        "Ingesta SAP diaria automática",
+        "Arquitectura Bronze/Silver/Gold",
+        "Lakehouse + Data Warehouse"
+      ]
+    }
+  ]
+}

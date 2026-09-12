@@ -45,3 +45,18 @@ test('language toggle switches to English', async ({ page }) => {
   await expect(page.getByRole('link', { name: 'View projects' })).toBeVisible();
   await expect(page.getByText('I turn data and AI models into business decisions.')).toBeVisible();
 });
+
+test('clicking anywhere on a project card opens its detail page', async ({ page }) => {
+  await page.goto('/');
+
+  const card = page.locator('article').filter({ hasText: 'tradingview-mcp' }).first();
+  await card.scrollIntoViewIfNeeded();
+
+  const box = await card.boundingBox();
+  if (!box) throw new Error('project card not visible');
+
+  // Click en el cuerpo de la card (no en el título ni en el link de GitHub)
+  await page.mouse.click(box.x + box.width / 2, box.y + box.height * 0.55);
+
+  await expect(page).toHaveURL(/\/projects\/tradingview-mcp/);
+});

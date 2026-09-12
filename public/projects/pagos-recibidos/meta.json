@@ -1,0 +1,26 @@
+{
+  "01-cover": {
+    "altEs": "Panel de cobro de CobroKai con KPIs y listado de comprobantes",
+    "altEn": "CobroKai collection panel with KPIs and receipt list",
+    "captionEs": "Panel de cobro: KPIs del día, búsqueda y comprobantes con sus estados",
+    "captionEn": "Collection panel: daily KPIs, search and receipts with their statuses"
+  },
+  "02-detalle-comprobante": {
+    "altEs": "Detalle de un comprobante con los datos extraídos automáticamente",
+    "altEn": "Receipt detail with automatically extracted data",
+    "captionEs": "Detalle del comprobante: imagen original más los datos extraídos (banco, cuenta, CVU e importe) y carga a SAP",
+    "captionEn": "Receipt detail: original image plus extracted data (bank, account, CVU and amount) and SAP posting"
+  },
+  "03-imputacion-sap": {
+    "altEs": "Imputación automática FICO a las facturas abiertas de SAP",
+    "altEn": "Automatic FICO imputation to open SAP invoices",
+    "captionEs": "Imputación automática FICO (FIFO): facturas abiertas, saldos, monto a imputar y sobrante a cuenta",
+    "captionEn": "Automatic FICO imputation (FIFO): open invoices, balances, amount to impute and account surplus"
+  },
+  "04-retenciones-sap": {
+    "altEs": "Gestión de retenciones de SAP con códigos activos",
+    "altEn": "SAP withholding management with active codes",
+    "captionEs": "Retenciones SAP: códigos activos (WTCODE/WTNAME) para efectivizar y actualizar",
+    "captionEn": "SAP withholdings: active codes (WTCODE/WTNAME) to apply and update"
+  }
+}

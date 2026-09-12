@@ -1,0 +1,95 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Cómo funciona ArbitrageAR-USDT",
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "output": "public/diagrams/arbitragear-usdt.html"
+  },
+  "lanes": [
+    {
+      "id": "flow",
+      "label": "Trading & Quant"
+    }
+  ],
+  "mainPath": [
+    "s1",
+    "s2",
+    "s3",
+    "s4"
+  ],
+  "nodes": [
+    {
+      "id": "s1",
+      "lane": "flow",
+      "col": 0,
+      "type": "external",
+      "label": "Scraping/API polling",
+      "width": 190
+    },
+    {
+      "id": "s2",
+      "lane": "flow",
+      "col": 1,
+      "type": "cloud",
+      "label": "Cálculo de spread",
+      "width": 190
+    },
+    {
+      "id": "s3",
+      "lane": "flow",
+      "col": 2,
+      "type": "cloud",
+      "label": "Simulador de ganancias",
+      "width": 190
+    },
+    {
+      "id": "s4",
+      "lane": "flow",
+      "col": 3,
+      "type": "backend",
+      "label": "Notificaciones",
+      "width": 190
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "s1",
+      "to": "s2",
+      "variant": "default"
+    },
+    {
+      "id": "e2",
+      "from": "s2",
+      "to": "s3",
+      "variant": "default"
+    },
+    {
+      "id": "e3",
+      "from": "s3",
+      "to": "s4",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "rose",
+      "title": "Problema",
+      "items": [
+        "Extensión Chrome que detecta arbitraje Dólar Oficial ↔ USDT en 30+ exchanges, con simulador de ganancias, notificaciones inteligentes y 47 tests.",
+        "Auditoría 2026: score 5.9 → 8.1."
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Solución",
+      "items": [
+        "Monitoreo de 30+ exchanges",
+        "Simulador de ganancias con comisiones",
+        "Notificaciones inteligentes de spread"
+      ]
+    }
+  ]
+}

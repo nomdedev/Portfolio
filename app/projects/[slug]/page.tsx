@@ -4,7 +4,8 @@ import { Navigation } from "@/components/portfolio/navigation"
 import { Footer } from "@/components/portfolio/footer"
 import { ProjectDetail } from "@/components/portfolio/project-detail"
 import { LanguageProvider } from "@/lib/i18n"
-import { getAdjacentProjects, getProject, getProjectImages, projects } from "@/lib/projects"
+import { getAdjacentProjects, getProject, projects } from "@/lib/projects"
+import { getProjectImages, getProjectDiagram } from "@/lib/project-images"
 
 export const dynamicParams = false
 
@@ -52,12 +53,13 @@ export default async function ProjectPage({
 
   const { prev, next } = getAdjacentProjects(slug)
   const images = getProjectImages(project)
+  const diagram = getProjectDiagram(slug)
 
   return (
     <LanguageProvider>
       <main className="min-h-screen bg-background">
         <Navigation />
-        <ProjectDetail project={project} images={images} prev={prev} next={next} />
+        <ProjectDetail project={project} images={images} diagram={diagram} prev={prev} next={next} />
         <Footer />
       </main>
     </LanguageProvider>
