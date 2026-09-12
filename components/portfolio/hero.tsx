@@ -57,9 +57,9 @@ export function Hero() {
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex flex-col justify-center px-6 md:px-12 lg:px-24"
+      className="relative min-h-screen flex flex-col px-6 md:px-12 lg:px-24 pt-28 pb-16"
     >
-      <div className="max-w-4xl">
+      <div className="max-w-4xl m-auto w-full">
         <Reveal>
           <p className="text-primary font-mono text-sm md:text-base mb-4 tracking-wide">
             {t.greeting}

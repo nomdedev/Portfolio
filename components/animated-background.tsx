@@ -2,8 +2,8 @@
 
 import { useEffect, useRef } from "react"
 
-const LINK_DIST = 130
-const MOUSE_DIST = 170
+const LINK_DIST = 140
+const MOUSE_DIST = 180
 const ACCENT = "52,211,153" // esmeralda del sistema
 
 type Particle = { x: number; y: number; vx: number; vy: number; r: number; tw: number }
@@ -55,13 +55,13 @@ export function AnimatedBackground() {
       canvas.style.width = `${w}px`
       canvas.style.height = `${h}px`
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-      const count = Math.max(30, Math.min(110, Math.floor((w * h) / 16000)))
+      const count = Math.max(45, Math.min(140, Math.floor((w * h) / 9000)))
       pts = Array.from({ length: count }, () => ({
         x: Math.random() * w,
         y: Math.random() * h,
         vx: (Math.random() - 0.5) * 0.35,
         vy: (Math.random() - 0.5) * 0.35,
-        r: Math.random() * 1.4 + 0.6,
+        r: Math.random() * 1.6 + 0.8,
         tw: Math.random() * Math.PI * 2,
       }))
     }
@@ -86,7 +86,7 @@ export function AnimatedBackground() {
           const dy = a.y - b.y
           const d2 = dx * dx + dy * dy
           if (d2 < LINK_DIST * LINK_DIST) {
-            const alpha = (1 - Math.sqrt(d2) / LINK_DIST) * 0.16
+            const alpha = (1 - Math.sqrt(d2) / LINK_DIST) * 0.22
             ctx.strokeStyle = `rgba(${ACCENT},${alpha.toFixed(3)})`
             ctx.beginPath()
             ctx.moveTo(a.x, a.y)
@@ -99,7 +99,7 @@ export function AnimatedBackground() {
         const mdy = a.y - mouse.y
         const md2 = mdx * mdx + mdy * mdy
         if (md2 < MOUSE_DIST * MOUSE_DIST) {
-          const alpha = (1 - Math.sqrt(md2) / MOUSE_DIST) * 0.35
+          const alpha = (1 - Math.sqrt(md2) / MOUSE_DIST) * 0.5
           ctx.strokeStyle = `rgba(${ACCENT},${alpha.toFixed(3)})`
           ctx.beginPath()
           ctx.moveTo(a.x, a.y)
@@ -111,7 +111,7 @@ export function AnimatedBackground() {
       ctx.fillStyle = `rgba(${ACCENT},0.5)`
       const now = performance.now() / 1000
       for (const p of pts) {
-        ctx.fillStyle = `rgba(${ACCENT},${(0.32 + 0.25 * Math.sin(now * 1.2 + p.tw)).toFixed(3)})`
+        ctx.fillStyle = `rgba(${ACCENT},${(0.45 + 0.3 * Math.sin(now * 1.2 + p.tw)).toFixed(3)})`
         ctx.beginPath()
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
         ctx.fill()
