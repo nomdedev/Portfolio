@@ -1,13 +1,14 @@
 /** @type {import('next').NextConfig} */
+const isGitHubPages = !!process.env.GITHUB_PAGES;
 const nextConfig = {
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: false,
   },
   images: {
-    unoptimized: true,
+    unoptimized: isGitHubPages,
   },
   // Solo usar export para GitHub Pages, no para Vercel
-  ...(process.env.GITHUB_PAGES ? {
+  ...(isGitHubPages ? {
     output: 'export',
     trailingSlash: true,
     distDir: 'dist',

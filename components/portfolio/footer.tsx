@@ -1,26 +1,54 @@
+"use client"
+
 import { Github, Linkedin, Mail } from "lucide-react"
 import Link from "next/link"
+import { useLanguage, type Lang } from "@/lib/i18n"
+
+const EMAIL = "martin.nomdedeu@gmail.com"
 
 const socialLinks = [
-  { name: "GitHub", href: "https://github.com/nomdedev", icon: Github },
-  { name: "LinkedIn", href: "https://linkedin.com/in/martin-nomdedeu", icon: Linkedin },
-  { name: "Email", href: "mailto:martin.nomdedeu.dev@gmail.com", icon: Mail },
+  { name: "GitHub", href: "https://github.com/nomdedev", icon: Github, external: true },
+  { name: "LinkedIn", href: "https://linkedin.com/in/martin-nomdedeu", icon: Linkedin, external: true },
+  { name: "Email", href: `mailto:${EMAIL}`, icon: Mail, external: false },
 ]
 
-const quickLinks = [
-  { name: "Home", href: "#hero" },
-  { name: "Sobre Mí", href: "#about" },
-  { name: "Proyectos", href: "#projects" },
-  { name: "Experiencia", href: "#experience" },
-  { name: "Contacto", href: "#contact" },
-]
+const quickLinks: Record<Lang, { name: string; href: string }[]> = {
+  es: [
+    { name: "Sobre mí", href: "#about" },
+    { name: "Proyectos", href: "#projects" },
+    { name: "Experiencia", href: "#experience" },
+    { name: "Docencia", href: "#teaching" },
+    { name: "Contacto", href: "#contact" },
+  ],
+  en: [
+    { name: "About", href: "#about" },
+    { name: "Projects", href: "#projects" },
+    { name: "Experience", href: "#experience" },
+    { name: "Teaching", href: "#teaching" },
+    { name: "Contact", href: "#contact" },
+  ],
+}
+
+const copy: Record<Lang, { credit: string; rights: string }> = {
+  es: {
+    credit: "Diseñado y desarrollado por Martin Nomdedeu",
+    rights: "Todos los derechos reservados.",
+  },
+  en: {
+    credit: "Designed and built by Martin Nomdedeu",
+    rights: "All rights reserved.",
+  },
+}
 
 export function Footer() {
+  const { lang } = useLanguage()
+  const t = copy[lang]
+  const year = new Date().getFullYear()
+
   return (
     <footer className="py-8 px-6 md:px-12 lg:px-24 border-t border-border">
-      {/* Quick Links */}
-      <div className="flex flex-wrap justify-center gap-6 mb-6">
-        {quickLinks.map((link) => (
+      <nav aria-label="Secundaria" className="flex flex-wrap justify-center gap-6 mb-6">
+        {quickLinks[lang].map((link) => (
           <Link
             key={link.name}
             href={link.href}
@@ -29,7 +57,7 @@ export function Footer() {
             {link.name}
           </Link>
         ))}
-      </div>
+      </nav>
 
       {/* Mobile Social Links */}
       <div className="flex justify-center gap-6 mb-6 md:hidden">
@@ -37,9 +65,8 @@ export function Footer() {
           <Link
             key={link.name}
             href={link.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-muted-foreground hover:text-primary transition-colors duration-300"
+            {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+            className="text-muted-foreground hover:text-primary transition-colors duration-300 min-w-[44px] min-h-[44px] grid place-items-center"
             aria-label={link.name}
           >
             <link.icon className="w-5 h-5" />
@@ -48,11 +75,9 @@ export function Footer() {
       </div>
 
       <div className="text-center space-y-2">
-        <p className="text-muted-foreground text-sm font-mono">
-          Diseñado y desarrollado por Martín Nomdedeu
-        </p>
-        <p className="text-muted-foreground/60 text-xs">
-          © 2025 Martín Nomdedeu. Todos los derechos reservados.
+        <p className="text-muted-foreground text-sm font-mono">{t.credit}</p>
+        <p className="text-muted-foreground text-xs">
+          © {year} Martin Nomdedeu. {t.rights}
         </p>
       </div>
     </footer>
