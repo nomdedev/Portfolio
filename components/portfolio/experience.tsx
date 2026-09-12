@@ -9,7 +9,7 @@ const experiences = [
     title: "Founder & Product Lead",
     company: "FinTech Products",
     companyUrl: "https://linkedin.com/in/martin-nomdedeu",
-    date: "2025 — Presente",
+    date: "Ene 2025 — Presente",
     description:
       "Desarrollé múltiples productos B2C desde discovery hasta MVP. Proyectos: Portfolio Tracker, ERP, Arbitrajes, Vecino Simple.",
     skills: ["Product Discovery", "MVP", "B2C", "FinTech", "Strategy"],
@@ -18,7 +18,7 @@ const experiences = [
     title: "Coordinador General Producción & Tecnología",
     company: "MPS",
     companyUrl: "https://linkedin.com/in/martin-nomdedeu",
-    date: "2023 — 2025",
+    date: "Feb 2023 — Ago2025",
     description:
       "Lideré transformación digital para 60+ personas. Resultados: Cycle time ↓70%, Eficiencia ↑25%, KPIs en Power BI.",
     skills: ["Digital Transformation", "Power BI", "KPIs", "Lean", "Leadership"],
@@ -27,7 +27,7 @@ const experiences = [
     title: "Project Analyst",
     company: "Centro Tecnológico Aeroespacial (CTA)",
     companyUrl: "https://linkedin.com/in/martin-nomdedeu",
-    date: "2019 — 2023",
+    date: "Mar 2019 — Ene 2023",
     description:
       "Primer colectivo eléctrico funcional de Argentina. Coordinación UNLP-CTA-Nueve de Julio, integración técnica completa.",
     skills: ["Project Management", "Aeroespacial", "Coordinación", "Innovación", "R&D"],
@@ -36,7 +36,7 @@ const experiences = [
     title: "Jefe de Mantenimiento",
     company: "Nueve de Julio SAT",
     companyUrl: "https://linkedin.com/in/martin-nomdedeu",
-    date: "2022 — 2023",
+    date: "Ene 2021 — Ene 2023",
     description:
       "Reorganización completa de almacén con 5S + digitalización. Implementación Lean Manufacturing, auditorías ISO/IRAM.",
     skills: ["Lean Manufacturing", "5S", "ISO", "IRAM", "Gestión"],

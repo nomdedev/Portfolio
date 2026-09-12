@@ -2,76 +2,79 @@
 
 Portfolio de Martín Nomdedeu - Ingeniero Electromecánico, Product Manager & Technical Leader especializado en transformación digital, optimización operativa y desarrollo de productos.
 
-Un portfolio web moderno y elegante construido con Next.js 15, React, TypeScript y Tailwind CSS que showcases proyectos de desarrollo web, ingeniería industrial y soluciones tecnológicas innovadoras.
+Un portfolio web moderno y elegante construido con Next.js 15, React 18, TypeScript y Tailwind CSS que showcases proyectos de desarrollo web, ingeniería industrial y soluciones tecnológicas innovadoras.
 
 ## 🌐 Información del Proyecto
 
 ### 🚀 Versión Principal
 - **Rama**: `main` (única rama)
-- **Framework**: Next.js 15 + TypeScript
+- **Framework**: Next.js 15 + React 18 + TypeScript
 - **UI Components**: Radix UI + Tailwind CSS
 - **Deployment**: Vercel automático
-- **Edición Visual**: Compatible con v0.dev
+- **URL del Portfolio**: https://martinnomdedeu.com
+
+### 👤 Información Personal
+- **Nombre**: Martín Nomdedeu
+- **Título**: Ingeniero Electromecánico, Product Manager & Technical Leader
+- **Email**: martin.nomdedeu.dev@gmail.com
+- **LinkedIn**: https://linkedin.com/in/martin-nomdedeu
+- **GitHub**: https://github.com/nomdedev
 
 ## ✨ Características Destacadas
 
-- **🎨 Diseño Moderno**: Tema oscuro con acentos violetas y efectos glassmorphism
-- **📱 Diseño Responsivo**: Optimizado para desktop, tablet y móvil
+- **🎨 Diseño Moderno**: Tema oscuro por defecto con acentos violetas y efectos glassmorphism
+- **📱 Diseño Responsivo**: Optimizado para desktop, tablet y móvil (mobile-first)
 - **⚡ Animaciones Suaves**: Transiciones CSS y animaciones al hacer scroll
-- **🖼️ Galerías Interactivas**: Visualización detallada de proyectos con múltiples imágenes
-- **🔗 Integración Social**: Enlaces directos a LinkedIn y GitHub
-- **🛠️ Tecnologías Actuales**: Next.js 15, TypeScript, Tailwind CSS, Radix UI
+- **🔍 SEO Optimizado**: Meta tags, Open Graph, Twitter Cards, sitemap.xml, robots.txt
+- **🖼️ Galerías Interactivas**: Grid de proyectos con visualización detallada
+- **🔗 Integración Social**: Enlaces directos a LinkedIn, GitHub y Email
+- **📄 CV Descargable**: CV en PDF disponible para descarga
+- **🌙 Dark Mode**: Tema oscuro por defecto con diseño consistente
+- **🧭 Smooth Scroll**: Navegación fluida entre secciones
 
-## 📁 Estructura de Imágenes
-
-```
-img/
-├── tsolares/           # Proyecto Tanques Solares
-│   ├── ts1-fabricacion.jpg
-│   ├── ts2-detalleproducto.jpg
-│   ├── ts3-productohogar.jpg
-│   └── ts4-procesofab.jpg
-├── harvesting/         # Proyecto Máquina Cosechadora
-├── Rexxus/            # Proyectos Web
-├── vecinosimple/      # Proyecto Vecino Simple
-└── [otras imágenes]
-```
-
-## 🏗️ Arquitectura del Proyecto
+## 📁 Estructura del Proyecto
 
 ```
 portfolio/
-├── app/                    # Next.js App Router
-│   ├── globals.css        # Estilos globales
-│   ├── layout.tsx         # Layout principal
-│   ├── page.tsx           # Página principal
-│   └── sitemap.ts         # Sitemap para SEO
-├── components/            # Componentes React
-│   ├── portfolio/         # Componentes del portfolio
-│   │   ├── navigation.tsx
-│   │   ├── hero.tsx
-│   │   ├── about.tsx
-│   │   ├── experience.tsx
-│   │   ├── projects.tsx
-│   │   ├── contact.tsx
-│   │   ├── footer.tsx
-│   │   └── side-elements.tsx
-│   ├── theme-provider.tsx
-│   └── ui/                # Componentes UI (Radix)
-├── lib/                   # Utilidades
-│   └── utils.ts
-├── public/                # Archivos estáticos
-│   ├── img/              # Imágenes del portfolio
-│   └── icons/            # Iconos y favicons
-├── styles/               # Estilos adicionales
-├── tests/                # Tests automatizados
-└── [config files]        # next.config.mjs, tsconfig.json, etc.
+├── app/                           # Next.js App Router
+│   ├── globals.css               # Estilos globales
+│   ├── layout.tsx                # Layout principal con meta tags SEO
+│   ├── page.tsx                  # Página principal que importa componentes
+│   └── sitemap.ts                # Sitemap para SEO
+├── components/                    # Componentes React
+│   ├── portfolio/                # Componentes del portfolio
+│   │   ├── navigation.tsx        # Navegación sticky header
+│   │   ├── hero.tsx              # Sección Hero con información principal
+│   │   ├── about.tsx             # Sección About con skills y contacto
+│   │   ├── experience.tsx       # Sección Experience con timeline
+│   │   ├── projects.tsx          # Sección Projects con grid
+│   │   ├── contact.tsx           # Sección Contact con formulario
+│   │   ├── footer.tsx            # Footer con links y sociales
+│   │   └── side-elements.tsx     # Elementos fijos laterales
+│   ├── theme-provider.tsx        # Provider de tema
+│   └── ui/                       # Componentes UI (Radix)
+├── lib/                          # Utilidades
+│   └── utils.ts                  # Funciones helper
+├── public/                       # Archivos estáticos
+│   ├── cv.pdf                    # CV descargable
+│   ├── img/                      # Imágenes de proyectos
+│   │   ├── harvesting/           # Imágenes proyecto Harvesting
+│   │   ├── Rexxus/               # Imágenes proyecto Rexxus
+│   │   ├── tsolares/             # Imágenes proyecto Tanques Solares
+│   │   └── vecinosimple/         # Imágenes proyecto Vecino Simple
+│   ├── manifest.json             # PWA manifest
+│   └── robots.txt                # Robots.txt para SEO
+├── styles/                       # Estilos adicionales
+├── tests/                        # Tests automatizados
+│   ├── cv-test.spec.ts           # Tests de CV
+│   └── redirect-test.spec.ts     # Tests de redirección
+└── [config files]                # next.config.mjs, tsconfig.json, etc.
 ```
 
 ## 🛠️ Tecnologías Utilizadas
 
 ### Framework y Stack Principal
-- **Next.js 15**: Framework React para aplicaciones web modernas
+- **Next.js 15**: Framework React para aplicaciones web modernas con App Router
 - **React 18**: Biblioteca JavaScript para interfaces de usuario
 - **TypeScript**: Superset tipado de JavaScript
 - **Tailwind CSS**: Framework de utilidades CSS
@@ -80,16 +83,23 @@ portfolio/
 - **HTML5**: Estructura semántica moderna
 - **CSS3**: Características avanzadas
   - Flexbox y Grid para layouts
-  - Animaciones y transiciones
+  - Animaciones y transiciones suaves
   - Glassmorphism con `backdrop-filter`
   - Variables CSS para temas
 - **JavaScript ES6+**: Interactividad y animaciones
   - Intersection Observer para scroll animations
   - Event listeners para navegación móvil
 
+### SEO y PWA
+- **Meta Tags**: Descripción, keywords, Open Graph
+- **Twitter Cards**: Optimización para redes sociales
+- **Sitemap**: Generación automática de sitemap.xml
+- **Robots.txt**: Configuración para crawlers
+- **PWA Manifest**: Configuración para instalación como app
+
 ### Herramientas de Desarrollo
 - **Google Fonts**: Tipografía Inter para diseño moderno
-- **Icons8**: Iconografía profesional
+- **Radix UI**: Componentes UI accesibles y personalizables
 - **Playwright**: Testing end-to-end
 - **Python**: Testing automatizado con requests/beautifulsoup4
 
@@ -146,13 +156,16 @@ portfolio/
 
 ```bash
 # Desarrollo
-pnpm dev          # Servidor de desarrollo
-pnpm build        # Build de producción
-pnpm start        # Servidor de producción
-pnpm lint         # Linting con ESLint
+npm run dev          # Servidor de desarrollo
+npm run build        # Build de producción
+npm start            # Servidor de producción
+npm run lint         # Linting con ESLint
 
-# Testing (futuro)
-pnpm test         # Ejecutar tests
+# Con pnpm
+pnpm dev             # Servidor de desarrollo
+pnpm build           # Build de producción
+pnpm start           # Servidor de producción
+pnpm lint            # Linting con ESLint
 ```
 
 ## 🌟 Flujo de Trabajo
@@ -188,69 +201,65 @@ git push origin main
 - `"Create a blog section with latest posts"`
 - `"Add animated background effects"`
 
-### � Verificación del Proyecto
-
-Este proyecto incluye scripts de verificación para asegurar que todo esté configurado correctamente:
-
-#### Para Windows PowerShell:
-```powershell
-.\check_main.ps1
-```
-
-#### Para Windows Command Prompt:
-```batch
-check_main.bat
-```
-
-### Qué Verifican los Scripts:
-
-- ✅ Rama actual (debe ser `main`)
-- ✅ Versión de Next.js instalada
-- ✅ Archivos requeridos presentes (`app/`, `components/`, configuración)
-- ✅ Servidor de desarrollo corriendo
-- ✅ Instrucciones paso a paso para importar a v0.dev
-
 ## 📱 Secciones del Portfolio
 
-### 🏠 Hero Section (bckPage)
-- Presentación personal con animaciones de texto
-- Fondo animado con gradientes violetas
-- Llamado a acción para ver proyectos
+### 1. 🏠 Hero Section
+- Presentación personal con nombre y título
+- Descripción profesional breve
+- Botones CTA para ver proyectos y descargar CV
+- Fondo con diseño glassmorphism
 
-### 💼 Servicios (Services)
-- Diseño de sitios web para empresas
-- Experiencia de usuario optimizada
-- Herramientas de administración
-- Análisis de datos
-
-### 🚀 Proyectos (Projects)
-Proyectos destacados:
-
-1. **Solar Water Tanks** - Desarrollo de tanques solares
-   - Tecnologías: CAD, Ingeniería Mecánica
-   - Enlace: [Drive Link](https://drive.google.com/file/d/...)
-
-2. **Harvesting Machine** - Diseño de máquina cosechadora
-   - Tecnologías: CAD, Normas ISO
-   - Enlace: [Drive Link](https://drive.google.com/file/d/...)
-
-3. **Industrial Gas Tank** - Diseño de tanque industrial
-   - Tecnologías: CAD, Ingeniería Industrial
-   - Enlace: [Drive Link](https://drive.google.com/file/d/...)
-
-### 👨‍💻 Sobre Mí (About)
-- Información personal y profesional
+### 2. 💼 About Section
+- Descripción personal y profesional detallada
+- 6 categorías de skills organizadas:
+  - Frontend Development
+  - Backend Development
+  - DevOps & Cloud
+  - Project Management
+  - Data & Analytics
+  - Soft Skills
+- Datos de contacto directos (email, LinkedIn, GitHub)
 - Imagen de perfil con efectos visuales
-- Enlaces a contacto
 
-### 📞 Contacto (Contact)
-- Información de contacto directa
-- Enlaces a LinkedIn
-- Formas múltiples de comunicación
+### 3. 🚀 Experience Section
+- Timeline de experiencia profesional
+- 4 posiciones destacadas con:
+  - Cargo y empresa
+  - Período de tiempo
+  - Descripción de responsabilidades
+  - Logros y tecnologías utilizadas
 
-### 🔗 Footer
-- Enlaces sociales (GitHub, LinkedIn)
+### 4. 🎨 Projects Section
+- Grid de 2 columnas responsivo
+- 4 proyectos principales:
+  1. **Rexxus** - Plataforma web empresarial
+  2. **Tanques Solares** - Desarrollo de tanques solares
+  3. **Vecino Simple** - Aplicación de gestión comunitaria
+  4. **Harvesting Machine** - Diseño de máquina cosechadora
+- Cada proyecto incluye:
+  - Imagen representativa
+  - Título y descripción
+  - Tecnologías utilizadas
+  - Enlace a demo/repositorio
+
+### 5. 📞 Contact Section
+- Formulario de contacto funcional
+- Enlaces directos a redes sociales
+- Botones CTA para contacto directo
+- Información de contacto completa
+
+### 6. 🔗 Footer
+- Enlaces a redes sociales (GitHub, LinkedIn)
+- Enlace de email
 - Información de copyright
+- Navegación rápida a secciones
+
+### 7. 📌 Side Elements
+- Elementos fijos laterales con:
+  - Enlace a GitHub
+  - Enlace a LinkedIn
+  - Email directo
+- Efectos hover y tooltips
 
 ## 🎨 Diseño y UX
 
@@ -266,30 +275,38 @@ Proyectos destacados:
 - **Tamaños**: Responsive (rem units)
 
 ### Animaciones
-- **Fade In Up**: Proyectos aparecen al hacer scroll
-- **Hover Effects**: Transformaciones y sombras
-- **Text Reveal**: Animación de título principal
-- **Background Shift**: Gradientes animados
+- **Fade In Up**: Elementos aparecen al hacer scroll
+- **Hover Effects**: Transformaciones y sombras en tarjetas
+- **Smooth Scroll**: Navegación fluida entre secciones
+- **Glassmorphism**: Efectos de desenfoque en elementos fijos
 
-## 🔧 Desarrollo y Mantenimiento
+### Responsive Design
+- **Mobile First**: Diseño optimizado para móviles primero
+- **Breakpoints**:
+  - Mobile: < 768px
+  - Tablet: 768px - 1024px
+  - Desktop: > 1024px
+- **Dropdown Menu**: Menú hamburguesa en dispositivos móviles
 
-### Estructura de Archivos
-- `index.html`: Contenido y estructura
-- `style.css`: Estilos y diseño visual
-- `script.js`: Funcionalidad interactiva
+## 🔧 SEO y Optimización
 
-### Mejores Prácticas Implementadas
-- ✅ HTML semántico
-- ✅ CSS modular y mantenible
-- ✅ JavaScript no obstructivo
-- ✅ Imágenes optimizadas
-- ✅ Enlaces accesibles
-- ✅ Diseño responsivo
-- ✅ Testing automatizado
+### Meta Tags
+- Título optimizado para búsqueda
+- Descripción meta con palabras clave
+- Open Graph para redes sociales
+- Twitter Cards para Twitter
 
-### Optimizaciones de Performance
+### Sitemap
+- Generación automática de sitemap.xml
+- Incluye todas las páginas del sitio
+
+### Robots.txt
+- Configuración para crawlers
+- Permite indexación de contenido relevante
+
+### Performance
+- Imágenes optimizadas
 - CSS crítico en línea
-- Imágenes lazy-loaded
 - Animaciones hardware-accelerated
 - Fuentes optimizadas
 
@@ -313,33 +330,10 @@ Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) par
 - GitHub: [github.com/nomdedev](https://github.com/nomdedev)
 - LinkedIn: [linkedin.com/in/martin-nomdedeu](https://linkedin.com/in/martin-nomdedeu)
 - Email: [martin.nomdedeu.dev@gmail.com](mailto:martin.nomdedeu.dev@gmail.com)
-
----
-
-## 📚 Recursos Adicionales
-
-### 🎯 Guía de Marketing Digital
-Para optimizar tu portfolio y estrategia de marketing profesional, consulta nuestra **[Guía Definitiva de Portfolios y Marketing Digital](PORTFOLIO_MARKETING_GUIDE.md)** que incluye:
-
-- Estrategias de posicionamiento de marca personal
-- Optimización SEO para profesionales
-- Diseño de portfolios que convierten
-- Content marketing para técnicos
-- Analytics y A/B testing
-- Casos de éxito reales
-
-### 📋 Checklist de Optimización
-- [ ] **SEO Técnico**: Meta tags, schema markup, Core Web Vitals
-- [ ] **Contenido**: Casos de estudio con métricas cuantificables
-- [ ] **Social Proof**: Testimonials y logos de clientes
-- [ ] **Conversiones**: CTAs estratégicos y formularios optimizados
-- [ ] **Analytics**: Google Analytics 4 y heatmaps configurados
+- Portfolio: [martinnomdedeu.com](https://martinnomdedeu.com)
 
 ---
 
 ⭐ **Si te gusta este portfolio, ¡dale una estrella!**
 
 Última actualización: Enero 2026
-#   F o r c e   r e d e p l o y   w i t h   G e i s t   f o n t s 
- 
- 
