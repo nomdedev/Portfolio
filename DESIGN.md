@@ -138,7 +138,7 @@ Fondo siempre oscuro (el tema claro no se diseña, solo existe el token).
 | `ticker`         | Cinta keywords                             | 36s linear infinite, pausa solo `pointer:fine` |
 | `spotlight`      | Glow cursor en cards                       | opacity 400ms, radial 320px fijo        |
 | `magnetic`       | Solo CTA primario del hero                 | rAF lerp 0.18, máx ±6px, solo `pointer:fine` |
-| `neural-bg`      | Fondo fijo (`components/animated-background.tsx`) | Red neuronal: retícula con jitter + sinapsis cortas; activación por cursor (pincel con estela), tap y velocidad de scroll; 30fps, DPR ≤1.5, pausa al ocultar pestaña |
+| `neural-bg`      | Fondo fijo (`components/animated-background.tsx`) | Somas por muestreo orgánico (sin retícula) + sinapsis **curvas** que sólo se revelan bajo el cursor, con traza que se desvanece en ~0.6s. En reposo no se ven conexiones: sólo somas y chispas eléctricas aleatorias que viajan por una sinapsis y hacen destellar la neurona que tocan. Tap revela localmente; el scroll acelera las chispas. 30fps, DPR ≤1.5, pausa al ocultar pestaña |
 | `scroll-coupling`| Glow del fondo + activación de la red      | Un solo driver (`lib/scroll-driver.ts`): `--scroll-progress` 0→1 mueve el aura (4%→42% del viewport) y `--scroll-vel` excita la red |
 
 ### Prohibiciones
@@ -158,6 +158,9 @@ Fondo siempre oscuro (el tema claro no se diseña, solo existe el token).
 8. El scroll del fondo NO se acopla con `translateY(scrollY)`: eso desplaza la
    capa fuera del viewport a los pocos miles de px. Lo vinculado al scroll es
    progreso (aura) y velocidad (activación), siempre acotado.
+9. Las conexiones del fondo son **curvas** y no se dibujan en reposo: la
+   estructura se revela con el cursor (o el tap). En reposo sólo hay somas y
+   chispas aleatorias. Nunca volver a la retícula de líneas rectas siempre visible.
 
 ---
 
