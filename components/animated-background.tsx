@@ -4,180 +4,119 @@ import { useEffect, useRef } from "react"
 import { subscribeScroll } from "@/lib/scroll-driver"
 
 /**
- * Fondo vivo: actividad neuronal sobre la que se apoya el contenido.
+ * Fondo "deep space": un cielo estelar vivo sobre el que se apoya el contenido.
  *
- * Dos capas:
+ * Tres sistemas:
  *
- * 1) RED AMBIENTE (pre-generada, siempre ahí pero casi invisible): neuronas chicas
- *    con dendritas curvas que se afinan, de tamaño y forma distintos, distribuidas
- *    en la pantalla. Fuera del radio del cursor se dibuja a `AMBIENT_GAIN` (16%),
- *    o sea se intuye pero no se ve. Cada neurona dispara cada tanto y su región
- *    late, así que de fondo hay vida tenue.
+ * 1) CAMPO ESTELAR (3 capas de profundidad): estrellas blancas/azuladas (neutro
+ *    slate) con unas pocas esmeralda. Cada una parpadea (twinkle) con fase,
+ *    velocidad y amplitud propias. Las capas derivan muy despacio (rotación
+ *    celeste) a velocidades distintas y tienen parallax distinto con el cursor:
+ *    la cercana se mueve ~13px, la lejana ~3px → profundidad real. Las
+ *    destacadas ("hot") llevan halo y cruz de difracción.
  *
- * 2) RED DEL CURSOR (lo que el usuario mira): al pasar el mouse se GENERA una red
- *    efímera dentro de un radio chico (~2 cm). Cada neurona que aparece es distinta
- *    (tamaño, cantidad y largo de dendritas aleatorios), dispara su impulso al nacer
- *    —el axón se enciende mientras lo recorre— y al llegar a la punta contagia a
- *    otra vecina. Cada una vive 1,4-2,6 s y se desvanece. Nunca se ve dos veces lo
- *    mismo. Dentro del radio, además, la red ambiente se enciende a full.
+ * 2) CONSTELACIONES DEL CURSOR: dentro de un radio (~170px) las estrellas de
+ *    las capas cercanas se conectan con trazos esmeralda finos que SE DIBUJAN
+ *    progresivamente (como si el cursor trazara la figura a mano) y se apagan
+ *    con un fade corto al alejarse. Las 4 más cercanas se enlazan con el propio
+ *    cursor. Alrededor del cursor las estrellas brillan un poco más.
  *
- * 3) BARRIDO "AGENTE IA": cada 5 minutos un frente cruza la pantalla y dispara
- *    cientos de neuronas a la vez (parámetros ejecutándose en paralelo). Es el único
- *    momento en que se ve la red completa.
+ * 3) ESTRELLAS FUGACES: cada 8-20s cruza una, con estela blanco→esmeralda.
+ *    Reemplaza al viejo "barrido": es el único evento global y es natural.
+ *    En táctil, un tap lanza una desde el punto tocado.
  *
- * Rendimiento (DESIGN.md §4): capa fija, ~30fps, DPR ≤1.5, malla ambiente en un solo
- * path, tope de neuronas vivas/disparando, pausa con la pestaña oculta y con
- * `prefers-reduced-motion` se pinta un único frame estático.
+ * Scroll: la velocidad acelera la deriva (lib/scroll-driver.ts). El aura
+ * esmeralda CSS (`.scroll-glow`) actúa de nebulosa tenue.
+ *
+ * Rendimiento (DESIGN.md §4): capa fija, ~30fps, DPR ≤1.5, sprites de halo
+ * pre-renderizados, pausa con la pestaña oculta y con `prefers-reduced-motion`
+ * se pinta un único frame estático (sin loop ni listeners de puntero).
  */
 
-// Acento del sistema (DESIGN.md §2): un solo tinte, distintos alfas/luminancias.
-const ACCENT = "52,211,153"
-const HOT = "196,255,226" // "blanco caliente" del soma activo (mismo tinte, más luz)
+// 2 tintes, nada más (DESIGN.md §2): neutro slate claro + acento esmeralda.
+const STAR_RGB = "224,234,242" // blanco frío (foreground)
+const ACCENT_RGB = "52,211,153" // esmeralda
+const HOT_RGB = "244,250,255" // cabezas de fugaz / núcleos calientes
 const FRAME_MS = 33 // ~30fps
 const TAU = Math.PI * 2
 
-// --- Radio del cursor -------------------------------------------------------
-// ≈2 cm en un monitor típico. Todo lo que queda fuera se dibuja a AMBIENT_GAIN.
-const CURSOR_RADIUS = 110
-const AMBIENT_GAIN = 0.16
+// --- Campo estelar ----------------------------------------------------------
+const DENSITY = 6500 // px² por estrella
+const STAR_MIN = 110
+const STAR_MAX = 320
+const WRAP_M = 26 // margen de wrap (> parallax máx para que no aparezcan a la vista)
+const HOT_CHANCE = 0.09 // % de estrellas con halo + cruz (capas 1 y 2)
+const ACCENT_CHANCE = 0.12 // % de estrellas esmeralda
 
-// --- Red ambiente -----------------------------------------------------------
-const AMBIENT_SPACING_MIN = 110
-const AMBIENT_MIN = 60
-const AMBIENT_MAX = 180
-const AMBIENT_DECAY = 0.03
-const AMBIENT_FIRE_MIN = 900 // frames entre disparos espontáneos (por región)
-const AMBIENT_FIRE_VAR = 2600
-const AMBIENT_REFRACTORY = 320
-const AMBIENT_MAX_FIRING = 130
+// Capa: [drift px/s, parallax máx px, proporción acumulada]
+const LAYERS = [
+  { drift: 1.1, parallax: 3, acc: 0.55, rMin: 0.4, rMax: 0.85, aMin: 0.28, aMax: 0.5 },
+  { drift: 2.4, parallax: 7, acc: 0.87, rMin: 0.7, rMax: 1.3, aMin: 0.35, aMax: 0.62 },
+  { drift: 4.2, parallax: 13, acc: 1, rMin: 1.1, rMax: 1.9, aMin: 0.5, aMax: 0.85 },
+] as const
+// Dirección común de la deriva (el cielo "cae" apenas hacia la izquierda).
+const DRIFT_X = -0.987
+const DRIFT_Y = 0.16
+const SCROLL_DRIFT_BOOST = 5
 
-// --- Red del cursor (efímera) ----------------------------------------------
-const LIVE_MAX = 22
-const LIVE_LIFE_MIN = 1400
-const LIVE_LIFE_VAR = 1200
-const LIVE_SPAWN_MOVING = 0.22 // probabilidad por frame con el mouse moviéndose
-const LIVE_SPAWN_IDLE = 0.035 // con el mouse quieto
-const LIVE_LINK_DIST = 86
-const LIVE_CASCADE = 0.5
+// --- Constelaciones del cursor ----------------------------------------------
+const CONST_RADIUS = 170
+const LINK_DIST = 100
+const CURSOR_LINK_DIST = 120
+const CURSOR_LINKS_MAX = 4
+const TRACE_MS = 320 // la línea se dibuja en este tiempo
+const RELEASE_MS = 380 // fade al romperse la conexión
 
-// --- Impulso y barrido ------------------------------------------------------
-const IMPULSE_SPEED = 0.16 // px por ms: se ve el axón encenderse al paso
-const SYNAPSE_DELAY = 60 // ms entre llegar a la punta y activar la vecina
-const BURST_INTERVAL = 300000 // 5 minutos: el único momento en que se ve toda la red
-const BURST_DUR = 1800
+// --- Estrellas fugaces -------------------------------------------------------
+const METEOR_FIRST_MS: [number, number] = [3500, 6000]
+const METEOR_EVERY_MS: [number, number] = [8000, 20000]
+const METEOR_MAX = 2
 
-type Branch = {
-  x1: number
-  y1: number
-  cx: number
-  cy: number
-  x2: number
-  y2: number
-  depth: number
-  w0: number
-  w1: number
-  dist: number
-  len: number
-  mx: number
-  my: number
-  reveal: number
-  head: number
-}
-
-type Neuron = {
+type Star = {
   x: number
   y: number
-  e: number
-  seed: number
-  region: number
-  next: number
-  firedAt: number
-  propagated: boolean
-  burstFired: boolean
-  total: number
+  r: number
+  layer: number
+  base: number
+  amp: number
+  twPhase: number
+  twSpeed: number
+  hot: boolean
+  accent: boolean
 }
 
-type Live = {
+type Meteor = {
   x: number
   y: number
+  vx: number
+  vy: number
   born: number
   life: number
-  firedAt: number
-  propagated: boolean
-  total: number
-  tree: Branch[]
-  links: number[]
+  len: number
 }
 
-type Region = { phase: number; freq: number; heat: number }
-type Pending = { j: number; at: number }
+/** Conexión viva de constelación: nace (trazado), vive y se apaga (release). */
+type Conn = { born: number; rel: number }
 
-/** Punto de una cuadrática (A → C → B) en t ∈ [0,1]; se usa para x y para y. */
-const curveAt = (a: number, c: number, b: number, t: number) =>
-  (1 - t) * (1 - t) * a + 2 * (1 - t) * t * c + t * t * b
+const lerp = (a: number, b: number, t: number) => a + (b - a) * t
+const easeOut = (t: number) => 1 - (1 - t) * (1 - t) * (1 - t)
+const rand = (min: number, max: number) => min + Math.random() * (max - min)
 
-type TreeOpts = {
-  dendrites: number
-  lenMin: number
-  lenMax: number
-  maxDepth: number
-  baseWidth: number
-  spread: number
-}
-
-/** Árbol dendrítico: troncos curvos que se afinan, con ramas hijas en ruta. */
-function makeTree(x: number, y: number, opts: TreeOpts): { tree: Branch[]; total: number } {
-  const tree: Branch[] = []
-  let total = 1
-  const base = Math.random() * TAU
-  const grow = (px: number, py: number, angle: number, len: number, depth: number, dist: number) => {
-    const ex = px + Math.cos(angle) * len
-    const ey = py + Math.sin(angle) * len
-    const nx = (ey - py) / len
-    const ny = -(ex - px) / len
-    const bow = len * (0.18 + Math.random() * 0.34) * (Math.random() < 0.5 ? -1 : 1)
-    const cxp = (px + ex) / 2 + nx * bow
-    const cyp = (py + ey) / 2 + ny * bow
-    const w0 = Math.max(0.6, opts.baseWidth - depth * 0.5)
-    tree.push({
-      x1: px,
-      y1: py,
-      cx: cxp,
-      cy: cyp,
-      x2: ex,
-      y2: ey,
-      depth,
-      w0,
-      w1: Math.max(0.25, w0 - 0.45),
-      dist: dist + len,
-      len,
-      mx: (px + ex) / 2 + nx * bow * 0.5,
-      my: (py + ey) / 2 + ny * bow * 0.5,
-      reveal: 0,
-      head: 0,
-    })
-    if (dist + len > total) total = dist + len
-    if (depth >= opts.maxDepth || len < 8) return
-    const kids = depth === 0 ? (Math.random() < 0.7 ? 2 : 1) : Math.random() < 0.4 ? 1 : 0
-    for (let k = 0; k < kids; k++) {
-      const at = 0.5 + Math.random() * 0.4
-      const spread = (0.3 + Math.random() * opts.spread) * (Math.random() < 0.5 ? -1 : 1)
-      grow(
-        curveAt(px, cxp, ex, at),
-        curveAt(py, cyp, ey, at),
-        angle + spread,
-        len * (0.45 + Math.random() * 0.3),
-        depth + 1,
-        dist + len * at
-      )
-    }
+/** Sprite de halo pre-renderizado por tinte (drawImage es GPU, gradients no). */
+function makeGlowSprite(rgb: string): HTMLCanvasElement {
+  const c = document.createElement("canvas")
+  c.width = 96
+  c.height = 96
+  const g = c.getContext("2d")
+  if (g) {
+    const grad = g.createRadialGradient(48, 48, 0, 48, 48, 48)
+    grad.addColorStop(0, `rgba(${rgb},0.9)`)
+    grad.addColorStop(0.22, `rgba(${rgb},0.3)`)
+    grad.addColorStop(1, `rgba(${rgb},0)`)
+    g.fillStyle = grad
+    g.fillRect(0, 0, 96, 96)
   }
-  for (let k = 0; k < opts.dendrites; k++) {
-    const angle = base + (k / opts.dendrites) * TAU + (Math.random() - 0.5) * 0.8
-    const len = opts.lenMin + Math.random() * (opts.lenMax - opts.lenMin)
-    grow(x, y, angle, len, 0, 0)
-  }
-  return { tree, total }
+  return c
 }
 
 export function AnimatedBackground() {
@@ -195,166 +134,86 @@ export function AnimatedBackground() {
 
     let w = 0
     let h = 0
-    let neurons: Neuron[] = []
-    let branches: Branch[] = []
-    let branchOwner: number[] = [] // neurona dueña de cada rama ambiente
-    let owned: number[][] = []
-    let links: number[][] = []
-    let regions: Region[] = []
-    let pending: Pending[] = []
-    let live: Live[] = []
-    let regionSize = 400
-    let regionCols = 1
-    let firingCount = 0
+    let stars: Star[] = []
+    let meteors: Meteor[] = []
+    let conns = new Map<number, Conn>()
+    let nextMeteorAt = 0
     let raf = 0
     let last = 0
     let stepTime = 0
     let resizeTimer = 0
     let running = true
-    let scrollVel = 0
-    let scrollBoost = 0
-    let pointerHeat = 0
     let intensity = 1
-    let dtSafe = 1 // dt del último frame (lo usa el desvanecido de la red efímera)
-    let burstActive = false
-    let burstT = 0
-    let burstTimer = BURST_INTERVAL
-    const burst = { axisX: true, from: 0 }
+    let scrollVel = 0
+    let pointerHeat = 0
+    let constellationGain = 0
+    // Parallax suavizado por capa.
+    const ox = [0, 0, 0]
+    const oy = [0, 0, 0]
 
     const pointer = { x: -9999, y: -9999, px: -9999, py: -9999, active: false }
 
-    /** Red ambiente: neuronas chicas, cada una con tamaño y forma propios. */
-    const buildAmbient = () => {
+    const glowWhite = makeGlowSprite(STAR_RGB)
+    const glowAccent = makeGlowSprite(ACCENT_RGB)
+
+    /** Campo estelar: distribución uniforme, cada estrella con su carácter. */
+    const buildSky = () => {
       const area = w * h
-      const count = Math.max(AMBIENT_MIN, Math.min(AMBIENT_MAX, Math.round(area / 9000)))
-      const spacing = Math.max(AMBIENT_SPACING_MIN, Math.sqrt(area / count))
-      const minDist = spacing * 0.9
-      const cell = minDist / Math.SQRT2
-      const gw = Math.max(1, Math.ceil(w / cell))
-      const gh = Math.max(1, Math.ceil(h / cell))
-      const grid = new Int32Array(gw * gh).fill(-1)
-
-      const tooClose = (x: number, y: number) => {
-        const gx = Math.floor(x / cell)
-        const gy = Math.floor(y / cell)
-        for (let j = Math.max(0, gy - 2); j <= Math.min(gh - 1, gy + 2); j++) {
-          for (let i = Math.max(0, gx - 2); i <= Math.min(gw - 1, gx + 2); i++) {
-            const idx = grid[j * gw + i]
-            if (idx < 0) continue
-            const s = neurons[idx]
-            if (Math.hypot(s.x - x, s.y - y) < minDist) return true
-          }
-        }
-        return false
-      }
-
-      regionSize = Math.max(320, spacing * 2.2)
-      regionCols = Math.max(1, Math.ceil(w / regionSize))
-      const regionRows = Math.max(1, Math.ceil(h / regionSize))
-      regions = Array.from({ length: regionCols * regionRows }, () => ({
-        phase: Math.random() * TAU,
-        freq: 0.01 + Math.random() * 0.014,
-        heat: 0,
-      }))
-
-      neurons = []
-      branches = []
-      branchOwner = []
-      owned = []
-      for (let k = 0; k < count * 30 && neurons.length < count; k++) {
-        const x = Math.random() * w
-        const y = Math.random() * h
-        if (tooClose(x, y)) continue
-        grid[Math.floor(y / cell) * gw + Math.floor(x / cell)] = neurons.length
-        const rx = Math.min(regionCols - 1, Math.floor(x / regionSize))
-        const ry = Math.min(regionRows - 1, Math.floor(y / regionSize))
-        const scale = 0.6 + Math.random() * 0.9
-        const { tree, total } = makeTree(x, y, {
-          dendrites: 3 + Math.floor(Math.random() * 4),
-          lenMin: spacing * 0.09 * scale,
-          lenMax: spacing * 0.24 * scale,
-          maxDepth: 1,
-          baseWidth: 0.9 + Math.random() * 0.6,
-          spread: 0.55,
-        })
-        const owner = neurons.length
-        const indices: number[] = []
-        for (const b of tree) {
-          branches.push(b)
-          branchOwner.push(owner)
-          indices.push(branches.length - 1)
-        }
-        owned.push(indices)
-        neurons.push({
-          x,
-          y,
-          e: 0.03 + Math.random() * 0.05,
-          seed: Math.random() * TAU,
-          region: ry * regionCols + rx,
-          next: 300 + Math.random() * 2400,
-          firedAt: -1e9,
-          propagated: true,
-          burstFired: false,
-          total,
+      const count = Math.max(STAR_MIN, Math.min(STAR_MAX, Math.round(area / DENSITY)))
+      stars = []
+      for (let k = 0; k < count; k++) {
+        const pick = Math.random()
+        const layer = pick < LAYERS[0].acc ? 0 : pick < LAYERS[1].acc ? 1 : 2
+        const L = LAYERS[layer]
+        stars.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          r: rand(L.rMin, L.rMax),
+          layer,
+          base: rand(L.aMin, L.aMax),
+          amp: rand(0.12, 0.45),
+          twPhase: Math.random() * TAU,
+          twSpeed: rand(0.0005, 0.0021), // período ~3-12,5s
+          hot: layer > 0 && Math.random() < HOT_CHANCE,
+          accent: Math.random() < ACCENT_CHANCE,
         })
       }
-
-      links = neurons.map(() => [])
-      const linkDist = spacing * 1.5
-      for (let i = 0; i < neurons.length; i++) {
-        const a = neurons[i]
-        const near: { j: number; d: number }[] = []
-        for (let j = 0; j < neurons.length; j++) {
-          if (j === i) continue
-          const d = Math.hypot(a.x - neurons[j].x, a.y - neurons[j].y)
-          if (d < linkDist) near.push({ j, d })
-        }
-        near.sort((p, q) => p.d - q.d)
-        links[i] = near.slice(0, 3).map((n) => n.j)
-      }
-      pending = []
-      live = []
+      conns.clear()
+      meteors = []
+      nextMeteorAt = performance.now() + rand(...METEOR_FIRST_MS)
     }
 
-    /** Neurona efímera: nace donde está el cursor, distinta cada vez. */
-    const spawnLive = (now: number, x: number, y: number) => {
-      // Distribución sesgada al centro del radio (aparecen más cerca del puntero).
-      const r = CURSOR_RADIUS * 0.85 * Math.sqrt(Math.random())
-      const a = Math.random() * TAU
-      const nx = x + Math.cos(a) * r
-      const ny = y + Math.sin(a) * r
-      if (nx < 0 || ny < 0 || nx > w || ny > h) return
-      const scale = 0.55 + Math.random() * 0.9
-      const { tree, total } = makeTree(nx, ny, {
-        dendrites: 3 + Math.floor(Math.random() * 3),
-        lenMin: 8 * scale,
-        lenMax: 26 * scale,
-        maxDepth: Math.random() < 0.5 ? 1 : 0,
-        baseWidth: 0.85 + Math.random() * 0.5,
-        spread: 0.7,
-      })
-      const item: Live = {
-        x: nx,
-        y: ny,
-        born: now,
-        life: LIVE_LIFE_MIN + Math.random() * LIVE_LIFE_VAR,
-        firedAt: now,
-        propagated: false,
-        total,
-        tree,
-        links: [],
+    const spawnMeteor = (now: number, fromX?: number, fromY?: number) => {
+      if (meteors.length >= METEOR_MAX) return
+      let x: number
+      let y: number
+      let vx: number
+      let vy: number
+      if (fromX !== undefined && fromY !== undefined) {
+        // Tap táctil: la fugaz sale del dedo hacia arriba.
+        const a = rand((-2 * Math.PI) / 3, -Math.PI / 3)
+        const spd = rand(650, 950)
+        x = fromX
+        y = fromY
+        vx = Math.cos(a) * spd
+        vy = Math.sin(a) * spd
+      } else {
+        // Natural: nace fuera del borde superior o en un lateral alto, cae en
+        // diagonal (~30-45°) hacia la izquierda o la derecha.
+        const dir = Math.random() < 0.5 ? 1 : -1
+        const a = rand(Math.PI * 0.16, Math.PI * 0.26)
+        const spd = rand(800, 1300)
+        if (Math.random() < 0.7) {
+          x = Math.random() * w
+          y = -WRAP_M
+        } else {
+          x = dir === 1 ? -WRAP_M : w + WRAP_M
+          y = Math.random() * h * 0.35
+        }
+        vx = Math.cos(a) * spd * dir
+        vy = Math.sin(a) * spd
       }
-      // Contagio: se enlaza con las efímeras más cercanas.
-      for (let i = live.length - 1, n = 0; i >= 0 && n < 2; i--) {
-        const o = live[i]
-        const d = Math.hypot(o.x - nx, o.y - ny)
-        if (d > LIVE_LINK_DIST) continue
-        item.links.push(i)
-        o.links.push(live.length)
-        n++
-      }
-      live.push(item)
-      if (live.length > LIVE_MAX) live.shift()
+      meteors.push({ x, y, vx, vy, born: now, life: rand(1100, 1600), len: rand(90, 200) })
     }
 
     const resize = () => {
@@ -369,309 +228,264 @@ export function AnimatedBackground() {
       canvas.style.width = `${w}px`
       canvas.style.height = `${h}px`
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-      buildAmbient()
+      buildSky()
       if (reduced) paint(performance.now())
     }
 
-    const fireAmbient = (i: number, now: number) => {
-      const s = neurons[i]
-      if (now - s.firedAt < AMBIENT_REFRACTORY) return
-      if (firingCount >= AMBIENT_MAX_FIRING) return
-      s.firedAt = now
-      s.propagated = false
-      s.e = 1
-      firingCount++
-      const r = regions[s.region]
-      if (r) r.heat = Math.min(0.8, r.heat + 0.1)
-    }
-
-    const inRadius = (x: number, y: number) => Math.hypot(x - pointer.x, y - pointer.y) < CURSOR_RADIUS
+    /** Posición en pantalla de una estrella (deriva ya aplicada + parallax). */
+    const posX = (s: Star) => s.x + ox[s.layer]
+    const posY = (s: Star) => s.y + oy[s.layer]
 
     const advance = (dt: number, now: number) => {
-      for (const r of regions) {
-        r.phase += r.freq * dt
-        r.heat *= 1 - 0.012 * dt
+      const ms = dt * 16.67
+      const driftBoost = 1 + scrollVel * SCROLL_DRIFT_BOOST
+
+      // Deriva celeste con wrap en bordes.
+      for (const s of stars) {
+        const v = LAYERS[s.layer].drift * driftBoost
+        s.x += DRIFT_X * v * (ms / 1000)
+        s.y += DRIFT_Y * v * (ms / 1000)
+        if (s.x < -WRAP_M) s.x += w + WRAP_M * 2
+        else if (s.x > w + WRAP_M) s.x -= w + WRAP_M * 2
+        if (s.y < -WRAP_M) s.y += h + WRAP_M * 2
+        else if (s.y > h + WRAP_M) s.y -= h + WRAP_M * 2
       }
 
-      // Red ambiente: dispara poco y suave (queda tenue salvo en el radio o en el barrido).
-      for (let i = 0; i < neurons.length; i++) {
-        const s = neurons[i]
-        s.e *= 1 - AMBIENT_DECAY * dt
-        if (s.e < 0.001) s.e = 0
-        const r = regions[s.region]
-        const ex =
-          (r ? 0.25 + 0.75 * (0.5 + 0.5 * Math.sin(r.phase)) + r.heat * 0.3 : 0.4) *
-          (1 + scrollBoost * 2.5)
-        s.next -= dt * ex
-        if (s.next <= 0) {
-          fireAmbient(i, now)
-          s.next = AMBIENT_FIRE_MIN + Math.random() * AMBIENT_FIRE_VAR
-        }
-        if (!s.propagated && now - s.firedAt > (s.total / IMPULSE_SPEED) * 0.75) {
-          s.propagated = true
-          for (const j of links[i]) {
-            if (Math.random() < 0.16) pending.push({ j, at: now + SYNAPSE_DELAY })
-          }
-        }
-      }
-      for (let k = pending.length - 1; k >= 0; k--) {
-        if (pending[k].at > now) continue
-        fireAmbient(pending[k].j, now)
-        pending.splice(k, 1)
+      // Parallax del cursor (objetivo 0 sin puntero; lerp por capa).
+      const tx = pointer.active && !coarse ? (pointer.x - w / 2) / (w / 2) : 0
+      const ty = pointer.active && !coarse ? (pointer.y - h / 2) / (h / 2) : 0
+      const k = Math.min(1, 0.055 * dt)
+      for (let i = 0; i < 3; i++) {
+        ox[i] += (tx * LAYERS[i].parallax - ox[i]) * k
+        oy[i] += (ty * LAYERS[i].parallax - oy[i]) * k
       }
 
-      // Barrido "agente IA" (cada 5 minutos): el único momento en que se ve toda la red.
-      burstTimer -= dt * 16.67
-      if (!burstActive && burstTimer <= 0) {
-        burstActive = true
-        burstT = 0
-        burst.axisX = Math.random() < 0.5
-        burst.from = Math.random() < 0.5 ? 0 : 1
-        for (const s of neurons) s.burstFired = false
-        burstTimer = BURST_INTERVAL
-      }
-      if (burstActive) {
-        burstT += dt * 16.67
-        const p = burstT / BURST_DUR
-        const line = burst.from === 0 ? p : 1 - p
-        for (let i = 0; i < neurons.length; i++) {
-          const s = neurons[i]
-          if (s.burstFired) continue
-          if (now - s.firedAt < 400) continue
-          const coord = burst.axisX ? s.x / w : s.y / h
-          if (burst.from === 0 ? coord <= line : coord >= line) {
-            s.burstFired = true
-            fireAmbient(i, now)
-          }
-        }
-        if (p >= 1) burstActive = false
-      }
-
-      // Red del cursor: se genera al paso del mouse y se desvanece sola.
+      // Calor del cursor (velocidad del mouse) y ganancia del grupo constelación.
       if (pointer.active && !coarse) {
         const speed = Math.hypot(pointer.x - pointer.px, pointer.y - pointer.py)
-        pointerHeat = Math.min(1, pointerHeat * 0.86 + speed / 90)
-        const chance = (speed > 4 ? LIVE_SPAWN_MOVING : LIVE_SPAWN_IDLE) * (0.5 + pointerHeat)
-        if (Math.random() < chance * dt) spawnLive(now, pointer.x, pointer.y)
+        pointerHeat = Math.min(1, pointerHeat * 0.88 + speed / 100)
         pointer.px = pointer.x
         pointer.py = pointer.y
       } else {
         pointerHeat *= 0.9
       }
+      constellationGain += ((pointer.active && !coarse ? 1 : 0) - constellationGain) * Math.min(1, 0.08 * dt)
+      if (constellationGain < 0.01) constellationGain = 0
 
-      for (let k = live.length - 1; k >= 0; k--) {
-        const l = live[k]
-        if (now - l.born > l.life) {
-          live.splice(k, 1)
-          continue
+      // Fugaces naturales.
+      if (now >= nextMeteorAt) {
+        spawnMeteor(now)
+        nextMeteorAt = now + rand(...METEOR_EVERY_MS)
+      }
+      for (let i = meteors.length - 1; i >= 0; i--) {
+        const m = meteors[i]
+        m.x += m.vx * (ms / 1000)
+        m.y += m.vy * (ms / 1000)
+        if (now - m.born > m.life || m.x < -120 || m.x > w + 120 || m.y < -120 || m.y > h + 120) {
+          meteors.splice(i, 1)
         }
-        // Al llegar a las puntas, contagia a una vecina (sigue la activación).
-        if (!l.propagated && now - l.firedAt > l.total / IMPULSE_SPEED + 40) {
-          l.propagated = true
-          if (l.links.length > 0 && Math.random() < LIVE_CASCADE) {
-            const j = l.links[Math.floor(Math.random() * l.links.length)]
-            const o = live[j]
-            if (o && now - o.firedAt > 220) {
-              o.firedAt = now
-              o.propagated = false
-              o.life = Math.max(o.life, now - o.born + 900)
+      }
+
+      // Constelaciones: candidatas = capas 1-2 dentro del radio del cursor.
+      if (constellationGain > 0) {
+        const near: number[] = []
+        for (let i = 0; i < stars.length; i++) {
+          const s = stars[i]
+          if (s.layer === 0) continue
+          if (Math.hypot(posX(s) - pointer.x, posY(s) - pointer.y) < CONST_RADIUS) near.push(i)
+        }
+        const n = stars.length
+        const touch = (key: number) => {
+          const c = conns.get(key)
+          if (c) {
+            if (c.rel) c.rel = 0 // volvió a cumplirse: revive sin re-trazarse
+          } else {
+            conns.set(key, { born: now, rel: 0 })
+          }
+        }
+        // Pares entre candidatas.
+        for (let a = 0; a < near.length; a++) {
+          for (let b = a + 1; b < near.length; b++) {
+            const i = near[a]
+            const j = near[b]
+            if (Math.hypot(posX(stars[i]) - posX(stars[j]), posY(stars[i]) - posY(stars[j])) < LINK_DIST) {
+              touch(i * n + j)
             }
           }
         }
-      }
-
-      // Revelado: impulso (y cursor dentro del radio) para la red ambiente.
-      for (let bi = 0; bi < branches.length; bi++) {
-        const b = branches[bi]
-        const s = neurons[branchOwner[bi]]
-        const travelled = (now - s.firedAt) * IMPULSE_SPEED
-        let target = 0
-        if (travelled > 0 && travelled < s.total + 60) {
-          const from = b.dist - b.len
-          if (travelled >= b.dist) target = 0.5 * Math.max(0, 1 - (travelled - b.dist) / 160)
-          else if (travelled > from) {
-            target = 0.9
-            b.head = (travelled - from) / b.len
+        // Las 4 más cercanas enlazan con el cursor.
+        near.sort((a, b) => {
+          const da = Math.hypot(posX(stars[a]) - pointer.x, posY(stars[a]) - pointer.y)
+          const db = Math.hypot(posX(stars[b]) - pointer.x, posY(stars[b]) - pointer.y)
+          return da - db
+        })
+        for (let a = 0; a < Math.min(CURSOR_LINKS_MAX, near.length); a++) {
+          const i = near[a]
+          if (Math.hypot(posX(stars[i]) - pointer.x, posY(stars[i]) - pointer.y) < CURSOR_LINK_DIST) {
+            touch(-(i + 1))
           }
         }
-        if (target === 0) b.head = 0
-        // Fuera del radio del cursor casi no se ve; adentro se enciende a full.
-        const gain = inRadius(b.mx, b.my) ? 1 : AMBIENT_GAIN
-        const boosted = burstActive && s.burstFired ? 1 : gain
-        target *= boosted
-        b.reveal =
-          target > b.reveal
-            ? Math.min(target, b.reveal + 0.3 * dt)
-            : Math.max(target, b.reveal - 0.03 * dt)
+      }
+      // Las conexiones en release que terminaron de apagarse mueren.
+      // (El flag `rel` lo marca `releaseStale` en paint: la condición de cercanía
+      // se evalúa sobre posiciones ya dibujadas.)
+      for (const [key, c] of conns) {
+        if (c.rel > 0 && now - c.rel > RELEASE_MS) conns.delete(key)
       }
     }
 
-    /** Traza una rama: grosor parejo (barato) o polígono que se afina (caliente). */
-    const drawBranch = (b: Branch, alpha: number, tapered: boolean) => {
-      if (!tapered) {
-        ctx.lineWidth = (b.w0 + b.w1) / 2
-        ctx.strokeStyle = `rgba(${ACCENT},${alpha.toFixed(3)})`
-        ctx.beginPath()
-        ctx.moveTo(b.x1, b.y1)
-        ctx.quadraticCurveTo(b.cx, b.cy, b.x2, b.y2)
-        ctx.stroke()
-        return
+    /** Marca release en las conexiones que ya no cumplen la condición. */
+    const releaseStale = (now: number) => {
+      const n = stars.length
+      for (const [key, c] of conns) {
+        if (c.rel > 0) continue
+        let alive = constellationGain > 0
+        if (alive) {
+          if (key < 0) {
+            const s = stars[-key - 1]
+            alive = Math.hypot(posX(s) - pointer.x, posY(s) - pointer.y) < CURSOR_LINK_DIST * 1.15
+          } else {
+            const i = Math.floor(key / n)
+            const j = key % n
+            const si = stars[i]
+            const sj = stars[j]
+            alive =
+              Math.hypot(posX(si) - posX(sj), posY(si) - posY(sj)) < LINK_DIST * 1.1 &&
+              (Math.hypot(posX(si) - pointer.x, posY(si) - pointer.y) < CONST_RADIUS * 1.1 ||
+                Math.hypot(posX(sj) - pointer.x, posY(sj) - pointer.y) < CONST_RADIUS * 1.1)
+          }
+        }
+        if (!alive) c.rel = now
       }
-      const steps = 4
-      ctx.fillStyle = `rgba(${ACCENT},${alpha.toFixed(3)})`
-      ctx.beginPath()
-      for (let k = 0; k <= steps; k++) {
-        const t = k / steps
-        const x = curveAt(b.x1, b.cx, b.x2, t)
-        const y = curveAt(b.y1, b.cy, b.y2, t)
-        const dx = 2 * (1 - t) * (b.cx - b.x1) + 2 * t * (b.x2 - b.cx)
-        const dy = 2 * (1 - t) * (b.cy - b.y1) + 2 * t * (b.y2 - b.cy)
-        const n = Math.hypot(dx, dy) || 1
-        const half = ((b.w0 + (b.w1 - b.w0) * t) / 2) * (k === 0 ? 0.25 : 1)
-        if (k === 0) ctx.moveTo(x + (-dy / n) * half, y + (dx / n) * half)
-        else ctx.lineTo(x + (-dy / n) * half, y + (dx / n) * half)
-      }
-      for (let k = steps; k >= 0; k--) {
-        const t = k / steps
-        const x = curveAt(b.x1, b.cx, b.x2, t)
-        const y = curveAt(b.y1, b.cy, b.y2, t)
-        const dx = 2 * (1 - t) * (b.cx - b.x1) + 2 * t * (b.x2 - b.cx)
-        const dy = 2 * (1 - t) * (b.cy - b.y1) + 2 * t * (b.y2 - b.cy)
-        const n = Math.hypot(dx, dy) || 1
-        const half = ((b.w0 + (b.w1 - b.w0) * t) / 2) * (k === 0 ? 0.25 : 1)
-        ctx.lineTo(x - (-dy / n) * half, y - (dx / n) * half)
-      }
-      ctx.closePath()
-      ctx.fill()
-    }
-
-    /** Cabeza del impulso: punto caliente con halo sobre el axón. */
-    const drawHead = (x: number, y: number, alpha: number) => {
-      const glow = ctx.createRadialGradient(x, y, 0, x, y, 7)
-      glow.addColorStop(0, `rgba(${HOT},${alpha.toFixed(3)})`)
-      glow.addColorStop(1, `rgba(${ACCENT},0)`)
-      ctx.fillStyle = glow
-      ctx.beginPath()
-      ctx.arc(x, y, 7, 0, TAU)
-      ctx.fill()
-      ctx.fillStyle = `rgba(${HOT},${Math.min(1, alpha * 1.6).toFixed(3)})`
-      ctx.beginPath()
-      ctx.arc(x, y, 1.1, 0, TAU)
-      ctx.fill()
     }
 
     const paint = (time: number) => {
       const now = time
       ctx.clearRect(0, 0, w, h)
+      releaseStale(now)
 
-      // 1) Malla ambiente en reposo: apenas visible, un solo path.
-      ctx.lineWidth = 0.6
-      ctx.strokeStyle = `rgba(${ACCENT},${(0.018 * intensity).toFixed(3)})`
-      ctx.beginPath()
-      for (const b of branches) {
-        ctx.moveTo(b.x1, b.y1)
-        ctx.quadraticCurveTo(b.cx, b.cy, b.x2, b.y2)
+      // 1) Estrellas base (source-over: alpha exacto por estrella).
+      for (const s of stars) {
+        let alpha = s.base * (1 - s.amp) + s.base * s.amp * (0.5 + 0.5 * Math.sin(now * s.twSpeed + s.twPhase))
+        if (constellationGain > 0 && s.layer > 0) {
+          const d = Math.hypot(posX(s) - pointer.x, posY(s) - pointer.y)
+          if (d < CONST_RADIUS) alpha *= 1 + 0.55 * (1 - d / CONST_RADIUS) * constellationGain
+        }
+        alpha *= intensity
+        if (alpha < 0.03) continue
+        ctx.fillStyle = `rgba(${s.accent ? ACCENT_RGB : STAR_RGB},${alpha.toFixed(3)})`
+        ctx.beginPath()
+        ctx.arc(posX(s), posY(s), s.r, 0, TAU)
+        ctx.fill()
       }
-      ctx.stroke()
 
       ctx.globalCompositeOperation = "lighter"
 
-      // 2) Ramas ambiente activas (tenues fuera del radio, llenas adentro / en barrido).
-      for (const b of branches) {
-        if (b.reveal < 0.02) continue
-        const alpha = (0.05 + b.reveal * 0.4) * intensity
-        drawBranch(b, alpha, b.reveal > 0.4 && b.depth < 1)
-      }
-      for (const b of branches) {
-        if (b.head <= 0 || b.head >= 1 || b.reveal < 0.12) continue
-        drawHead(
-          curveAt(b.x1, b.cx, b.x2, b.head),
-          curveAt(b.y1, b.cy, b.y2, b.head),
-          0.4 * intensity
-        )
-      }
-
-      // 3) Somas ambiente.
-      for (const s of neurons) {
-        const e = Math.min(1, s.e * (0.92 + 0.08 * Math.sin(now / 700 + s.seed)))
-        if (e < 0.2) continue
-        const gain = inRadius(s.x, s.y) ? 1 : AMBIENT_GAIN
-        const boosted = burstActive && s.burstFired ? 1 : gain
-        if (boosted < 0.3) continue
-        ctx.fillStyle = `rgba(${ACCENT},${(0.5 * e * boosted * intensity).toFixed(3)})`
+      // 2) Destacadas: halo (sprite) + cruz de difracción.
+      for (const s of stars) {
+        if (!s.hot) continue
+        const tw = (1 - s.amp) + s.amp * (0.5 + 0.5 * Math.sin(now * s.twSpeed + s.twPhase))
+        const px = posX(s)
+        const py = posY(s)
+        const size = s.r * 11
+        ctx.globalAlpha = tw * 0.5 * intensity
+        ctx.drawImage(s.accent ? glowAccent : glowWhite, px - size / 2, py - size / 2, size, size)
+        const arm = s.r * 7
+        ctx.globalAlpha = 1
+        ctx.lineWidth = 0.6
+        ctx.strokeStyle = `rgba(${s.accent ? ACCENT_RGB : STAR_RGB},${(0.09 * tw * intensity).toFixed(3)})`
         ctx.beginPath()
-        ctx.arc(s.x, s.y, 0.9 + e * 1.1, 0, TAU)
-        ctx.fill()
-        ctx.fillStyle = `rgba(${HOT},${(0.4 * e * boosted * intensity).toFixed(3)})`
-        ctx.beginPath()
-        ctx.arc(s.x, s.y, 0.5 + e * 0.6, 0, TAU)
-        ctx.fill()
-      }
-
-      // 4) Red del cursor: aparece, dispara y se desvanece.
-      for (const l of live) {
-        const age = now - l.born
-        const k = age / l.life
-        const fade = k < 0.12 ? k / 0.12 : k > 0.6 ? Math.max(0, 1 - (k - 0.6) / 0.4) : 1
-        if (fade <= 0.01) continue
-        const travelled = (now - l.firedAt) * IMPULSE_SPEED
-        for (const b of l.tree) {
-          const from = b.dist - b.len
-          let target = 0
-          if (travelled >= b.dist) target = 0.55 * Math.max(0, 1 - (travelled - b.dist) / 130)
-          else if (travelled > from) {
-            target = 0.95
-            b.head = (travelled - from) / b.len
-          } else b.head = 0
-          b.reveal = Math.max(target * fade, b.reveal - 0.035 * dtSafe)
-          if (b.reveal > 0.02) {
-            drawBranch(b, (0.13 + b.reveal * 0.4) * fade * intensity, b.reveal > 0.45)
-          }
-          if (b.head > 0 && b.head < 1) {
-            drawHead(
-              curveAt(b.x1, b.cx, b.x2, b.head),
-              curveAt(b.y1, b.cy, b.y2, b.head),
-              0.42 * fade * intensity
-            )
-          }
-        }
-        const e = fade
-        ctx.fillStyle = `rgba(${ACCENT},${(0.42 * e * intensity).toFixed(3)})`
-        ctx.beginPath()
-        ctx.arc(l.x, l.y, 1 + e * 1.1, 0, TAU)
-        ctx.fill()
-        ctx.fillStyle = `rgba(${HOT},${(0.6 * e * intensity).toFixed(3)})`
-        ctx.beginPath()
-        ctx.arc(l.x, l.y, 0.6 + e * 0.5, 0, TAU)
-        ctx.fill()
-      }
-
-      // 5) Barrido IA: frente fino que cruza la pantalla.
-      if (burstActive) {
-        const p = burstT / BURST_DUR
-        const line = burst.from === 0 ? p : 1 - p
-        const fade = Math.sin(Math.PI * Math.min(1, Math.max(0, p)))
-        ctx.lineWidth = 1
-        ctx.strokeStyle = `rgba(${ACCENT},${(0.07 * fade * intensity).toFixed(3)})`
-        ctx.beginPath()
-        if (burst.axisX) {
-          ctx.moveTo(line * w, 0)
-          ctx.lineTo(line * w, h)
-        } else {
-          ctx.moveTo(0, line * h)
-          ctx.lineTo(w, line * h)
-        }
+        ctx.moveTo(px - arm, py)
+        ctx.lineTo(px + arm, py)
+        ctx.moveTo(px, py - arm)
+        ctx.lineTo(px, py + arm)
         ctx.stroke()
       }
+      ctx.globalAlpha = 1
 
-      // 6) El cursor: sólo un punto caliente con un halo chico (el radio se lee solo).
+      // 3) Constelaciones: trazos que se dibujan y se apagan.
+      if (conns.size > 0) {
+        const n = stars.length
+        ctx.lineWidth = 0.7
+        for (const [key, c] of conns) {
+          const prog = easeOut(Math.min(1, (now - c.born) / TRACE_MS))
+          let alpha = prog * constellationGain * intensity
+          if (c.rel > 0) alpha *= Math.max(0, 1 - (now - c.rel) / RELEASE_MS)
+          if (alpha < 0.015) continue
+          let x1: number
+          let y1: number
+          let x2: number
+          let y2: number
+          let maxAlpha: number
+          if (key < 0) {
+            const s = stars[-key - 1]
+            x1 = posX(s)
+            y1 = posY(s)
+            x2 = pointer.x
+            y2 = pointer.y
+            const d = Math.hypot(x2 - x1, y2 - y1)
+            maxAlpha = 0.22 * Math.max(0, 1 - d / CURSOR_LINK_DIST)
+          } else {
+            const i = Math.floor(key / n)
+            const j = key % n
+            const si = stars[i]
+            const sj = stars[j]
+            x1 = posX(si)
+            y1 = posY(si)
+            x2 = posX(sj)
+            y2 = posY(sj)
+            const d = Math.hypot(x2 - x1, y2 - y1)
+            const layerFactor =
+              si.layer + sj.layer === 4 ? 1 : si.layer + sj.layer === 3 ? 0.8 : 0.55
+            maxAlpha = 0.3 * Math.max(0, 1 - d / LINK_DIST) * layerFactor
+          }
+          ctx.strokeStyle = `rgba(${ACCENT_RGB},${(alpha * maxAlpha).toFixed(3)})`
+          ctx.beginPath()
+          ctx.moveTo(x1, y1)
+          ctx.lineTo(lerp(x1, x2, prog), lerp(y1, y2, prog))
+          ctx.stroke()
+        }
+      }
+
+      // 4) Fugaces: estela con gradiente + cabeza caliente.
+      for (const m of meteors) {
+        const age = now - m.born
+        const kd = age / m.life
+        const fade = Math.min(1, kd * 12) * (kd > 0.82 ? Math.max(0, 1 - (kd - 0.82) / 0.18) : 1)
+        if (fade <= 0) continue
+        const spd = Math.hypot(m.vx, m.vy)
+        const nx = m.vx / spd
+        const ny = m.vy / spd
+        const tx = m.x - nx * m.len
+        const ty = m.y - ny * m.len
+        const trail = ctx.createLinearGradient(m.x, m.y, tx, ty)
+        trail.addColorStop(0, `rgba(${HOT_RGB},${(0.85 * fade).toFixed(3)})`)
+        trail.addColorStop(0.35, `rgba(${ACCENT_RGB},${(0.28 * fade).toFixed(3)})`)
+        trail.addColorStop(1, `rgba(${ACCENT_RGB},0)`)
+        ctx.lineWidth = 1.6
+        ctx.lineCap = "round"
+        ctx.strokeStyle = trail
+        ctx.beginPath()
+        ctx.moveTo(m.x, m.y)
+        ctx.lineTo(tx, ty)
+        ctx.stroke()
+        ctx.globalAlpha = 0.8 * fade
+        ctx.drawImage(glowWhite, m.x - 11, m.y - 11, 22, 22)
+        ctx.globalAlpha = 1
+        ctx.fillStyle = `rgba(${HOT_RGB},${(0.9 * fade).toFixed(3)})`
+        ctx.beginPath()
+        ctx.arc(m.x, m.y, 1.3, 0, TAU)
+        ctx.fill()
+      }
+
+      // 5) El cursor: solo un halo esmeralda tenue (el radio se lee solo).
       if (pointer.active && !coarse && pointerHeat > 0.08) {
-        const glow = ctx.createRadialGradient(pointer.x, pointer.y, 0, pointer.x, pointer.y, 34)
-        glow.addColorStop(0, `rgba(${HOT},${(0.1 + pointerHeat * 0.14).toFixed(3)})`)
-        glow.addColorStop(1, `rgba(${ACCENT},0)`)
+        const glow = ctx.createRadialGradient(pointer.x, pointer.y, 0, pointer.x, pointer.y, 46)
+        glow.addColorStop(0, `rgba(${ACCENT_RGB},${(0.06 + pointerHeat * 0.08).toFixed(3)})`)
+        glow.addColorStop(1, `rgba(${ACCENT_RGB},0)`)
         ctx.fillStyle = glow
         ctx.beginPath()
-        ctx.arc(pointer.x, pointer.y, 34, 0, TAU)
+        ctx.arc(pointer.x, pointer.y, 46, 0, TAU)
         ctx.fill()
       }
       ctx.globalCompositeOperation = "source-over"
@@ -684,10 +498,6 @@ export function AnimatedBackground() {
       const dt = last ? Math.min((ts - last) / 16.67, 3) : 1
       last = ts
       stepTime = ts
-      dtSafe = dt
-      scrollBoost = Math.min(1, scrollBoost * 0.9 + scrollVel * 1.5)
-      firingCount = 0
-      for (const s of neurons) if (ts - s.firedAt < s.total / IMPULSE_SPEED) firingCount++
       advance(dt, ts)
       paint(ts)
     }
@@ -710,14 +520,10 @@ export function AnimatedBackground() {
       pointer.x = -9999
       pointer.y = -9999
     }
-    /** Tap (móvil): genera un racimo de neuronas en el punto tocado. */
+    /** Tap (táctil): lanza una fugaz desde el punto tocado. */
     const onDown = (event: PointerEvent) => {
-      const now = performance.now()
-      for (let k = 0; k < 6; k++) spawnLive(now, event.clientX, event.clientY)
-      for (let i = 0; i < neurons.length; i++) {
-        const s = neurons[i]
-        if (Math.hypot(s.x - event.clientX, s.y - event.clientY) < CURSOR_RADIUS) fireAmbient(i, now)
-      }
+      if (event.pointerType !== "touch") return
+      spawnMeteor(performance.now(), event.clientX, event.clientY)
     }
     const onVisibility = () => {
       running = document.visibilityState === "visible"
@@ -755,7 +561,6 @@ export function AnimatedBackground() {
   return (
     <div className="fixed inset-0 -z-10 overflow-hidden" aria-hidden="true">
       <div className="absolute inset-0 bg-background" />
-      <div className="absolute inset-0 bg-grid" />
       <div className="absolute inset-0 scroll-glow" />
       <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none" />
     </div>

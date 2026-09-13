@@ -153,16 +153,8 @@
   background: oklch(0.78 0.17 160);
 }
 
-/* Subtle background: faint grid + single soft glow (minimal, static) */
-.bg-grid {
-  background-image:
-    linear-gradient(to right, oklch(0.93 0.01 240 / 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, oklch(0.93 0.01 240 / 0.04) 1px, transparent 1px);
-  background-size: 56px 56px;
-  mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black 30%, transparent 75%);
-}
-
 /* Glow acoplado al scroll: una única aura suave que acompaña la lectura.
+   Actúa de nebulosa tenue sobre el campo estelar (`animated-background.tsx`).
    Sin JS `--scroll-progress` vale 0 → el aura queda arriba (hero).
    La escribe `lib/scroll-driver.ts` (rAF + un solo listener de scroll). */
 @property --scroll-progress {

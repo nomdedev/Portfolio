@@ -138,8 +138,8 @@ Fondo siempre oscuro (el tema claro no se diseña, solo existe el token).
 | `ticker`         | Cinta keywords                             | 36s linear infinite, pausa solo `pointer:fine` |
 | `spotlight`      | Glow cursor en cards                       | opacity 400ms, radial 320px fijo        |
 | `magnetic`       | Solo CTA primario del hero                 | rAF lerp 0.18, máx ±6px, solo `pointer:fine` |
-| `neural-bg`      | Fondo fijo (`components/animated-background.tsx`) | Dos capas. **Ambiente**: neuronas chicas (dendritas curvas que se afinan, tamaño y forma distintos) distribuidas en la pantalla, dibujadas al 16% (`AMBIENT_GAIN`) fuera del radio del cursor: se intuyen, no se ven. **Cursor**: dentro de un radio de ~110px (`CURSOR_RADIUS`, ≈2 cm) se generan neuronas EFÍMERAS al paso del mouse — cada una distinta, dispara su impulso al nacer, el axón se enciende mientras lo recorre, contagia a una vecina y se desvanece en 1,4-2,6 s. Dentro del radio la red ambiente también se enciende a full. **Barrido "agente IA"**: cada 5 min (`BURST_INTERVAL`) un frente cruza la pantalla y dispara la red completa; es el único momento en que se ve entera. 30fps, DPR ≤1.5, pausa al ocultar pestaña |
-| `scroll-coupling`| Glow del fondo + activación de la red      | Un solo driver (`lib/scroll-driver.ts`): `--scroll-progress` 0→1 mueve el aura (4%→42% del viewport) y `--scroll-vel` excita la red |
+| `starfield-bg`   | Fondo fijo (`components/animated-background.tsx`) | Cielo "deep space" en 3 sistemas. **Campo estelar**: 3 capas de profundidad (deriva celeste lenta a distinta velocidad + parallax con el cursor de 3/7/13px → profundidad real), cada estrella con twinkle propio (fase, velocidad 3-12s, amplitud), ~9% de las cercanas con halo y cruz de difracción, ~12% en esmeralda (resto blanco frío). **Constelaciones del cursor**: dentro de ~170px las estrellas de las capas cercanas se conectan con trazos esmeralda finos que SE DIBUJAN progresivamente (320ms) y se apagan con fade (380ms); las 4 más cercanas enlazan con el propio cursor. **Fugaces**: una cada 8-20s con estela blanco→esmeralda; en táctil, un tap lanza una desde el dedo. 30fps, DPR ≤1.5, sprites de halo pre-renderizados, pausa al ocultar pestaña |
+| `scroll-coupling`| Glow del fondo + deriva estelar            | Un solo driver (`lib/scroll-driver.ts`): `--scroll-progress` 0→1 mueve el aura (4%→42% del viewport, actúa de nebulosa) y `--scroll-vel` acelera la deriva estelar |
 
 ### Prohibiciones
 
@@ -158,12 +158,12 @@ Fondo siempre oscuro (el tema claro no se diseña, solo existe el token).
 8. El scroll del fondo NO se acopla con `translateY(scrollY)`: eso desplaza la
    capa fuera del viewport a los pocos miles de px. Lo vinculado al scroll es
    progreso (aura) y velocidad (activación), siempre acotado.
-9. Las conexiones del fondo son **curvas** (dendritas), nunca rectas ni retícula. Lo que
-   se ve es la ACTIVIDAD alrededor del cursor, no una estructura fija: fuera del radio
-   (`CURSOR_RADIUS`, ≈2 cm) todo se dibuja a `AMBIENT_GAIN` (16%), y dentro del radio
-   aparecen neuronas efímeras generadas al paso del mouse, distintas cada vez. El barrido
-   completo va cada 5 minutos (`BURST_INTERVAL`); si se acorta, resulta invasivo.
-   La propagación entre neuronas se mantiene **subcrítica**: si se sube, la red se satura.
+9. El fondo es un **cielo estelar**, no una red: las conexiones (constelaciones) solo
+   existen dentro del radio del cursor (`CONST_RADIUS`, ~170px), son trazos rectos finos
+   que se dibujan progresivamente y se apagan con fade — nunca una estructura fija ni
+   retícula. El evento global es la estrella fugaz: una cada 8-20s (`METEOR_EVERY_MS`);
+   si se acorta, deja de ser especial. La deriva celeste es apenas perceptible
+   (1-4 px/s por capa): si se sube, marea; el parallax del cursor queda acotado a 13px.
 
 ---
 
@@ -230,4 +230,4 @@ Reglas transversales:
 - [ ] `tsc --noEmit` + `npm run build` verdes.
 - [ ] Este doc actualizado si se agregó un patrón nuevo.
 
-Última actualización: Septiembre 2026 (cabecera de sección unificada, `lib/stats.ts`).
+Última actualización: Septiembre 2026 (fondo estelar "deep space" reemplaza la red neuronal).
