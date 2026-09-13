@@ -4,65 +4,87 @@ import { useEffect, useRef } from "react"
 import { subscribeScroll } from "@/lib/scroll-driver"
 
 /**
- * Fondo vivo: red neuronal sutil y curva sobre la que se apoya el contenido.
+ * Fondo vivo: actividad neuronal sobre la que se apoya el contenido.
  *
- * Reglas del diseño (pedido explícito):
- * - Las conexiones son curvas (axones/dendritas), nunca rectas de retícula.
- * - En reposo NO se ven conexiones: sólo los somas. Las sinapsis se revelan
- *   únicamente por donde pasa el cursor, y la traza se desvanece sola.
- * - Fuera de eso, la red "chispea": luces aleatorias que viajan por una sinapsis
- *   y hacen destellar la neurona que tocan (como una conexión eléctrica).
- * - Todo muy sutil: alfas bajas, trazo fino, nada compite con el texto.
+ * Inspirado en la referencia "Actividad neuronal en el cerebro":
+ * - Cada neurona es una ESTRELLA: 4-7 dendritas gruesas en la base que se afinan
+ *   hacia las puntas, curvadas, y con ramas hijas que nacen a lo largo del tronco
+ *   (no todas en la punta). Largos distintos por neurona.
+ * - La red en reposo se ve, pero tenue (es la "malla" de fondo). Lo que resalta es
+ *   la ACTIVIDAD: un impulso eléctrico sale del soma, recorre el axón iluminando el
+ *   tramo que va pasando, llega a la punta, destella la sinapsis y activa la
+ *   neurona vecina (que dispara su propio impulso). Así se forma una red de
+ *   actividad que se propaga por zonas.
+ * - CEREBRO + AGENTE IA: además de la actividad orgánica, cada tanto un BARRIDO
+ *   sincronizado cruza la pantalla y dispara cientos de neuronas a la vez
+ *   (parámetros ejecutándose en paralelo).
+ * - El cursor es un hotspot: acelera los disparos de la zona y dibuja excitación
+ *   eléctrica alrededor del puntero.
  *
- * Rendimiento (DESIGN.md §4): capa fija, ~30fps, DPR ≤1.5, sin drift de
- * partículas, pausa con la pestaña oculta y con `prefers-reduced-motion` se
- * pinta un único frame estático (sólo somas).
+ * Rendimiento (DESIGN.md §4): capa fija, ~30fps, DPR ≤1.5, malla de reposo en un
+ * solo path, tope de neuronas disparando a la vez, pausa con la pestaña oculta y
+ * con `prefers-reduced-motion` se pinta un único frame estático.
  */
 
-// Acento del sistema (DESIGN.md §2): un solo tinte, distintos alfas.
+// Acento del sistema (DESIGN.md §2): un solo tinte, distintos alfas/luminancias.
 const ACCENT = "52,211,153"
+const HOT = "196,255,226" // "blanco caliente" del soma activo (mismo tinte, más luz)
 const FRAME_MS = 33 // ~30fps
-const DECAY = 0.05 // caída de energía por frame (normalizada por dt)
-const MAX_SPARKS = 48
-const MIN_SPACING = 135
-const NODE_MIN = 48
-const NODE_MAX = 180
-const BRUSH_MIN = 190
-const REVEAL_RISE = 0.3 // qué tan rápido aparece la sinapsis bajo el cursor
-const REVEAL_FADE = 0.025 // qué tan lento se borra la traza (~0.6s)
-const SPARK_RATE = 0.06 // chispas por frame (× dt)
-const SPARK_CASCADE = 0.35 // probabilidad de que la chispa siga viaje al llegar
-const CURVE_MIN = 0.13 // curvatura mínima (fracción del largo)
-const CURVE_MAX = 0.32
+const MIN_SPACING = 175
+const NODE_MIN = 30
+const NODE_MAX = 110
+const BRUSH_MIN = 230
+const MAX_DEPTH = 2
+const WAVE_DUR = 1100 // ms que tarda el impulso en recorrer el árbol
+const IMPULSE_SPEED = 0.42 // px por ms (~420 px/s: el axón se recorre en ~0.7s)
+const DECAY = 0.03
+const REVEAL_RISE = 0.3
+const REVEAL_FADE = 0.022
+const REFRACTORY = 320 // ms entre disparos de la misma neurona
+const MAX_FIRING = 130
+const SYNAPSE_DELAY = 70 // ms entre llegar a la punta y activar la vecina
+const BURST_MIN = 16000
+const BURST_MAX = 26000
+const BURST_DUR = 1700
 
-type Neuron = { x: number; y: number; e: number; seed: number; next: number }
-type Synapse = {
-  a: number
-  b: number
-  xa: number
-  ya: number
-  xb: number
-  yb: number
+type Soma = {
+  x: number
+  y: number
+  e: number
+  seed: number
+  region: number
+  next: number
+  firedAt: number
+  propagated: boolean
+  burstFired: boolean
+  total: number
+}
+
+type Branch = {
+  o: number
+  x1: number
+  y1: number
   cx: number
   cy: number
+  x2: number
+  y2: number
+  depth: number
+  w0: number
+  w1: number
+  dist: number
+  len: number
   mx: number
   my: number
-  len: number
   reveal: number
+  head: number // 0..1: porción del axón que ya quedó encendida por el impulso
 }
-type Spark = { s: number; t: number; speed: number; dir: 1 | -1 }
+
+type Region = { phase: number; freq: number; heat: number }
+type Pending = { j: number; at: number }
 
 /** Punto de una cuadrática (A → C → B) en t ∈ [0,1]; se usa para x y para y. */
 const curveAt = (a: number, c: number, b: number, t: number) =>
   (1 - t) * (1 - t) * a + 2 * (1 - t) * t * c + t * t * b
-
-/**
- * Período medio entre descargas espontáneas de una neurona, en frames (~30fps).
- * Decorrelacionado por neurona: la red titila, no parpadea en bloque.
- */
-function ambientPeriod(coarse: boolean): number {
-  return (coarse ? 260 : 420) * (0.4 + Math.random() * 1.2)
-}
 
 export function AnimatedBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -79,10 +101,15 @@ export function AnimatedBackground() {
 
     let w = 0
     let h = 0
-    let neurons: Neuron[] = []
-    let synapses: Synapse[] = []
-    let adjacency: number[][] = []
-    let sparks: Spark[] = []
+    let somas: Soma[] = []
+    let branches: Branch[] = []
+    let owned: number[][] = []
+    let links: number[][] = []
+    let regions: Region[] = []
+    let pending: Pending[] = []
+    let regionSize = 400
+    let regionCols = 1
+    let firingCount = 0
     let raf = 0
     let last = 0
     let stepTime = 0
@@ -91,108 +118,158 @@ export function AnimatedBackground() {
     let scrollVel = 0
     let scrollBoost = 0
     let pointerHeat = 0
-    // Presupuesto de contraste: en pantallas chicas el texto ocupa casi todo el
-    // ancho, así que la red baja un escalón para no competir con la lectura.
     let intensity = 1
     let brushRadius = BRUSH_MIN
+    let burstActive = false
+    let burstT = 0
+    let burstTimer = 6000
+    const burst = { axisX: true, from: 0 }
 
     const pointer = { x: -9999, y: -9999, active: false }
 
-    /**
-     * Neuronas por muestreo tipo "dart throwing": dispersión orgánica, sin la
-     * regularidad de retícula que se nota cuando no hay líneas dibujadas.
-     */
-    const build = () => {
+    /** Somas por muestreo tipo dart-throwing: dispersión orgánica, sin retícula. */
+    const buildSomas = () => {
       const area = w * h
-      const count = Math.max(NODE_MIN, Math.min(NODE_MAX, Math.round(area / 11000)))
+      const count = Math.max(NODE_MIN, Math.min(NODE_MAX, Math.round(area / 22000)))
       const spacing = Math.max(MIN_SPACING, Math.sqrt(area / count))
-      brushRadius = Math.max(BRUSH_MIN, spacing * 1.6)
-      const minDist = spacing * 0.92
-      const cellSize = minDist / Math.SQRT2
-      const gw = Math.max(1, Math.ceil(w / cellSize))
-      const gh = Math.max(1, Math.ceil(h / cellSize))
+      brushRadius = Math.max(BRUSH_MIN, spacing * 1.4)
+      const minDist = spacing * 0.95
+      const cell = minDist / Math.SQRT2
+      const gw = Math.max(1, Math.ceil(w / cell))
+      const gh = Math.max(1, Math.ceil(h / cell))
       const grid = new Int32Array(gw * gh).fill(-1)
 
       const tooClose = (x: number, y: number) => {
-        const gx = Math.floor(x / cellSize)
-        const gy = Math.floor(y / cellSize)
+        const gx = Math.floor(x / cell)
+        const gy = Math.floor(y / cell)
         for (let j = Math.max(0, gy - 2); j <= Math.min(gh - 1, gy + 2); j++) {
           for (let i = Math.max(0, gx - 2); i <= Math.min(gw - 1, gx + 2); i++) {
             const idx = grid[j * gw + i]
             if (idx < 0) continue
-            const n = neurons[idx]
-            if (Math.hypot(n.x - x, n.y - y) < minDist) return true
+            const s = somas[idx]
+            if (Math.hypot(s.x - x, s.y - y) < minDist) return true
           }
         }
         return false
       }
 
-      neurons = []
-      const attempts = count * 30
-      for (let k = 0; k < attempts && neurons.length < count; k++) {
+      regionSize = Math.max(360, spacing * 2.2)
+      regionCols = Math.max(1, Math.ceil(w / regionSize))
+      const regionRows = Math.max(1, Math.ceil(h / regionSize))
+      regions = Array.from({ length: regionCols * regionRows }, () => ({
+        phase: Math.random() * Math.PI * 2,
+        freq: 0.01 + Math.random() * 0.014,
+        heat: 0,
+      }))
+
+      somas = []
+      for (let k = 0; k < count * 30 && somas.length < count; k++) {
         const x = Math.random() * w
         const y = Math.random() * h
         if (tooClose(x, y)) continue
-        grid[Math.floor(y / cellSize) * gw + Math.floor(x / cellSize)] = neurons.length
-        neurons.push({
+        grid[Math.floor(y / cell) * gw + Math.floor(x / cell)] = somas.length
+        const rx = Math.min(regionCols - 1, Math.floor(x / regionSize))
+        const ry = Math.min(regionRows - 1, Math.floor(y / regionSize))
+        somas.push({
           x,
           y,
-          e: 0.02 + Math.random() * 0.05,
+          e: 0.03 + Math.random() * 0.05,
           seed: Math.random() * Math.PI * 2,
-          // Timer propio (proceso de Poisson) para el destello espontáneo.
-          next: Math.random() * ambientPeriod(coarse),
+          region: ry * regionCols + rx,
+          next: 300 + Math.random() * 1400,
+          firedAt: -1e9,
+          propagated: true,
+          burstFired: false,
+          total: 1,
         })
       }
+      return spacing
+    }
 
-      // Sinapsis CURVAS entre vecinas cercanas: el punto de control se corre
-      // perpendicular al segmento, con signo y magnitud aleatorios.
-      const maxEdge = spacing * 1.75
-      synapses = []
-      const seen = new Set<number>()
-      const key = (i: number, j: number) => (i < j ? i * 100000 + j : j * 100000 + i)
-      for (let i = 0; i < neurons.length; i++) {
-        const a = neurons[i]
-        const candidates: { j: number; d: number }[] = []
-        for (let j = 0; j < neurons.length; j++) {
-          if (j === i) continue
-          const d = Math.hypot(a.x - neurons[j].x, a.y - neurons[j].y)
-          if (d < maxEdge) candidates.push({ j, d })
-        }
-        candidates.sort((p, q) => p.d - q.d)
-        for (const candidate of candidates.slice(0, 3)) {
-          if (seen.has(key(i, candidate.j))) continue
-          seen.add(key(i, candidate.j))
-          const b = neurons[candidate.j]
-          const len = candidate.d
-          const nx = (b.y - a.y) / len
-          const ny = -(b.x - a.x) / len
-          const bend = len * (CURVE_MIN + Math.random() * (CURVE_MAX - CURVE_MIN))
-          const sign = Math.random() < 0.5 ? -1 : 1
-          const mx = (a.x + b.x) / 2
-          const my = (a.y + b.y) / 2
-          synapses.push({
-            a: i,
-            b: candidate.j,
-            xa: a.x,
-            ya: a.y,
-            xb: b.x,
-            yb: b.y,
-            cx: mx + nx * bend * sign,
-            cy: my + ny * bend * sign,
-            mx: mx + nx * bend * sign * 0.5,
-            my: my + ny * bend * sign * 0.5,
-            len,
-            reveal: 0,
-          })
+    /**
+     * Dendrita: tronco grueso que se afina, curvo, con ramas hijas que nacen a lo
+     * largo del tronco (55-90%) y no en la punta. Distinta longitud cada una.
+     */
+    const grow = (
+      o: number,
+      x: number,
+      y: number,
+      angle: number,
+      len: number,
+      depth: number,
+      dist: number
+    ) => {
+      const ex = x + Math.cos(angle) * len
+      const ey = y + Math.sin(angle) * len
+      const nx = (ey - y) / len
+      const ny = -(ex - x) / len
+      const bow = len * (0.18 + Math.random() * 0.3) * (Math.random() < 0.5 ? -1 : 1)
+      const cx = (x + ex) / 2 + nx * bow
+      const cy = (y + ey) / 2 + ny * bow
+      const w0 = 2.3 - depth * 0.7
+      const w1 = Math.max(0.35, w0 - 0.55)
+      branches.push({
+        o,
+        x1: x,
+        y1: y,
+        cx,
+        cy,
+        x2: ex,
+        y2: ey,
+        depth,
+        w0,
+        w1,
+        dist: dist + len,
+        len,
+        mx: (x + ex) / 2 + nx * bow * 0.5,
+        my: (y + ey) / 2 + ny * bow * 0.5,
+        reveal: 0,
+        head: 0,
+      })
+      if (dist + len > somas[o].total) somas[o].total = dist + len
+      if (depth >= MAX_DEPTH || len < 14) return
+      const kids = depth === 0 ? 2 : Math.random() < 0.5 ? 2 : 1
+      for (let k = 0; k < kids; k++) {
+        const at = 0.55 + Math.random() * 0.35
+        const bx = curveAt(x, cx, ex, at)
+        const by = curveAt(y, cy, ey, at)
+        const spread = (0.35 + Math.random() * 0.5) * (Math.random() < 0.5 ? -1 : 1)
+        grow(o, bx, by, angle + spread, len * (0.45 + Math.random() * 0.25), depth + 1, dist + len * at)
+      }
+    }
+
+    const build = () => {
+      const spacing = buildSomas()
+      branches = []
+      owned = somas.map(() => [])
+      for (let i = 0; i < somas.length; i++) {
+        const s = somas[i]
+        // Estrella: 4-7 dendritas alrededor del soma, largos bien distintos.
+        const dendrites = 4 + Math.floor(Math.random() * 4)
+        const base = (Math.random() * Math.PI * 2) / dendrites
+        for (let k = 0; k < dendrites; k++) {
+          const angle = base + (k / dendrites) * Math.PI * 2 + (Math.random() - 0.5) * 0.5
+          const len = spacing * (0.25 + Math.random() * 0.4)
+          const before = branches.length
+          grow(i, s.x, s.y, angle, len, 0, 0)
+          for (let b = before; b < branches.length; b++) owned[i].push(b)
         }
       }
-
-      adjacency = neurons.map(() => [])
-      synapses.forEach((s, index) => {
-        adjacency[s.a].push(index)
-        adjacency[s.b].push(index)
-      })
-      sparks = []
+      // Sinapsis: adyacencia por cercanía (por dónde salta la activación).
+      links = somas.map(() => [])
+      const linkDist = spacing * 1.6
+      for (let i = 0; i < somas.length; i++) {
+        const a = somas[i]
+        const near: { j: number; d: number }[] = []
+        for (let j = 0; j < somas.length; j++) {
+          if (j === i) continue
+          const d = Math.hypot(a.x - somas[j].x, a.y - somas[j].y)
+          if (d < linkDist) near.push({ j, d })
+        }
+        near.sort((p, q) => p.d - q.d)
+        links[i] = near.slice(0, 3).map((n) => n.j)
+      }
+      pending = []
     }
 
     const resize = () => {
@@ -208,152 +285,286 @@ export function AnimatedBackground() {
       canvas.style.height = `${h}px`
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
       build()
-      if (reduced) paint(0)
+      if (reduced) paint(performance.now())
     }
 
-    /** Chispa eléctrica: viaja por una sinapsis y hace destellar la neurona. */
-    const sparkOn = (index: number) => {
-      if (sparks.length >= MAX_SPARKS) return
-      sparks.push({
-        s: index,
-        t: 0,
-        speed: 0.028 + Math.random() * 0.016,
-        dir: Math.random() < 0.5 ? 1 : -1,
-      })
+    /** Dispara una neurona: arranca su impulso y calienta su región. */
+    const fire = (i: number, now: number) => {
+      const s = somas[i]
+      if (now - s.firedAt < REFRACTORY) return
+      if (firingCount >= MAX_FIRING) return
+      s.firedAt = now
+      s.propagated = false
+      s.e = 1
+      s.total = Math.max(1, s.total)
+      firingCount++
+      const r = regions[s.region]
+      if (r) r.heat = Math.min(0.8, r.heat + 0.1)
     }
 
-    const spawnRandom = () => {
-      if (synapses.length === 0) return
-      sparkOn(Math.floor(Math.random() * synapses.length))
-    }
-
-    /** Excitación por cursor: revela sinapsis y enciende somas cercanos. */
-    const excitePointer = (dt: number) => {
+    /** Hotspot del cursor: cuanta más cercanía, más probabilidad de disparo. */
+    const excitePointer = (dt: number, now: number) => {
       if (!pointer.active || coarse) {
         pointerHeat *= 0.9
         return
       }
-      pointerHeat = Math.min(1, pointerHeat * 0.9 + 0.22)
-      const gain = (0.01 + 0.05 * pointerHeat) * dt
-      for (let i = 0; i < neurons.length; i++) {
-        const n = neurons[i]
-        const d = Math.hypot(n.x - pointer.x, n.y - pointer.y)
+      pointerHeat = Math.min(1, pointerHeat * 0.9 + 0.24)
+      for (let i = 0; i < somas.length; i++) {
+        const s = somas[i]
+        const d = Math.hypot(s.x - pointer.x, s.y - pointer.y)
         if (d >= brushRadius) continue
-        n.e = Math.min(1, n.e + (1 - d / brushRadius) * gain)
+        const prox = 1 - d / brushRadius
+        s.e = Math.min(1, s.e + prox * 0.14 * dt)
+        if (Math.random() < prox * 0.14 * dt) fire(i, now)
       }
     }
 
-    const advance = (dt: number) => {
-      // Somas: decaimiento + destello espontáneo de baja tasa.
-      for (let i = 0; i < neurons.length; i++) {
-        const n = neurons[i]
-        n.e *= 1 - DECAY * dt
-        if (n.e < 0.001) n.e = 0
-        n.next -= dt * (1 + scrollBoost * 2.5)
-        if (n.next <= 0) {
-          if (n.e < 0.5) n.e = 0.85
-          n.next = ambientPeriod(coarse)
+    const advance = (dt: number, now: number) => {
+      // Regiones: cada una late con su fase; las que dispararon quedan calientes.
+      for (const r of regions) {
+        r.phase += r.freq * dt
+        r.heat *= 1 - 0.012 * dt
+      }
+
+      for (let i = 0; i < somas.length; i++) {
+        const s = somas[i]
+        s.e *= 1 - DECAY * dt
+        if (s.e < 0.001) s.e = 0
+        const r = regions[s.region]
+        const ex =
+          (r ? 0.3 + 0.7 * (0.5 + 0.5 * Math.sin(r.phase)) + r.heat * 0.3 : 0.5) * (1 + scrollBoost * 3)
+        s.next -= dt * ex
+        if (s.next <= 0) {
+          fire(i, now)
+          s.next = 1600 + Math.random() * 3200
+        }
+        // Al llegar el impulso a las puntas, el soma avisa a sus vecinos.
+        if (!s.propagated && now - s.firedAt > WAVE_DUR * 0.7) {
+          s.propagated = true
+          for (const j of links[i]) if (Math.random() < 0.18) pending.push({ j, at: now + SYNAPSE_DELAY })
         }
       }
 
-      // Revelado de sinapsis: rise rápido bajo el cursor, fade lento (traza).
-      const revealRate = (strong: boolean) => (strong ? REVEAL_RISE : REVEAL_FADE) * dt
-      for (const s of synapses) {
+      // Sinapsis pendientes: la neurona vecina arranca su propio impulso.
+      for (let k = pending.length - 1; k >= 0; k--) {
+        if (pending[k].at > now) continue
+        fire(pending[k].j, now)
+        pending.splice(k, 1)
+      }
+
+      // Barrido "agente IA": un frente cruza la pantalla y dispara en paralelo.
+      burstTimer -= dt * 16.67
+      if (!burstActive && burstTimer <= 0) {
+        burstActive = true
+        burstT = 0
+        burst.axisX = Math.random() < 0.5
+        burst.from = Math.random() < 0.5 ? 0 : 1
+        for (const s of somas) s.burstFired = false
+        burstTimer = BURST_MIN + Math.random() * (BURST_MAX - BURST_MIN)
+      }
+      if (burstActive) {
+        burstT += dt * 16.67
+        const p = burstT / BURST_DUR
+        const line = burst.from === 0 ? p : 1 - p
+        for (let i = 0; i < somas.length; i++) {
+          const s = somas[i]
+          if (s.burstFired) continue
+          if (now - s.firedAt < WAVE_DUR * 0.6) continue
+          const coord = burst.axisX ? s.x / w : s.y / h
+          if (burst.from === 0 ? coord <= line : coord >= line) {
+            s.burstFired = true
+            fire(i, now)
+          }
+        }
+        if (p >= 1) burstActive = false
+      }
+
+      // Impulso: recorre el árbol por distancia; el tramo recorrido queda encendido.
+      for (const b of branches) {
+        const s = somas[b.o]
+        const travelled = (now - s.firedAt) * IMPULSE_SPEED
         let target = 0
+        let head = 0
+        if (travelled > 0 && travelled < s.total + 90) {
+          const from = b.dist - b.len
+          if (travelled >= b.dist) {
+            // Ya pasó: queda encendido y se va apagando detrás del impulso.
+            const behind = travelled - b.dist
+            target = 0.5 * Math.max(0, 1 - behind / 180)
+            head = 1
+          } else if (travelled > from) {
+            // Lo está recorriendo: se enciende el tramo que ya pasó.
+            head = (travelled - from) / b.len
+            target = 0.9
+          }
+        }
         if (pointer.active && !coarse) {
-          const d = Math.hypot(s.mx - pointer.x, s.my - pointer.y)
-          if (d < brushRadius) target = 1 - d / brushRadius
+          const d = Math.hypot(b.mx - pointer.x, b.my - pointer.y)
+          if (d < brushRadius) target = Math.max(target, (1 - d / brushRadius) * 0.8)
         }
-        if (target > s.reveal) s.reveal = Math.min(target, s.reveal + revealRate(true))
-        else s.reveal = Math.max(target, s.reveal - revealRate(false))
+        b.head = head
+        b.reveal =
+          target > b.reveal
+            ? Math.min(target, b.reveal + REVEAL_RISE * dt)
+            : Math.max(target, b.reveal - REVEAL_FADE * dt)
       }
+    }
 
-      // Chispas aleatorias (más frecuentes al scrollear).
-      if (Math.random() < SPARK_RATE * dt * (1 + scrollBoost * 4)) spawnRandom()
-
-      for (let k = sparks.length - 1; k >= 0; k--) {
-        const sp = sparks[k]
-        sp.t += sp.speed * dt
-        const s = synapses[sp.s]
-        // Una chispa deja la sinapsis apenas visible mientras viaja.
-        if (s.reveal < 0.22) s.reveal = Math.min(0.22, s.reveal + 0.05 * dt)
-        if (sp.t < 1) continue
-        sparks.splice(k, 1)
-        const target = sp.dir === 1 ? s.b : s.a
-        neurons[target].e = 1
-        if (Math.random() < SPARK_CASCADE) {
-          const links = adjacency[target]
-          const next = links[Math.floor(Math.random() * links.length)]
-          if (next !== undefined) sparkOn(next)
-        }
+    /** Traza una rama; si está "caliente" la dibuja con grosor que se afina. */
+    const drawBranch = (b: Branch, alpha: number, tapered: boolean) => {
+      if (!tapered) {
+        ctx.lineWidth = (b.w0 + b.w1) / 2
+        ctx.strokeStyle = `rgba(${ACCENT},${alpha.toFixed(3)})`
+        ctx.beginPath()
+        ctx.moveTo(b.x1, b.y1)
+        ctx.quadraticCurveTo(b.cx, b.cy, b.x2, b.y2)
+        ctx.stroke()
+        return
       }
+      // Polígono: ancho w0 en la base → w1 en la punta (axón que se afina).
+      const steps = 5
+      ctx.fillStyle = `rgba(${ACCENT},${alpha.toFixed(3)})`
+      ctx.beginPath()
+      for (let k = 0; k <= steps; k++) {
+        const t = k / steps
+        const x = curveAt(b.x1, b.cx, b.x2, t)
+        const y = curveAt(b.y1, b.cy, b.y2, t)
+        const dx = 2 * (1 - t) * (b.cx - b.x1) + 2 * t * (b.x2 - b.cx)
+        const dy = 2 * (1 - t) * (b.cy - b.y1) + 2 * t * (b.y2 - b.cy)
+        const n = Math.hypot(dx, dy) || 1
+        const half = ((b.w0 + (b.w1 - b.w0) * t) / 2) * (k === 0 ? 0.2 : 1)
+        const ox = (-dy / n) * half
+        const oy = (dx / n) * half
+        if (k === 0) ctx.moveTo(x - ox, y - oy)
+        else ctx.lineTo(x - ox, y - oy)
+      }
+      for (let k = steps; k >= 0; k--) {
+        const t = k / steps
+        const x = curveAt(b.x1, b.cx, b.x2, t)
+        const y = curveAt(b.y1, b.cy, b.y2, t)
+        const dx = 2 * (1 - t) * (b.cx - b.x1) + 2 * t * (b.x2 - b.cx)
+        const dy = 2 * (1 - t) * (b.cy - b.y1) + 2 * t * (b.y2 - b.cy)
+        const n = Math.hypot(dx, dy) || 1
+        const half = ((b.w0 + (b.w1 - b.w0) * t) / 2) * (k === 0 ? 0.2 : 1)
+        ctx.lineTo(x + (-dy / n) * half, y + (dx / n) * half)
+      }
+      ctx.closePath()
+      ctx.fill()
     }
 
     const paint = (time: number) => {
-      const now = time / 1000
+      const now = time
       ctx.clearRect(0, 0, w, h)
-      ctx.lineWidth = 1
 
-      // 1) Sinapsis reveladas por el cursor (curvas, nunca rectas).
-      for (const s of synapses) {
-        if (s.reveal < 0.015) continue
-        const heat = 0.4 + 0.6 * pointerHeat
-        const alpha = (0.04 + s.reveal * 0.3) * heat * intensity
-        if (alpha < 0.012) continue
-        ctx.strokeStyle = `rgba(${ACCENT},${alpha.toFixed(3)})`
-        ctx.beginPath()
-        ctx.moveTo(s.xa, s.ya)
-        ctx.quadraticCurveTo(s.cx, s.cy, s.xb, s.yb)
-        ctx.stroke()
+      // 1) Malla en reposo: toda la red apenas visible, en UN solo path.
+      ctx.lineWidth = 0.7
+      ctx.strokeStyle = `rgba(${ACCENT},${(0.03 * intensity).toFixed(3)})`
+      ctx.beginPath()
+      for (const b of branches) {
+        ctx.moveTo(b.x1, b.y1)
+        ctx.quadraticCurveTo(b.cx, b.cy, b.x2, b.y2)
+      }
+      ctx.stroke()
+
+      // 2) Ramas activas: encendidas por el impulso o por el cursor.
+      ctx.globalCompositeOperation = "lighter"
+      for (const b of branches) {
+        if (b.reveal < 0.03) continue
+        const alpha = (0.06 + b.reveal * 0.42) * intensity
+        drawBranch(b, alpha, b.reveal > 0.35 && b.depth < 2)
       }
 
-      // 2) Chispas: cola curva + cabeza brillante (composite aditivo).
-      ctx.globalCompositeOperation = "lighter"
-      for (const sp of sparks) {
-        const s = synapses[sp.s]
-        // La misma cuadrática, recorrida en el sentido de la chispa.
-        const x1 = sp.dir === 1 ? s.xa : s.xb
-        const y1 = sp.dir === 1 ? s.ya : s.yb
-        const x2 = sp.dir === 1 ? s.xb : s.xa
-        const y2 = sp.dir === 1 ? s.yb : s.ya
-        const t = sp.t
-        const tailT = Math.max(0, t - 0.22)
-        ctx.strokeStyle = `rgba(${ACCENT},0.3)`
+      // 3) Cabeza del impulso: punto brillante + halo sobre el axón.
+      for (const b of branches) {
+        if (b.head <= 0 || b.head >= 1 || b.reveal < 0.2) continue
+        const x = curveAt(b.x1, b.cx, b.x2, b.head)
+        const y = curveAt(b.y1, b.cy, b.y2, b.head)
+        const glow = ctx.createRadialGradient(x, y, 0, x, y, 14)
+        glow.addColorStop(0, `rgba(${HOT},${(0.5 * intensity).toFixed(3)})`)
+        glow.addColorStop(1, `rgba(${ACCENT},0)`)
+        ctx.fillStyle = glow
         ctx.beginPath()
-        ctx.moveTo(curveAt(x1, s.cx, x2, tailT), curveAt(y1, s.cy, y2, tailT))
-        for (let k = 1; k <= 4; k++) {
-          const tt = tailT + ((t - tailT) * k) / 4
-          ctx.lineTo(curveAt(x1, s.cx, x2, tt), curveAt(y1, s.cy, y2, tt))
+        ctx.arc(x, y, 14, 0, Math.PI * 2)
+        ctx.fill()
+        ctx.fillStyle = `rgba(${HOT},${(0.85 * intensity).toFixed(3)})`
+        ctx.beginPath()
+        ctx.arc(x, y, 1.4, 0, Math.PI * 2)
+        ctx.fill()
+      }
+
+      // 4) Somas: en reposo tenue; activos con núcleo caliente y halo.
+      for (const s of somas) {
+        const e = Math.min(1, s.e * (0.92 + 0.08 * Math.sin(now / 700 + s.seed)))
+        if (e > 0.5) {
+          const glow = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, 22 + e * 16)
+          glow.addColorStop(0, `rgba(${HOT},${((e - 0.5) * 0.55 * intensity).toFixed(3)})`)
+          glow.addColorStop(0.45, `rgba(${ACCENT},${((e - 0.5) * 0.3 * intensity).toFixed(3)})`)
+          glow.addColorStop(1, `rgba(${ACCENT},0)`)
+          ctx.fillStyle = glow
+          ctx.beginPath()
+          ctx.arc(s.x, s.y, 22 + e * 16, 0, Math.PI * 2)
+          ctx.fill()
+        }
+        ctx.fillStyle = `rgba(${ACCENT},${((0.1 + e * 0.35) * intensity).toFixed(3)})`
+        ctx.beginPath()
+        ctx.arc(s.x, s.y, 1.2 + e * 1.8, 0, Math.PI * 2)
+        ctx.fill()
+        if (e > 0.45) {
+          ctx.fillStyle = `rgba(${HOT},${((e - 0.45) * 0.7 * intensity).toFixed(3)})`
+          ctx.beginPath()
+          ctx.arc(s.x, s.y, 0.7 + e * 0.9, 0, Math.PI * 2)
+          ctx.fill()
+        }
+      }
+
+      // 5) Barrido IA: frente fino que cruza la pantalla.
+      if (burstActive) {
+        const p = burstT / BURST_DUR
+        const line = burst.from === 0 ? p : 1 - p
+        const fade = Math.sin(Math.PI * Math.min(1, Math.max(0, p)))
+        ctx.lineWidth = 1
+        ctx.strokeStyle = `rgba(${ACCENT},${(0.08 * fade * intensity).toFixed(3)})`
+        ctx.beginPath()
+        if (burst.axisX) {
+          ctx.moveTo(line * w, 0)
+          ctx.lineTo(line * w, h)
+        } else {
+          ctx.moveTo(0, line * h)
+          ctx.lineTo(w, line * h)
         }
         ctx.stroke()
-        const hx = curveAt(x1, s.cx, x2, t)
-        const hy = curveAt(y1, s.cy, y2, t)
-        ctx.fillStyle = `rgba(${ACCENT},0.65)`
-        ctx.beginPath()
-        ctx.arc(hx, hy, 1, 0, Math.PI * 2)
-        ctx.fill()
       }
 
-      // 3) Somas: punto + halo cuando están activos.
-      for (const n of neurons) {
-        const e = Math.min(1, n.e * (0.92 + 0.08 * Math.sin(now * 1.4 + n.seed)))
-        ctx.fillStyle = `rgba(${ACCENT},${((0.16 + e * 0.7) * intensity).toFixed(3)})`
-        ctx.beginPath()
-        ctx.arc(n.x, n.y, 1 + e * 2, 0, Math.PI * 2)
-        ctx.fill()
-        if (e > 0.5) {
-          ctx.strokeStyle = `rgba(${ACCENT},${((e - 0.5) * 0.5 * intensity).toFixed(3)})`
+      // 6) Excitación eléctrica en el cursor: filamentos cortos que tiemblan.
+      if (pointer.active && !coarse && pointerHeat > 0.15) {
+        ctx.lineWidth = 1
+        for (let k = 0; k < 9; k++) {
+          const angle = Math.random() * Math.PI * 2
+          const len = 14 + Math.random() * 54
+          const x2 = pointer.x + Math.cos(angle) * len
+          const y2 = pointer.y + Math.sin(angle) * len
+          const bow = (Math.random() - 0.5) * len * 0.7
+          ctx.strokeStyle = `rgba(${ACCENT},${(0.1 + pointerHeat * 0.24).toFixed(3)})`
           ctx.beginPath()
-          ctx.arc(n.x, n.y, 3 + e * 5, 0, Math.PI * 2)
+          ctx.moveTo(pointer.x, pointer.y)
+          ctx.quadraticCurveTo(
+            pointer.x + (x2 - pointer.x) / 2 - Math.sin(angle) * bow,
+            pointer.y + (y2 - pointer.y) / 2 + Math.cos(angle) * bow,
+            x2,
+            y2
+          )
           ctx.stroke()
         }
-      }
-
-      // 4) Puntero: soma propio, apenas un punto.
-      if (pointer.active && !coarse && pointerHeat > 0.15) {
-        ctx.fillStyle = `rgba(${ACCENT},${(0.25 + pointerHeat * 0.25).toFixed(3)})`
+        const glow = ctx.createRadialGradient(pointer.x, pointer.y, 0, pointer.x, pointer.y, 46)
+        glow.addColorStop(0, `rgba(${HOT},${(0.16 + pointerHeat * 0.16).toFixed(3)})`)
+        glow.addColorStop(1, `rgba(${ACCENT},0)`)
+        ctx.fillStyle = glow
         ctx.beginPath()
-        ctx.arc(pointer.x, pointer.y, 1.6, 0, Math.PI * 2)
+        ctx.arc(pointer.x, pointer.y, 46, 0, Math.PI * 2)
+        ctx.fill()
+        ctx.fillStyle = `rgba(${HOT},${(0.4 + pointerHeat * 0.35).toFixed(3)})`
+        ctx.beginPath()
+        ctx.arc(pointer.x, pointer.y, 1.8, 0, Math.PI * 2)
         ctx.fill()
       }
       ctx.globalCompositeOperation = "source-over"
@@ -367,8 +578,10 @@ export function AnimatedBackground() {
       last = ts
       stepTime = ts
       scrollBoost = Math.min(1, scrollBoost * 0.9 + scrollVel * 1.5)
-      excitePointer(dt)
-      advance(dt)
+      firingCount = 0
+      for (const s of somas) if (ts - s.firedAt < WAVE_DUR) firingCount++
+      excitePointer(dt, ts)
+      advance(dt, ts)
       paint(ts)
     }
 
@@ -386,14 +599,13 @@ export function AnimatedBackground() {
       pointer.x = -9999
       pointer.y = -9999
     }
-    /** Tap (móvil) o click: revela y chispea la zona tocada. */
+    /** Tap (móvil): dispara las neuronas de la zona tocada. */
     const onDown = (event: PointerEvent) => {
-      const { clientX: x, clientY: y } = event
-      for (const s of synapses) {
-        const d = Math.hypot(s.mx - x, s.my - y)
-        if (d < brushRadius) s.reveal = Math.max(s.reveal, 1 - d / brushRadius)
+      const now = performance.now()
+      for (let i = 0; i < somas.length; i++) {
+        const s = somas[i]
+        if (Math.hypot(s.x - event.clientX, s.y - event.clientY) < brushRadius) fire(i, now)
       }
-      for (let k = 0; k < 3; k++) spawnRandom()
     }
     const onVisibility = () => {
       running = document.visibilityState === "visible"

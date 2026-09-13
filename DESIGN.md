@@ -138,7 +138,7 @@ Fondo siempre oscuro (el tema claro no se diseña, solo existe el token).
 | `ticker`         | Cinta keywords                             | 36s linear infinite, pausa solo `pointer:fine` |
 | `spotlight`      | Glow cursor en cards                       | opacity 400ms, radial 320px fijo        |
 | `magnetic`       | Solo CTA primario del hero                 | rAF lerp 0.18, máx ±6px, solo `pointer:fine` |
-| `neural-bg`      | Fondo fijo (`components/animated-background.tsx`) | Somas por muestreo orgánico (sin retícula) + sinapsis **curvas** que sólo se revelan bajo el cursor, con traza que se desvanece en ~0.6s. En reposo no se ven conexiones: sólo somas y chispas eléctricas aleatorias que viajan por una sinapsis y hacen destellar la neurona que tocan. Tap revela localmente; el scroll acelera las chispas. 30fps, DPR ≤1.5, pausa al ocultar pestaña |
+| `neural-bg`      | Fondo fijo (`components/animated-background.tsx`) | Neuronas **estrella**: 4-7 dendritas curvas por soma, gruesas en la base y finas en las puntas (polígono que se afina), con ramas hijas que nacen a lo largo del tronco y largos distintos. La malla de reposo se ve apenas (un solo path, alfa 0.03); lo que resalta es la ACTIVIDAD: el impulso sale del soma, enciende el axón que va recorriendo (~420 px/s), destella la sinapsis y activa la neurona vecina. El cursor es hotspot (acelera los disparos de la zona y dibuja filamentos eléctricos); el tap hace lo mismo en táctil. Cada 16-26s un barrido sincronizado (capa "agente IA") dispara cientos de neuronas en paralelo. 30fps, DPR ≤1.5, pausa al ocultar pestaña |
 | `scroll-coupling`| Glow del fondo + activación de la red      | Un solo driver (`lib/scroll-driver.ts`): `--scroll-progress` 0→1 mueve el aura (4%→42% del viewport) y `--scroll-vel` excita la red |
 
 ### Prohibiciones
@@ -158,9 +158,11 @@ Fondo siempre oscuro (el tema claro no se diseña, solo existe el token).
 8. El scroll del fondo NO se acopla con `translateY(scrollY)`: eso desplaza la
    capa fuera del viewport a los pocos miles de px. Lo vinculado al scroll es
    progreso (aura) y velocidad (activación), siempre acotado.
-9. Las conexiones del fondo son **curvas** y no se dibujan en reposo: la
-   estructura se revela con el cursor (o el tap). En reposo sólo hay somas y
-   chispas aleatorias. Nunca volver a la retícula de líneas rectas siempre visible.
+9. Las conexiones del fondo son **curvas** (dendritas), nunca rectas ni retícula. La
+   malla en reposo se dibuja apenas visible (alfa ≤0.03) y lo que tiene que resaltar
+   es la ACTIVIDAD: el impulso recorriendo el axón y el hotspot del cursor, no la
+   estructura. La propagación entre neuronas se mantiene **subcrítica** (≈0.5 hijos
+   por disparo): si se sube, la red se satura y se enciende entera.
 
 ---
 
