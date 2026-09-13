@@ -138,7 +138,7 @@ Fondo siempre oscuro (el tema claro no se diseña, solo existe el token).
 | `ticker`         | Cinta keywords                             | 36s linear infinite, pausa solo `pointer:fine` |
 | `spotlight`      | Glow cursor en cards                       | opacity 400ms, radial 320px fijo        |
 | `magnetic`       | Solo CTA primario del hero                 | rAF lerp 0.18, máx ±6px, solo `pointer:fine` |
-| `neural-bg`      | Fondo fijo (`components/animated-background.tsx`) | Neuronas **estrella**: 4-7 dendritas curvas por soma, gruesas en la base y finas en las puntas (polígono que se afina), con ramas hijas que nacen a lo largo del tronco y largos distintos. La malla de reposo se ve apenas (un solo path, alfa 0.03); lo que resalta es la ACTIVIDAD: el impulso sale del soma, enciende el axón que va recorriendo (~420 px/s), destella la sinapsis y activa la neurona vecina. El cursor es hotspot (acelera los disparos de la zona y dibuja filamentos eléctricos); el tap hace lo mismo en táctil. Cada 16-26s un barrido sincronizado (capa "agente IA") dispara cientos de neuronas en paralelo. 30fps, DPR ≤1.5, pausa al ocultar pestaña |
+| `neural-bg`      | Fondo fijo (`components/animated-background.tsx`) | Dos capas. **Ambiente**: neuronas chicas (dendritas curvas que se afinan, tamaño y forma distintos) distribuidas en la pantalla, dibujadas al 16% (`AMBIENT_GAIN`) fuera del radio del cursor: se intuyen, no se ven. **Cursor**: dentro de un radio de ~110px (`CURSOR_RADIUS`, ≈2 cm) se generan neuronas EFÍMERAS al paso del mouse — cada una distinta, dispara su impulso al nacer, el axón se enciende mientras lo recorre, contagia a una vecina y se desvanece en 1,4-2,6 s. Dentro del radio la red ambiente también se enciende a full. **Barrido "agente IA"**: cada 5 min (`BURST_INTERVAL`) un frente cruza la pantalla y dispara la red completa; es el único momento en que se ve entera. 30fps, DPR ≤1.5, pausa al ocultar pestaña |
 | `scroll-coupling`| Glow del fondo + activación de la red      | Un solo driver (`lib/scroll-driver.ts`): `--scroll-progress` 0→1 mueve el aura (4%→42% del viewport) y `--scroll-vel` excita la red |
 
 ### Prohibiciones
@@ -158,11 +158,12 @@ Fondo siempre oscuro (el tema claro no se diseña, solo existe el token).
 8. El scroll del fondo NO se acopla con `translateY(scrollY)`: eso desplaza la
    capa fuera del viewport a los pocos miles de px. Lo vinculado al scroll es
    progreso (aura) y velocidad (activación), siempre acotado.
-9. Las conexiones del fondo son **curvas** (dendritas), nunca rectas ni retícula. La
-   malla en reposo se dibuja apenas visible (alfa ≤0.03) y lo que tiene que resaltar
-   es la ACTIVIDAD: el impulso recorriendo el axón y el hotspot del cursor, no la
-   estructura. La propagación entre neuronas se mantiene **subcrítica** (≈0.5 hijos
-   por disparo): si se sube, la red se satura y se enciende entera.
+9. Las conexiones del fondo son **curvas** (dendritas), nunca rectas ni retícula. Lo que
+   se ve es la ACTIVIDAD alrededor del cursor, no una estructura fija: fuera del radio
+   (`CURSOR_RADIUS`, ≈2 cm) todo se dibuja a `AMBIENT_GAIN` (16%), y dentro del radio
+   aparecen neuronas efímeras generadas al paso del mouse, distintas cada vez. El barrido
+   completo va cada 5 minutos (`BURST_INTERVAL`); si se acorta, resulta invasivo.
+   La propagación entre neuronas se mantiene **subcrítica**: si se sube, la red se satura.
 
 ---
 

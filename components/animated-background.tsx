@@ -6,62 +6,67 @@ import { subscribeScroll } from "@/lib/scroll-driver"
 /**
  * Fondo vivo: actividad neuronal sobre la que se apoya el contenido.
  *
- * Inspirado en la referencia "Actividad neuronal en el cerebro":
- * - Cada neurona es una ESTRELLA: 4-7 dendritas gruesas en la base que se afinan
- *   hacia las puntas, curvadas, y con ramas hijas que nacen a lo largo del tronco
- *   (no todas en la punta). Largos distintos por neurona.
- * - La red en reposo se ve, pero tenue (es la "malla" de fondo). Lo que resalta es
- *   la ACTIVIDAD: un impulso eléctrico sale del soma, recorre el axón iluminando el
- *   tramo que va pasando, llega a la punta, destella la sinapsis y activa la
- *   neurona vecina (que dispara su propio impulso). Así se forma una red de
- *   actividad que se propaga por zonas.
- * - CEREBRO + AGENTE IA: además de la actividad orgánica, cada tanto un BARRIDO
- *   sincronizado cruza la pantalla y dispara cientos de neuronas a la vez
- *   (parámetros ejecutándose en paralelo).
- * - El cursor es un hotspot: acelera los disparos de la zona y dibuja excitación
- *   eléctrica alrededor del puntero.
+ * Dos capas:
  *
- * Rendimiento (DESIGN.md §4): capa fija, ~30fps, DPR ≤1.5, malla de reposo en un
- * solo path, tope de neuronas disparando a la vez, pausa con la pestaña oculta y
- * con `prefers-reduced-motion` se pinta un único frame estático.
+ * 1) RED AMBIENTE (pre-generada, siempre ahí pero casi invisible): neuronas chicas
+ *    con dendritas curvas que se afinan, de tamaño y forma distintos, distribuidas
+ *    en la pantalla. Fuera del radio del cursor se dibuja a `AMBIENT_GAIN` (16%),
+ *    o sea se intuye pero no se ve. Cada neurona dispara cada tanto y su región
+ *    late, así que de fondo hay vida tenue.
+ *
+ * 2) RED DEL CURSOR (lo que el usuario mira): al pasar el mouse se GENERA una red
+ *    efímera dentro de un radio chico (~2 cm). Cada neurona que aparece es distinta
+ *    (tamaño, cantidad y largo de dendritas aleatorios), dispara su impulso al nacer
+ *    —el axón se enciende mientras lo recorre— y al llegar a la punta contagia a
+ *    otra vecina. Cada una vive 1,4-2,6 s y se desvanece. Nunca se ve dos veces lo
+ *    mismo. Dentro del radio, además, la red ambiente se enciende a full.
+ *
+ * 3) BARRIDO "AGENTE IA": cada 5 minutos un frente cruza la pantalla y dispara
+ *    cientos de neuronas a la vez (parámetros ejecutándose en paralelo). Es el único
+ *    momento en que se ve la red completa.
+ *
+ * Rendimiento (DESIGN.md §4): capa fija, ~30fps, DPR ≤1.5, malla ambiente en un solo
+ * path, tope de neuronas vivas/disparando, pausa con la pestaña oculta y con
+ * `prefers-reduced-motion` se pinta un único frame estático.
  */
 
 // Acento del sistema (DESIGN.md §2): un solo tinte, distintos alfas/luminancias.
 const ACCENT = "52,211,153"
 const HOT = "196,255,226" // "blanco caliente" del soma activo (mismo tinte, más luz)
 const FRAME_MS = 33 // ~30fps
-const MIN_SPACING = 175
-const NODE_MIN = 30
-const NODE_MAX = 110
-const BRUSH_MIN = 230
-const MAX_DEPTH = 2
-const WAVE_DUR = 1100 // ms que tarda el impulso en recorrer el árbol
-const IMPULSE_SPEED = 0.42 // px por ms (~420 px/s: el axón se recorre en ~0.7s)
-const DECAY = 0.03
-const REVEAL_RISE = 0.3
-const REVEAL_FADE = 0.022
-const REFRACTORY = 320 // ms entre disparos de la misma neurona
-const MAX_FIRING = 130
-const SYNAPSE_DELAY = 70 // ms entre llegar a la punta y activar la vecina
-const BURST_MIN = 16000
-const BURST_MAX = 26000
-const BURST_DUR = 1700
+const TAU = Math.PI * 2
 
-type Soma = {
-  x: number
-  y: number
-  e: number
-  seed: number
-  region: number
-  next: number
-  firedAt: number
-  propagated: boolean
-  burstFired: boolean
-  total: number
-}
+// --- Radio del cursor -------------------------------------------------------
+// ≈2 cm en un monitor típico. Todo lo que queda fuera se dibuja a AMBIENT_GAIN.
+const CURSOR_RADIUS = 110
+const AMBIENT_GAIN = 0.16
+
+// --- Red ambiente -----------------------------------------------------------
+const AMBIENT_SPACING_MIN = 110
+const AMBIENT_MIN = 60
+const AMBIENT_MAX = 180
+const AMBIENT_DECAY = 0.03
+const AMBIENT_FIRE_MIN = 900 // frames entre disparos espontáneos (por región)
+const AMBIENT_FIRE_VAR = 2600
+const AMBIENT_REFRACTORY = 320
+const AMBIENT_MAX_FIRING = 130
+
+// --- Red del cursor (efímera) ----------------------------------------------
+const LIVE_MAX = 22
+const LIVE_LIFE_MIN = 1400
+const LIVE_LIFE_VAR = 1200
+const LIVE_SPAWN_MOVING = 0.22 // probabilidad por frame con el mouse moviéndose
+const LIVE_SPAWN_IDLE = 0.035 // con el mouse quieto
+const LIVE_LINK_DIST = 86
+const LIVE_CASCADE = 0.5
+
+// --- Impulso y barrido ------------------------------------------------------
+const IMPULSE_SPEED = 0.16 // px por ms: se ve el axón encenderse al paso
+const SYNAPSE_DELAY = 60 // ms entre llegar a la punta y activar la vecina
+const BURST_INTERVAL = 300000 // 5 minutos: el único momento en que se ve toda la red
+const BURST_DUR = 1800
 
 type Branch = {
-  o: number
   x1: number
   y1: number
   cx: number
@@ -76,7 +81,32 @@ type Branch = {
   mx: number
   my: number
   reveal: number
-  head: number // 0..1: porción del axón que ya quedó encendida por el impulso
+  head: number
+}
+
+type Neuron = {
+  x: number
+  y: number
+  e: number
+  seed: number
+  region: number
+  next: number
+  firedAt: number
+  propagated: boolean
+  burstFired: boolean
+  total: number
+}
+
+type Live = {
+  x: number
+  y: number
+  born: number
+  life: number
+  firedAt: number
+  propagated: boolean
+  total: number
+  tree: Branch[]
+  links: number[]
 }
 
 type Region = { phase: number; freq: number; heat: number }
@@ -85,6 +115,70 @@ type Pending = { j: number; at: number }
 /** Punto de una cuadrática (A → C → B) en t ∈ [0,1]; se usa para x y para y. */
 const curveAt = (a: number, c: number, b: number, t: number) =>
   (1 - t) * (1 - t) * a + 2 * (1 - t) * t * c + t * t * b
+
+type TreeOpts = {
+  dendrites: number
+  lenMin: number
+  lenMax: number
+  maxDepth: number
+  baseWidth: number
+  spread: number
+}
+
+/** Árbol dendrítico: troncos curvos que se afinan, con ramas hijas en ruta. */
+function makeTree(x: number, y: number, opts: TreeOpts): { tree: Branch[]; total: number } {
+  const tree: Branch[] = []
+  let total = 1
+  const base = Math.random() * TAU
+  const grow = (px: number, py: number, angle: number, len: number, depth: number, dist: number) => {
+    const ex = px + Math.cos(angle) * len
+    const ey = py + Math.sin(angle) * len
+    const nx = (ey - py) / len
+    const ny = -(ex - px) / len
+    const bow = len * (0.18 + Math.random() * 0.34) * (Math.random() < 0.5 ? -1 : 1)
+    const cxp = (px + ex) / 2 + nx * bow
+    const cyp = (py + ey) / 2 + ny * bow
+    const w0 = Math.max(0.6, opts.baseWidth - depth * 0.5)
+    tree.push({
+      x1: px,
+      y1: py,
+      cx: cxp,
+      cy: cyp,
+      x2: ex,
+      y2: ey,
+      depth,
+      w0,
+      w1: Math.max(0.25, w0 - 0.45),
+      dist: dist + len,
+      len,
+      mx: (px + ex) / 2 + nx * bow * 0.5,
+      my: (py + ey) / 2 + ny * bow * 0.5,
+      reveal: 0,
+      head: 0,
+    })
+    if (dist + len > total) total = dist + len
+    if (depth >= opts.maxDepth || len < 8) return
+    const kids = depth === 0 ? (Math.random() < 0.7 ? 2 : 1) : Math.random() < 0.4 ? 1 : 0
+    for (let k = 0; k < kids; k++) {
+      const at = 0.5 + Math.random() * 0.4
+      const spread = (0.3 + Math.random() * opts.spread) * (Math.random() < 0.5 ? -1 : 1)
+      grow(
+        curveAt(px, cxp, ex, at),
+        curveAt(py, cyp, ey, at),
+        angle + spread,
+        len * (0.45 + Math.random() * 0.3),
+        depth + 1,
+        dist + len * at
+      )
+    }
+  }
+  for (let k = 0; k < opts.dendrites; k++) {
+    const angle = base + (k / opts.dendrites) * TAU + (Math.random() - 0.5) * 0.8
+    const len = opts.lenMin + Math.random() * (opts.lenMax - opts.lenMin)
+    grow(x, y, angle, len, 0, 0)
+  }
+  return { tree, total }
+}
 
 export function AnimatedBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -101,12 +195,14 @@ export function AnimatedBackground() {
 
     let w = 0
     let h = 0
-    let somas: Soma[] = []
+    let neurons: Neuron[] = []
     let branches: Branch[] = []
+    let branchOwner: number[] = [] // neurona dueña de cada rama ambiente
     let owned: number[][] = []
     let links: number[][] = []
     let regions: Region[] = []
     let pending: Pending[] = []
+    let live: Live[] = []
     let regionSize = 400
     let regionCols = 1
     let firingCount = 0
@@ -119,21 +215,20 @@ export function AnimatedBackground() {
     let scrollBoost = 0
     let pointerHeat = 0
     let intensity = 1
-    let brushRadius = BRUSH_MIN
+    let dtSafe = 1 // dt del último frame (lo usa el desvanecido de la red efímera)
     let burstActive = false
     let burstT = 0
-    let burstTimer = 6000
+    let burstTimer = BURST_INTERVAL
     const burst = { axisX: true, from: 0 }
 
-    const pointer = { x: -9999, y: -9999, active: false }
+    const pointer = { x: -9999, y: -9999, px: -9999, py: -9999, active: false }
 
-    /** Somas por muestreo tipo dart-throwing: dispersión orgánica, sin retícula. */
-    const buildSomas = () => {
+    /** Red ambiente: neuronas chicas, cada una con tamaño y forma propios. */
+    const buildAmbient = () => {
       const area = w * h
-      const count = Math.max(NODE_MIN, Math.min(NODE_MAX, Math.round(area / 22000)))
-      const spacing = Math.max(MIN_SPACING, Math.sqrt(area / count))
-      brushRadius = Math.max(BRUSH_MIN, spacing * 1.4)
-      const minDist = spacing * 0.95
+      const count = Math.max(AMBIENT_MIN, Math.min(AMBIENT_MAX, Math.round(area / 9000)))
+      const spacing = Math.max(AMBIENT_SPACING_MIN, Math.sqrt(area / count))
+      const minDist = spacing * 0.9
       const cell = minDist / Math.SQRT2
       const gw = Math.max(1, Math.ceil(w / cell))
       const gh = Math.max(1, Math.ceil(h / cell))
@@ -146,130 +241,120 @@ export function AnimatedBackground() {
           for (let i = Math.max(0, gx - 2); i <= Math.min(gw - 1, gx + 2); i++) {
             const idx = grid[j * gw + i]
             if (idx < 0) continue
-            const s = somas[idx]
+            const s = neurons[idx]
             if (Math.hypot(s.x - x, s.y - y) < minDist) return true
           }
         }
         return false
       }
 
-      regionSize = Math.max(360, spacing * 2.2)
+      regionSize = Math.max(320, spacing * 2.2)
       regionCols = Math.max(1, Math.ceil(w / regionSize))
       const regionRows = Math.max(1, Math.ceil(h / regionSize))
       regions = Array.from({ length: regionCols * regionRows }, () => ({
-        phase: Math.random() * Math.PI * 2,
+        phase: Math.random() * TAU,
         freq: 0.01 + Math.random() * 0.014,
         heat: 0,
       }))
 
-      somas = []
-      for (let k = 0; k < count * 30 && somas.length < count; k++) {
+      neurons = []
+      branches = []
+      branchOwner = []
+      owned = []
+      for (let k = 0; k < count * 30 && neurons.length < count; k++) {
         const x = Math.random() * w
         const y = Math.random() * h
         if (tooClose(x, y)) continue
-        grid[Math.floor(y / cell) * gw + Math.floor(x / cell)] = somas.length
+        grid[Math.floor(y / cell) * gw + Math.floor(x / cell)] = neurons.length
         const rx = Math.min(regionCols - 1, Math.floor(x / regionSize))
         const ry = Math.min(regionRows - 1, Math.floor(y / regionSize))
-        somas.push({
+        const scale = 0.6 + Math.random() * 0.9
+        const { tree, total } = makeTree(x, y, {
+          dendrites: 3 + Math.floor(Math.random() * 4),
+          lenMin: spacing * 0.09 * scale,
+          lenMax: spacing * 0.24 * scale,
+          maxDepth: 1,
+          baseWidth: 0.9 + Math.random() * 0.6,
+          spread: 0.55,
+        })
+        const owner = neurons.length
+        const indices: number[] = []
+        for (const b of tree) {
+          branches.push(b)
+          branchOwner.push(owner)
+          indices.push(branches.length - 1)
+        }
+        owned.push(indices)
+        neurons.push({
           x,
           y,
           e: 0.03 + Math.random() * 0.05,
-          seed: Math.random() * Math.PI * 2,
+          seed: Math.random() * TAU,
           region: ry * regionCols + rx,
-          next: 300 + Math.random() * 1400,
+          next: 300 + Math.random() * 2400,
           firedAt: -1e9,
           propagated: true,
           burstFired: false,
-          total: 1,
+          total,
         })
       }
-      return spacing
-    }
 
-    /**
-     * Dendrita: tronco grueso que se afina, curvo, con ramas hijas que nacen a lo
-     * largo del tronco (55-90%) y no en la punta. Distinta longitud cada una.
-     */
-    const grow = (
-      o: number,
-      x: number,
-      y: number,
-      angle: number,
-      len: number,
-      depth: number,
-      dist: number
-    ) => {
-      const ex = x + Math.cos(angle) * len
-      const ey = y + Math.sin(angle) * len
-      const nx = (ey - y) / len
-      const ny = -(ex - x) / len
-      const bow = len * (0.18 + Math.random() * 0.3) * (Math.random() < 0.5 ? -1 : 1)
-      const cx = (x + ex) / 2 + nx * bow
-      const cy = (y + ey) / 2 + ny * bow
-      const w0 = 2.3 - depth * 0.7
-      const w1 = Math.max(0.35, w0 - 0.55)
-      branches.push({
-        o,
-        x1: x,
-        y1: y,
-        cx,
-        cy,
-        x2: ex,
-        y2: ey,
-        depth,
-        w0,
-        w1,
-        dist: dist + len,
-        len,
-        mx: (x + ex) / 2 + nx * bow * 0.5,
-        my: (y + ey) / 2 + ny * bow * 0.5,
-        reveal: 0,
-        head: 0,
-      })
-      if (dist + len > somas[o].total) somas[o].total = dist + len
-      if (depth >= MAX_DEPTH || len < 14) return
-      const kids = depth === 0 ? 2 : Math.random() < 0.5 ? 2 : 1
-      for (let k = 0; k < kids; k++) {
-        const at = 0.55 + Math.random() * 0.35
-        const bx = curveAt(x, cx, ex, at)
-        const by = curveAt(y, cy, ey, at)
-        const spread = (0.35 + Math.random() * 0.5) * (Math.random() < 0.5 ? -1 : 1)
-        grow(o, bx, by, angle + spread, len * (0.45 + Math.random() * 0.25), depth + 1, dist + len * at)
-      }
-    }
-
-    const build = () => {
-      const spacing = buildSomas()
-      branches = []
-      owned = somas.map(() => [])
-      for (let i = 0; i < somas.length; i++) {
-        const s = somas[i]
-        // Estrella: 4-7 dendritas alrededor del soma, largos bien distintos.
-        const dendrites = 4 + Math.floor(Math.random() * 4)
-        const base = (Math.random() * Math.PI * 2) / dendrites
-        for (let k = 0; k < dendrites; k++) {
-          const angle = base + (k / dendrites) * Math.PI * 2 + (Math.random() - 0.5) * 0.5
-          const len = spacing * (0.25 + Math.random() * 0.4)
-          const before = branches.length
-          grow(i, s.x, s.y, angle, len, 0, 0)
-          for (let b = before; b < branches.length; b++) owned[i].push(b)
-        }
-      }
-      // Sinapsis: adyacencia por cercanía (por dónde salta la activación).
-      links = somas.map(() => [])
-      const linkDist = spacing * 1.6
-      for (let i = 0; i < somas.length; i++) {
-        const a = somas[i]
+      links = neurons.map(() => [])
+      const linkDist = spacing * 1.5
+      for (let i = 0; i < neurons.length; i++) {
+        const a = neurons[i]
         const near: { j: number; d: number }[] = []
-        for (let j = 0; j < somas.length; j++) {
+        for (let j = 0; j < neurons.length; j++) {
           if (j === i) continue
-          const d = Math.hypot(a.x - somas[j].x, a.y - somas[j].y)
+          const d = Math.hypot(a.x - neurons[j].x, a.y - neurons[j].y)
           if (d < linkDist) near.push({ j, d })
         }
         near.sort((p, q) => p.d - q.d)
         links[i] = near.slice(0, 3).map((n) => n.j)
       }
       pending = []
+      live = []
+    }
+
+    /** Neurona efímera: nace donde está el cursor, distinta cada vez. */
+    const spawnLive = (now: number, x: number, y: number) => {
+      // Distribución sesgada al centro del radio (aparecen más cerca del puntero).
+      const r = CURSOR_RADIUS * 0.85 * Math.sqrt(Math.random())
+      const a = Math.random() * TAU
+      const nx = x + Math.cos(a) * r
+      const ny = y + Math.sin(a) * r
+      if (nx < 0 || ny < 0 || nx > w || ny > h) return
+      const scale = 0.55 + Math.random() * 0.9
+      const { tree, total } = makeTree(nx, ny, {
+        dendrites: 3 + Math.floor(Math.random() * 3),
+        lenMin: 8 * scale,
+        lenMax: 26 * scale,
+        maxDepth: Math.random() < 0.5 ? 1 : 0,
+        baseWidth: 0.85 + Math.random() * 0.5,
+        spread: 0.7,
+      })
+      const item: Live = {
+        x: nx,
+        y: ny,
+        born: now,
+        life: LIVE_LIFE_MIN + Math.random() * LIVE_LIFE_VAR,
+        firedAt: now,
+        propagated: false,
+        total,
+        tree,
+        links: [],
+      }
+      // Contagio: se enlaza con las efímeras más cercanas.
+      for (let i = live.length - 1, n = 0; i >= 0 && n < 2; i--) {
+        const o = live[i]
+        const d = Math.hypot(o.x - nx, o.y - ny)
+        if (d > LIVE_LINK_DIST) continue
+        item.links.push(i)
+        o.links.push(live.length)
+        n++
+      }
+      live.push(item)
+      if (live.length > LIVE_MAX) live.shift()
     }
 
     const resize = () => {
@@ -278,139 +363,150 @@ export function AnimatedBackground() {
       const doc = document.documentElement
       w = doc.clientWidth
       h = doc.clientHeight
-      intensity = w < 768 ? 0.8 : 1
+      intensity = w < 768 ? 0.85 : 1
       canvas.width = Math.floor(w * dpr)
       canvas.height = Math.floor(h * dpr)
       canvas.style.width = `${w}px`
       canvas.style.height = `${h}px`
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-      build()
+      buildAmbient()
       if (reduced) paint(performance.now())
     }
 
-    /** Dispara una neurona: arranca su impulso y calienta su región. */
-    const fire = (i: number, now: number) => {
-      const s = somas[i]
-      if (now - s.firedAt < REFRACTORY) return
-      if (firingCount >= MAX_FIRING) return
+    const fireAmbient = (i: number, now: number) => {
+      const s = neurons[i]
+      if (now - s.firedAt < AMBIENT_REFRACTORY) return
+      if (firingCount >= AMBIENT_MAX_FIRING) return
       s.firedAt = now
       s.propagated = false
       s.e = 1
-      s.total = Math.max(1, s.total)
       firingCount++
       const r = regions[s.region]
       if (r) r.heat = Math.min(0.8, r.heat + 0.1)
     }
 
-    /** Hotspot del cursor: cuanta más cercanía, más probabilidad de disparo. */
-    const excitePointer = (dt: number, now: number) => {
-      if (!pointer.active || coarse) {
-        pointerHeat *= 0.9
-        return
-      }
-      pointerHeat = Math.min(1, pointerHeat * 0.9 + 0.24)
-      for (let i = 0; i < somas.length; i++) {
-        const s = somas[i]
-        const d = Math.hypot(s.x - pointer.x, s.y - pointer.y)
-        if (d >= brushRadius) continue
-        const prox = 1 - d / brushRadius
-        s.e = Math.min(1, s.e + prox * 0.14 * dt)
-        if (Math.random() < prox * 0.14 * dt) fire(i, now)
-      }
-    }
+    const inRadius = (x: number, y: number) => Math.hypot(x - pointer.x, y - pointer.y) < CURSOR_RADIUS
 
     const advance = (dt: number, now: number) => {
-      // Regiones: cada una late con su fase; las que dispararon quedan calientes.
       for (const r of regions) {
         r.phase += r.freq * dt
         r.heat *= 1 - 0.012 * dt
       }
 
-      for (let i = 0; i < somas.length; i++) {
-        const s = somas[i]
-        s.e *= 1 - DECAY * dt
+      // Red ambiente: dispara poco y suave (queda tenue salvo en el radio o en el barrido).
+      for (let i = 0; i < neurons.length; i++) {
+        const s = neurons[i]
+        s.e *= 1 - AMBIENT_DECAY * dt
         if (s.e < 0.001) s.e = 0
         const r = regions[s.region]
         const ex =
-          (r ? 0.3 + 0.7 * (0.5 + 0.5 * Math.sin(r.phase)) + r.heat * 0.3 : 0.5) * (1 + scrollBoost * 3)
+          (r ? 0.25 + 0.75 * (0.5 + 0.5 * Math.sin(r.phase)) + r.heat * 0.3 : 0.4) *
+          (1 + scrollBoost * 2.5)
         s.next -= dt * ex
         if (s.next <= 0) {
-          fire(i, now)
-          s.next = 1600 + Math.random() * 3200
+          fireAmbient(i, now)
+          s.next = AMBIENT_FIRE_MIN + Math.random() * AMBIENT_FIRE_VAR
         }
-        // Al llegar el impulso a las puntas, el soma avisa a sus vecinos.
-        if (!s.propagated && now - s.firedAt > WAVE_DUR * 0.7) {
+        if (!s.propagated && now - s.firedAt > (s.total / IMPULSE_SPEED) * 0.75) {
           s.propagated = true
-          for (const j of links[i]) if (Math.random() < 0.18) pending.push({ j, at: now + SYNAPSE_DELAY })
+          for (const j of links[i]) {
+            if (Math.random() < 0.16) pending.push({ j, at: now + SYNAPSE_DELAY })
+          }
         }
       }
-
-      // Sinapsis pendientes: la neurona vecina arranca su propio impulso.
       for (let k = pending.length - 1; k >= 0; k--) {
         if (pending[k].at > now) continue
-        fire(pending[k].j, now)
+        fireAmbient(pending[k].j, now)
         pending.splice(k, 1)
       }
 
-      // Barrido "agente IA": un frente cruza la pantalla y dispara en paralelo.
+      // Barrido "agente IA" (cada 5 minutos): el único momento en que se ve toda la red.
       burstTimer -= dt * 16.67
       if (!burstActive && burstTimer <= 0) {
         burstActive = true
         burstT = 0
         burst.axisX = Math.random() < 0.5
         burst.from = Math.random() < 0.5 ? 0 : 1
-        for (const s of somas) s.burstFired = false
-        burstTimer = BURST_MIN + Math.random() * (BURST_MAX - BURST_MIN)
+        for (const s of neurons) s.burstFired = false
+        burstTimer = BURST_INTERVAL
       }
       if (burstActive) {
         burstT += dt * 16.67
         const p = burstT / BURST_DUR
         const line = burst.from === 0 ? p : 1 - p
-        for (let i = 0; i < somas.length; i++) {
-          const s = somas[i]
+        for (let i = 0; i < neurons.length; i++) {
+          const s = neurons[i]
           if (s.burstFired) continue
-          if (now - s.firedAt < WAVE_DUR * 0.6) continue
+          if (now - s.firedAt < 400) continue
           const coord = burst.axisX ? s.x / w : s.y / h
           if (burst.from === 0 ? coord <= line : coord >= line) {
             s.burstFired = true
-            fire(i, now)
+            fireAmbient(i, now)
           }
         }
         if (p >= 1) burstActive = false
       }
 
-      // Impulso: recorre el árbol por distancia; el tramo recorrido queda encendido.
-      for (const b of branches) {
-        const s = somas[b.o]
-        const travelled = (now - s.firedAt) * IMPULSE_SPEED
-        let target = 0
-        let head = 0
-        if (travelled > 0 && travelled < s.total + 90) {
-          const from = b.dist - b.len
-          if (travelled >= b.dist) {
-            // Ya pasó: queda encendido y se va apagando detrás del impulso.
-            const behind = travelled - b.dist
-            target = 0.5 * Math.max(0, 1 - behind / 180)
-            head = 1
-          } else if (travelled > from) {
-            // Lo está recorriendo: se enciende el tramo que ya pasó.
-            head = (travelled - from) / b.len
-            target = 0.9
+      // Red del cursor: se genera al paso del mouse y se desvanece sola.
+      if (pointer.active && !coarse) {
+        const speed = Math.hypot(pointer.x - pointer.px, pointer.y - pointer.py)
+        pointerHeat = Math.min(1, pointerHeat * 0.86 + speed / 90)
+        const chance = (speed > 4 ? LIVE_SPAWN_MOVING : LIVE_SPAWN_IDLE) * (0.5 + pointerHeat)
+        if (Math.random() < chance * dt) spawnLive(now, pointer.x, pointer.y)
+        pointer.px = pointer.x
+        pointer.py = pointer.y
+      } else {
+        pointerHeat *= 0.9
+      }
+
+      for (let k = live.length - 1; k >= 0; k--) {
+        const l = live[k]
+        if (now - l.born > l.life) {
+          live.splice(k, 1)
+          continue
+        }
+        // Al llegar a las puntas, contagia a una vecina (sigue la activación).
+        if (!l.propagated && now - l.firedAt > l.total / IMPULSE_SPEED + 40) {
+          l.propagated = true
+          if (l.links.length > 0 && Math.random() < LIVE_CASCADE) {
+            const j = l.links[Math.floor(Math.random() * l.links.length)]
+            const o = live[j]
+            if (o && now - o.firedAt > 220) {
+              o.firedAt = now
+              o.propagated = false
+              o.life = Math.max(o.life, now - o.born + 900)
+            }
           }
         }
-        if (pointer.active && !coarse) {
-          const d = Math.hypot(b.mx - pointer.x, b.my - pointer.y)
-          if (d < brushRadius) target = Math.max(target, (1 - d / brushRadius) * 0.8)
+      }
+
+      // Revelado: impulso (y cursor dentro del radio) para la red ambiente.
+      for (let bi = 0; bi < branches.length; bi++) {
+        const b = branches[bi]
+        const s = neurons[branchOwner[bi]]
+        const travelled = (now - s.firedAt) * IMPULSE_SPEED
+        let target = 0
+        if (travelled > 0 && travelled < s.total + 60) {
+          const from = b.dist - b.len
+          if (travelled >= b.dist) target = 0.5 * Math.max(0, 1 - (travelled - b.dist) / 160)
+          else if (travelled > from) {
+            target = 0.9
+            b.head = (travelled - from) / b.len
+          }
         }
-        b.head = head
+        if (target === 0) b.head = 0
+        // Fuera del radio del cursor casi no se ve; adentro se enciende a full.
+        const gain = inRadius(b.mx, b.my) ? 1 : AMBIENT_GAIN
+        const boosted = burstActive && s.burstFired ? 1 : gain
+        target *= boosted
         b.reveal =
           target > b.reveal
-            ? Math.min(target, b.reveal + REVEAL_RISE * dt)
-            : Math.max(target, b.reveal - REVEAL_FADE * dt)
+            ? Math.min(target, b.reveal + 0.3 * dt)
+            : Math.max(target, b.reveal - 0.03 * dt)
       }
     }
 
-    /** Traza una rama; si está "caliente" la dibuja con grosor que se afina. */
+    /** Traza una rama: grosor parejo (barato) o polígono que se afina (caliente). */
     const drawBranch = (b: Branch, alpha: number, tapered: boolean) => {
       if (!tapered) {
         ctx.lineWidth = (b.w0 + b.w1) / 2
@@ -421,8 +517,7 @@ export function AnimatedBackground() {
         ctx.stroke()
         return
       }
-      // Polígono: ancho w0 en la base → w1 en la punta (axón que se afina).
-      const steps = 5
+      const steps = 4
       ctx.fillStyle = `rgba(${ACCENT},${alpha.toFixed(3)})`
       ctx.beginPath()
       for (let k = 0; k <= steps; k++) {
@@ -432,11 +527,9 @@ export function AnimatedBackground() {
         const dx = 2 * (1 - t) * (b.cx - b.x1) + 2 * t * (b.x2 - b.cx)
         const dy = 2 * (1 - t) * (b.cy - b.y1) + 2 * t * (b.y2 - b.cy)
         const n = Math.hypot(dx, dy) || 1
-        const half = ((b.w0 + (b.w1 - b.w0) * t) / 2) * (k === 0 ? 0.2 : 1)
-        const ox = (-dy / n) * half
-        const oy = (dx / n) * half
-        if (k === 0) ctx.moveTo(x - ox, y - oy)
-        else ctx.lineTo(x - ox, y - oy)
+        const half = ((b.w0 + (b.w1 - b.w0) * t) / 2) * (k === 0 ? 0.25 : 1)
+        if (k === 0) ctx.moveTo(x + (-dy / n) * half, y + (dx / n) * half)
+        else ctx.lineTo(x + (-dy / n) * half, y + (dx / n) * half)
       }
       for (let k = steps; k >= 0; k--) {
         const t = k / steps
@@ -445,10 +538,25 @@ export function AnimatedBackground() {
         const dx = 2 * (1 - t) * (b.cx - b.x1) + 2 * t * (b.x2 - b.cx)
         const dy = 2 * (1 - t) * (b.cy - b.y1) + 2 * t * (b.y2 - b.cy)
         const n = Math.hypot(dx, dy) || 1
-        const half = ((b.w0 + (b.w1 - b.w0) * t) / 2) * (k === 0 ? 0.2 : 1)
-        ctx.lineTo(x + (-dy / n) * half, y + (dx / n) * half)
+        const half = ((b.w0 + (b.w1 - b.w0) * t) / 2) * (k === 0 ? 0.25 : 1)
+        ctx.lineTo(x - (-dy / n) * half, y - (dx / n) * half)
       }
       ctx.closePath()
+      ctx.fill()
+    }
+
+    /** Cabeza del impulso: punto caliente con halo sobre el axón. */
+    const drawHead = (x: number, y: number, alpha: number) => {
+      const glow = ctx.createRadialGradient(x, y, 0, x, y, 7)
+      glow.addColorStop(0, `rgba(${HOT},${alpha.toFixed(3)})`)
+      glow.addColorStop(1, `rgba(${ACCENT},0)`)
+      ctx.fillStyle = glow
+      ctx.beginPath()
+      ctx.arc(x, y, 7, 0, TAU)
+      ctx.fill()
+      ctx.fillStyle = `rgba(${HOT},${Math.min(1, alpha * 1.6).toFixed(3)})`
+      ctx.beginPath()
+      ctx.arc(x, y, 1.1, 0, TAU)
       ctx.fill()
     }
 
@@ -456,9 +564,9 @@ export function AnimatedBackground() {
       const now = time
       ctx.clearRect(0, 0, w, h)
 
-      // 1) Malla en reposo: toda la red apenas visible, en UN solo path.
-      ctx.lineWidth = 0.7
-      ctx.strokeStyle = `rgba(${ACCENT},${(0.03 * intensity).toFixed(3)})`
+      // 1) Malla ambiente en reposo: apenas visible, un solo path.
+      ctx.lineWidth = 0.6
+      ctx.strokeStyle = `rgba(${ACCENT},${(0.018 * intensity).toFixed(3)})`
       ctx.beginPath()
       for (const b of branches) {
         ctx.moveTo(b.x1, b.y1)
@@ -466,55 +574,76 @@ export function AnimatedBackground() {
       }
       ctx.stroke()
 
-      // 2) Ramas activas: encendidas por el impulso o por el cursor.
       ctx.globalCompositeOperation = "lighter"
+
+      // 2) Ramas ambiente activas (tenues fuera del radio, llenas adentro / en barrido).
       for (const b of branches) {
-        if (b.reveal < 0.03) continue
-        const alpha = (0.06 + b.reveal * 0.42) * intensity
-        drawBranch(b, alpha, b.reveal > 0.35 && b.depth < 2)
+        if (b.reveal < 0.02) continue
+        const alpha = (0.05 + b.reveal * 0.4) * intensity
+        drawBranch(b, alpha, b.reveal > 0.4 && b.depth < 1)
+      }
+      for (const b of branches) {
+        if (b.head <= 0 || b.head >= 1 || b.reveal < 0.12) continue
+        drawHead(
+          curveAt(b.x1, b.cx, b.x2, b.head),
+          curveAt(b.y1, b.cy, b.y2, b.head),
+          0.4 * intensity
+        )
       }
 
-      // 3) Cabeza del impulso: punto brillante + halo sobre el axón.
-      for (const b of branches) {
-        if (b.head <= 0 || b.head >= 1 || b.reveal < 0.2) continue
-        const x = curveAt(b.x1, b.cx, b.x2, b.head)
-        const y = curveAt(b.y1, b.cy, b.y2, b.head)
-        const glow = ctx.createRadialGradient(x, y, 0, x, y, 14)
-        glow.addColorStop(0, `rgba(${HOT},${(0.5 * intensity).toFixed(3)})`)
-        glow.addColorStop(1, `rgba(${ACCENT},0)`)
-        ctx.fillStyle = glow
-        ctx.beginPath()
-        ctx.arc(x, y, 14, 0, Math.PI * 2)
-        ctx.fill()
-        ctx.fillStyle = `rgba(${HOT},${(0.85 * intensity).toFixed(3)})`
-        ctx.beginPath()
-        ctx.arc(x, y, 1.4, 0, Math.PI * 2)
-        ctx.fill()
-      }
-
-      // 4) Somas: en reposo tenue; activos con núcleo caliente y halo.
-      for (const s of somas) {
+      // 3) Somas ambiente.
+      for (const s of neurons) {
         const e = Math.min(1, s.e * (0.92 + 0.08 * Math.sin(now / 700 + s.seed)))
-        if (e > 0.5) {
-          const glow = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, 22 + e * 16)
-          glow.addColorStop(0, `rgba(${HOT},${((e - 0.5) * 0.55 * intensity).toFixed(3)})`)
-          glow.addColorStop(0.45, `rgba(${ACCENT},${((e - 0.5) * 0.3 * intensity).toFixed(3)})`)
-          glow.addColorStop(1, `rgba(${ACCENT},0)`)
-          ctx.fillStyle = glow
-          ctx.beginPath()
-          ctx.arc(s.x, s.y, 22 + e * 16, 0, Math.PI * 2)
-          ctx.fill()
-        }
-        ctx.fillStyle = `rgba(${ACCENT},${((0.1 + e * 0.35) * intensity).toFixed(3)})`
+        if (e < 0.2) continue
+        const gain = inRadius(s.x, s.y) ? 1 : AMBIENT_GAIN
+        const boosted = burstActive && s.burstFired ? 1 : gain
+        if (boosted < 0.3) continue
+        ctx.fillStyle = `rgba(${ACCENT},${(0.5 * e * boosted * intensity).toFixed(3)})`
         ctx.beginPath()
-        ctx.arc(s.x, s.y, 1.2 + e * 1.8, 0, Math.PI * 2)
+        ctx.arc(s.x, s.y, 0.9 + e * 1.1, 0, TAU)
         ctx.fill()
-        if (e > 0.45) {
-          ctx.fillStyle = `rgba(${HOT},${((e - 0.45) * 0.7 * intensity).toFixed(3)})`
-          ctx.beginPath()
-          ctx.arc(s.x, s.y, 0.7 + e * 0.9, 0, Math.PI * 2)
-          ctx.fill()
+        ctx.fillStyle = `rgba(${HOT},${(0.4 * e * boosted * intensity).toFixed(3)})`
+        ctx.beginPath()
+        ctx.arc(s.x, s.y, 0.5 + e * 0.6, 0, TAU)
+        ctx.fill()
+      }
+
+      // 4) Red del cursor: aparece, dispara y se desvanece.
+      for (const l of live) {
+        const age = now - l.born
+        const k = age / l.life
+        const fade = k < 0.12 ? k / 0.12 : k > 0.6 ? Math.max(0, 1 - (k - 0.6) / 0.4) : 1
+        if (fade <= 0.01) continue
+        const travelled = (now - l.firedAt) * IMPULSE_SPEED
+        for (const b of l.tree) {
+          const from = b.dist - b.len
+          let target = 0
+          if (travelled >= b.dist) target = 0.55 * Math.max(0, 1 - (travelled - b.dist) / 130)
+          else if (travelled > from) {
+            target = 0.95
+            b.head = (travelled - from) / b.len
+          } else b.head = 0
+          b.reveal = Math.max(target * fade, b.reveal - 0.035 * dtSafe)
+          if (b.reveal > 0.02) {
+            drawBranch(b, (0.13 + b.reveal * 0.4) * fade * intensity, b.reveal > 0.45)
+          }
+          if (b.head > 0 && b.head < 1) {
+            drawHead(
+              curveAt(b.x1, b.cx, b.x2, b.head),
+              curveAt(b.y1, b.cy, b.y2, b.head),
+              0.42 * fade * intensity
+            )
+          }
         }
+        const e = fade
+        ctx.fillStyle = `rgba(${ACCENT},${(0.42 * e * intensity).toFixed(3)})`
+        ctx.beginPath()
+        ctx.arc(l.x, l.y, 1 + e * 1.1, 0, TAU)
+        ctx.fill()
+        ctx.fillStyle = `rgba(${HOT},${(0.6 * e * intensity).toFixed(3)})`
+        ctx.beginPath()
+        ctx.arc(l.x, l.y, 0.6 + e * 0.5, 0, TAU)
+        ctx.fill()
       }
 
       // 5) Barrido IA: frente fino que cruza la pantalla.
@@ -523,7 +652,7 @@ export function AnimatedBackground() {
         const line = burst.from === 0 ? p : 1 - p
         const fade = Math.sin(Math.PI * Math.min(1, Math.max(0, p)))
         ctx.lineWidth = 1
-        ctx.strokeStyle = `rgba(${ACCENT},${(0.08 * fade * intensity).toFixed(3)})`
+        ctx.strokeStyle = `rgba(${ACCENT},${(0.07 * fade * intensity).toFixed(3)})`
         ctx.beginPath()
         if (burst.axisX) {
           ctx.moveTo(line * w, 0)
@@ -535,36 +664,14 @@ export function AnimatedBackground() {
         ctx.stroke()
       }
 
-      // 6) Excitación eléctrica en el cursor: filamentos cortos que tiemblan.
-      if (pointer.active && !coarse && pointerHeat > 0.15) {
-        ctx.lineWidth = 1
-        for (let k = 0; k < 9; k++) {
-          const angle = Math.random() * Math.PI * 2
-          const len = 14 + Math.random() * 54
-          const x2 = pointer.x + Math.cos(angle) * len
-          const y2 = pointer.y + Math.sin(angle) * len
-          const bow = (Math.random() - 0.5) * len * 0.7
-          ctx.strokeStyle = `rgba(${ACCENT},${(0.1 + pointerHeat * 0.24).toFixed(3)})`
-          ctx.beginPath()
-          ctx.moveTo(pointer.x, pointer.y)
-          ctx.quadraticCurveTo(
-            pointer.x + (x2 - pointer.x) / 2 - Math.sin(angle) * bow,
-            pointer.y + (y2 - pointer.y) / 2 + Math.cos(angle) * bow,
-            x2,
-            y2
-          )
-          ctx.stroke()
-        }
-        const glow = ctx.createRadialGradient(pointer.x, pointer.y, 0, pointer.x, pointer.y, 46)
-        glow.addColorStop(0, `rgba(${HOT},${(0.16 + pointerHeat * 0.16).toFixed(3)})`)
+      // 6) El cursor: sólo un punto caliente con un halo chico (el radio se lee solo).
+      if (pointer.active && !coarse && pointerHeat > 0.08) {
+        const glow = ctx.createRadialGradient(pointer.x, pointer.y, 0, pointer.x, pointer.y, 34)
+        glow.addColorStop(0, `rgba(${HOT},${(0.1 + pointerHeat * 0.14).toFixed(3)})`)
         glow.addColorStop(1, `rgba(${ACCENT},0)`)
         ctx.fillStyle = glow
         ctx.beginPath()
-        ctx.arc(pointer.x, pointer.y, 46, 0, Math.PI * 2)
-        ctx.fill()
-        ctx.fillStyle = `rgba(${HOT},${(0.4 + pointerHeat * 0.35).toFixed(3)})`
-        ctx.beginPath()
-        ctx.arc(pointer.x, pointer.y, 1.8, 0, Math.PI * 2)
+        ctx.arc(pointer.x, pointer.y, 34, 0, TAU)
         ctx.fill()
       }
       ctx.globalCompositeOperation = "source-over"
@@ -577,10 +684,10 @@ export function AnimatedBackground() {
       const dt = last ? Math.min((ts - last) / 16.67, 3) : 1
       last = ts
       stepTime = ts
+      dtSafe = dt
       scrollBoost = Math.min(1, scrollBoost * 0.9 + scrollVel * 1.5)
       firingCount = 0
-      for (const s of somas) if (ts - s.firedAt < WAVE_DUR) firingCount++
-      excitePointer(dt, ts)
+      for (const s of neurons) if (ts - s.firedAt < s.total / IMPULSE_SPEED) firingCount++
       advance(dt, ts)
       paint(ts)
     }
@@ -590,6 +697,10 @@ export function AnimatedBackground() {
       resizeTimer = window.setTimeout(resize, 150)
     }
     const onMove = (event: PointerEvent) => {
+      if (!pointer.active) {
+        pointer.px = event.clientX
+        pointer.py = event.clientY
+      }
       pointer.x = event.clientX
       pointer.y = event.clientY
       pointer.active = true
@@ -599,12 +710,13 @@ export function AnimatedBackground() {
       pointer.x = -9999
       pointer.y = -9999
     }
-    /** Tap (móvil): dispara las neuronas de la zona tocada. */
+    /** Tap (móvil): genera un racimo de neuronas en el punto tocado. */
     const onDown = (event: PointerEvent) => {
       const now = performance.now()
-      for (let i = 0; i < somas.length; i++) {
-        const s = somas[i]
-        if (Math.hypot(s.x - event.clientX, s.y - event.clientY) < brushRadius) fire(i, now)
+      for (let k = 0; k < 6; k++) spawnLive(now, event.clientX, event.clientY)
+      for (let i = 0; i < neurons.length; i++) {
+        const s = neurons[i]
+        if (Math.hypot(s.x - event.clientX, s.y - event.clientY) < CURSOR_RADIUS) fireAmbient(i, now)
       }
     }
     const onVisibility = () => {
