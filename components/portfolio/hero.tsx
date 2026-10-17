@@ -1,6 +1,7 @@
 "use client"
 
-import { Github, Linkedin, Mail, ArrowDown, Download, MapPin } from "lucide-react"
+import { Mail, ArrowDown, Download, MapPin } from "lucide-react"
+import { Github, Linkedin } from "@/components/icons/brand-icons"
 import Link from "next/link"
 import { useLanguage, type Lang } from "@/lib/i18n"
 import { Reveal } from "@/components/portfolio/reveal"

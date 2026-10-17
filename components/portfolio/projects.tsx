@@ -1,7 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import { ArrowRight, Github, Lock } from "lucide-react"
+import { ArrowRight, Lock } from "lucide-react"
+import { Github } from "@/components/icons/brand-icons"
 import Link from "next/link"
 import {
   categories,

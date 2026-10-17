@@ -2,7 +2,8 @@
 
 import Link from "next/link"
 import { useState, useEffect, useRef } from "react"
-import { Menu, X, Github, Linkedin } from "lucide-react"
+import { Menu, X } from "lucide-react"
+import { Github, Linkedin } from "@/components/icons/brand-icons"
 import { useLanguage, type Lang } from "@/lib/i18n"
 import { BrandMark } from "@/components/brand-mark"
 

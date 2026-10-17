@@ -8,12 +8,12 @@ import {
   Check,
   Cpu,
   ExternalLink,
-  Github,
   ListOrdered,
   Lock,
   Sparkles,
   Workflow,
 } from "lucide-react"
+import { Github } from "@/components/icons/brand-icons"
 import { categoryLabel } from "@/lib/categories"
 import type { Project, ProjectImage } from "@/lib/projects"
 import { ProjectGallery } from "@/components/portfolio/project-gallery"

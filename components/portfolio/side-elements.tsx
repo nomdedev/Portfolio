@@ -1,4 +1,4 @@
-import { Github, Linkedin } from "lucide-react"
+import { Github, Linkedin } from "@/components/icons/brand-icons"
 import Link from "next/link"
 
 const socialLinks = [
