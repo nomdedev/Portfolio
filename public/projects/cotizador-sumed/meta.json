@@ -1,26 +1,44 @@
 {
   "01-cover": {
-    "altEs": "Portada de Cotizador Sumed",
-    "altEn": "Cotizador Sumed cover",
-    "captionEs": "Cotizador que integra bots conversacionales, modelado de datos y procesos en Microsoft Fabric para crear y gestionar cotizaciones de punta a punta, c…",
-    "captionEn": "Quoting system integrating conversational bots, data modeling and Microsoft Fabric processes to create and manage quotes end to end, with full applic…"
+    "altEs": "Panel de cotizaciones con listado de cotizaciones y detalle de la cotización #269: rentabilidad, unidades e ítems cotizados",
+    "altEn": "Quotes panel with quote list and detail of quote #269: margin, units and quoted items",
+    "captionEs": "Panel de cotizaciones: listado con estado y rentabilidad, y detalle de la cotización con sus ítems, precios y alertas del bot",
+    "captionEn": "Quotes panel: list with status and margin, plus quote detail with its items, prices and bot alerts"
   },
-  "02-vista": {
-    "altEs": "Bots conversacionales para alta y consulta de cotizaciones",
-    "altEn": "Conversational bots for creating and querying quotes",
-    "captionEs": "Bots conversacionales para alta y consulta de cotizaciones",
-    "captionEn": "Conversational bots for creating and querying quotes"
+  "02-bot-conversacion": {
+    "altEs": "Panel de la cotización con el chat del bot conversacional que arma la cotización paso a paso",
+    "altEn": "Quote panel with the conversational bot chat building the quote step by step",
+    "captionEs": "Bot conversacional: el pedido entra por chat, el bot resume los artículos detectados y envía la cotización",
+    "captionEn": "Conversational bot: the request arrives via chat, the bot summarizes the detected items and sends the quote"
   },
-  "03-flujo": {
-    "altEs": "Modelado y normalización de datos",
-    "altEn": "Data modeling and normalization",
-    "captionEs": "Modelado y normalización de datos",
-    "captionEn": "Data modeling and normalization"
+  "03-alertas": {
+    "altEs": "Ventana de alertas con críticas y advertencias, como precios bajo el mínimo y artículos sin resultado del bot",
+    "altEn": "Alerts window with criticals and warnings, such as prices below minimum and items the bot could not find",
+    "captionEs": "Alertas de la aplicación: precios bajo el mínimo y artículos sin resultado, con acceso directo a la cotización afectada",
+    "captionEn": "Application alerts: prices below minimum and unmatched items, with direct access to the affected quote"
   },
-  "04-detalle": {
-    "altEs": "Procesos en Microsoft Fabric",
-    "altEn": "Microsoft Fabric processes",
-    "captionEs": "Procesos en Microsoft Fabric",
-    "captionEn": "Microsoft Fabric processes"
+  "04-observabilidad-resumen": {
+    "altEs": "Panel de observabilidad con KPIs de cotizaciones, tasa de conversión, ticket promedio y distribución por estado",
+    "altEn": "Observability dashboard with quote KPIs, conversion rate, average ticket and status distribution",
+    "captionEs": "Observabilidad — Resumen: KPIs del período, cotizaciones por día y distribución por estado, con filtros y exportación de reportes",
+    "captionEn": "Observability — Overview: period KPIs, quotes per day and status distribution, with filters and report export"
+  },
+  "05-observabilidad-vendedores": {
+    "altEs": "Panel de observabilidad con top 10 de vendedores por volumen cotizado y ranking de vendedores",
+    "altEn": "Observability dashboard with top 10 salespeople by quoted volume and salesperson ranking",
+    "captionEs": "Observabilidad — Vendedores: volumen cotizado por vendedor, ticket y rentabilidad promedio, con exportación a CSV",
+    "captionEn": "Observability — Salespeople: quoted volume per salesperson, average ticket and margin, with CSV export"
+  },
+  "06-observabilidad-productos": {
+    "altEs": "Panel de observabilidad con análisis de precio versus margen por producto y detalle de un ítem",
+    "altEn": "Observability dashboard with price versus margin analysis per product and item detail",
+    "captionEs": "Observabilidad — Productos: precio vs. margen por producto (burbujas por unidad cotizada) y ranking de ítems",
+    "captionEn": "Observability — Products: price vs. margin per product (bubbles per quoted unit) and item ranking"
+  },
+  "07-observabilidad-performance": {
+    "altEs": "Panel de observabilidad de sistemas con latencia P50/P95 por día, tasa de error y performance por endpoint",
+    "altEn": "Systems observability dashboard with P50/P95 latency per day, error rate and performance per endpoint",
+    "captionEs": "Observabilidad — Sistemas: tiempos de respuesta P50/P95 reales, tasa de error en requests y performance por endpoint",
+    "captionEn": "Observability — Systems: real P50/P95 response times, request error rate and performance per endpoint"
   }
 }
